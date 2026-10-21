@@ -50,4 +50,9 @@ def row(loc, left, right):
     return (head + L, head + R)
 
 def new_act(loc, text):
-    return (loc + "\nВ действующей редакции отсутствует.", loc + "\n" + "[[G]]" + text + "[[/G]]")
+    body = text
+    for pref in (loc + ". ", loc + ".", loc):
+        if body.startswith(pref):
+            body = body[len(pref):].lstrip()
+            break
+    return (loc + "\nВ действующей редакции отсутствует.", loc + "\n" + "[[G]]" + body + "[[/G]]")

@@ -7,7 +7,8 @@ from docx.oxml import OxmlElement
 from docx.table import _Cell
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE = os.path.join(ROOT, "ACT. 230 — Технические исправления в Закон о Национальной Гвардии.docx")
+BASE = os.path.join(ROOT, "Законодательная база")
+TEMPLATE = os.path.join(ROOT, "Законопроекты", "ACT. 230 — Технические исправления в Закон о Национальной Гвардии.docx")
 OUT = os.path.join(ROOT, "Законопроекты")
 RED, GREEN = "F4CCCC", "D9EAD3"
 
@@ -21,7 +22,7 @@ def resolve(f):
         return p
     import glob
     key = [w for w in f.replace(".json", "").split() if len(w) > 4][:3]
-    hits = [x for x in glob.glob(os.path.join(ROOT, "*.json")) if all(w in x for w in key)]
+    hits = [x for d in (BASE, ROOT) for x in glob.glob(os.path.join(d, "*.json")) if all(w in x for w in key)]
     if len(hits) > 1:
         pref = [x for x in hits if "Сан-Андреас" in x or "San-Andreas" in x]
         if len(pref) == 1:

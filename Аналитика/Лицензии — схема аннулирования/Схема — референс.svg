@@ -1,119 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1010" viewBox="0 0 1240 1010" font-family="Inter, Segoe UI, Arial, Helvetica, sans-serif">
-<defs><marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D4AF37"/></marker><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D64545"/></marker></defs>
-<rect width="1240" height="1010" fill="#0E1B2A"/>
-<text x="40" y="66" font-size="33" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0.6" opacity="1">ЛИЦЕНЗИИ ШТАТА SAN-ANDREAS</text>
-<text x="40" y="94" font-size="14" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">что нужно для получения  ·  что аннулирует</text>
-<line x1="40" y1="132" x2="70" y2="132" stroke="#D4AF37" stroke-width="2" marker-end="url(#ag)"/>
-<text x="78" y="136" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">требуется для получения</text>
-<line x1="300" y1="132" x2="330" y2="132" stroke="#D64545" stroke-width="2" marker-end="url(#ar)"/>
-<text x="338" y="136" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирует</text>
-<line x1="490" y1="132" x2="520" y2="132" stroke="#D4AF37" stroke-width="2" stroke-dasharray="5 4" opacity="0.8"/>
-<text x="528" y="136" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приостановление / заморозка</text>
-<rect x="40" y="228" width="86" height="266" rx="14" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.7"/>
-<g transform="rotate(-90 83 361)"><text x="83" y="355" font-size="12.5" fill="#D4AF37" text-anchor="middle" letter-spacing="1" font-weight="bold">МЕДСПРАВКА EMS</text><text x="83" y="373" font-size="10.5" fill="#8FA3B8" text-anchor="middle">14 календарных дней</text></g>
-<line x1="126" y1="308" x2="146" y2="308" stroke="#D4AF37" stroke-width="1.6" opacity="0.9"/>
-<circle cx="126" cy="308" r="3" fill="#D4AF37"/>
-<line x1="126" y1="452" x2="146" y2="452" stroke="#D4AF37" stroke-width="1.6" opacity="0.9"/>
-<circle cx="126" cy="452" r="3" fill="#D4AF37"/>
-<path d="M 274.5 228 V 196 H 1075.5" fill="none" stroke="#D4AF37" stroke-width="1.6" opacity="0.85"/>
-<line x1="541.5" y1="196" x2="541.5" y2="222" stroke="#D4AF37" stroke-width="1.6" marker-end="url(#ag)" opacity="0.85"/>
-<line x1="808.5" y1="196" x2="808.5" y2="222" stroke="#D4AF37" stroke-width="1.6" marker-end="url(#ag)" opacity="0.85"/>
-<line x1="1075.5" y1="196" x2="1075.5" y2="222" stroke="#D4AF37" stroke-width="1.6" marker-end="url(#ag)" opacity="0.85"/>
-<rect x="150" y="228" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="184" cy="260" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(184,260)"><path d="M -11 -4 H 9 V 1 H 1 L -2 7 H -8 L -5 1 H -11 Z" fill="none" stroke="#D4AF37" stroke-width="1.6" stroke-linejoin="round"/></g>
-<text x="210" y="264" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ГРАЖДАНСКОЕ ОРУЖИЕ</text>
-<line x1="166" y1="278" x2="383" y2="278" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="166" y="304" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">медсправка · экзамен</text>
-<text x="166" y="328" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">12 000 $ + 3 000 $ · бессрочно</text>
-<text x="166" y="352" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">выдают LSPD · LSCSD</text>
-<rect x="417" y="228" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="451" cy="260" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(451,260)"><path d="M -12 4 H 11 M -12 4 L -7 8 M -4 4 V 1 M 0 1 H 5" fill="none" stroke="#D4AF37" stroke-width="1.6" stroke-linecap="round"/></g>
-<text x="477" y="264" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ОХОТНИЧЬЕ ОРУЖИЕ</text>
-<line x1="433" y1="278" x2="650" y2="278" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="433" y="304" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">гражданское оружие · медсправка</text>
-<text x="433" y="328" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">цена и срок не установлены</text>
-<text x="433" y="352" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">Правительство · правоохранители</text>
-<rect x="684" y="228" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="718" cy="260" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(718,260)"><rect x="-11" y="-8" width="22" height="16" rx="2" fill="none" stroke="#D4AF37" stroke-width="1.6"/><line x1="-11" y1="0" x2="11" y2="0" stroke="#D4AF37" stroke-width="1.2"/></g>
-<text x="744" y="264" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">КОЛЛЕКЦИОНЕР</text>
-<line x1="700" y1="278" x2="917" y2="278" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="700" y="304" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">гражданское оружие · медсправка</text>
-<text x="700" y="328" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">75 000 $/нед + 30 000 $ · 7 дней</text>
-<text x="700" y="352" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">Глава ДНБ · Губернатор</text>
-<rect x="951" y="228" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="985" cy="260" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(985,260)"><path d="M -6 9 C -6 0 -12 -2 -12 -9 M -6 2 L -10 -1 M 6 9 C 6 0 12 -2 12 -9 M 6 2 L 10 -1" fill="none" stroke="#D4AF37" stroke-width="1.6" stroke-linecap="round"/></g>
-<text x="1011" y="264" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">HUNTING</text>
-<line x1="967" y1="278" x2="1184" y2="278" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="967" y="304" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лицензия на оружие · медсправка</text>
-<text x="967" y="328" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">4 000 $ + 3 000 $ · бессрочно</text>
-<text x="967" y="352" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">мэрия LS · LSPD · LSCSD</text>
-<rect x="150" y="410" width="1050" height="84" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="192" cy="452.0" r="20" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(192,452.0)"><circle cx="0" cy="0" r="9" fill="none" stroke="#D4AF37" stroke-width="1.6"/><circle cx="0" cy="0" r="2.5" fill="none" stroke="#D4AF37" stroke-width="1.4"/><path d="M 0 2.5 V 9 M -2.2 -1 L -8 -4 M 2.2 -1 L 8 -4" stroke="#D4AF37" stroke-width="1.3"/></g>
-<text x="228" y="442" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ВОДИТЕЛЬСКИЕ ЛИЦЕНЗИИ</text>
-<text x="228" y="466" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">CDL A · CDL B · Drive D · Drive M</text>
-<text x="228" y="486" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">действующая медсправка · Дорожный кодекс ст. 1.1</text>
-<rect x="150" y="516" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="184" cy="548" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(184,548)"><rect x="-3" y="-10" width="6" height="20" rx="1.5" fill="#D4AF37"/><rect x="-10" y="-3" width="20" height="6" rx="1.5" fill="#D4AF37"/></g>
-<text x="210" y="552" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПАРА-МЕДИК</text>
-<line x1="166" y1="566" x2="383" y2="566" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="166" y="592" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">экзамен и пошлина</text>
-<text x="166" y="616" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">250 000 $/мес + 50 000 $ · 1 месяц</text>
-<text x="166" y="640" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">главврач и заместители</text>
-<rect x="417" y="516" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="451" cy="548" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(451,548)"><path d="M 0 -10 V 9 M -8 9 H 8 M -9 -6 H 9 M -9 -6 L -13 2 H -5 Z M 9 -6 L 5 2 H 13 Z" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round"/></g>
-<text x="477" y="552" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ЧАСТНЫЙ АДВОКАТ</text>
-<line x1="433" y1="566" x2="650" y2="566" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="433" y="592" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">экзамен</text>
-<text x="433" y="616" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">100 000 $ · 30 дней</text>
-<text x="433" y="640" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">Губернатор · Генпрокурор</text>
-<rect x="684" y="516" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="718" cy="548" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(718,548)"><rect x="-11" y="-4" width="22" height="13" rx="2" fill="none" stroke="#D4AF37" stroke-width="1.6"/><path d="M -5 -4 V -7 H 5 V -4" fill="none" stroke="#D4AF37" stroke-width="1.5"/></g>
-<text x="744" y="552" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПРЕДПРИНИМАТЕЛЬ</text>
-<line x1="700" y1="566" x2="917" y2="566" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="700" y="592" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">регистрация в Казначействе</text>
-<text x="700" y="616" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">40 000 / 100 000 / 200 000 $</text>
-<text x="700" y="640" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">малое · среднее · организация</text>
-<rect x="951" y="516" width="249" height="160" rx="16" fill="#16283C" stroke="#D4AF37" stroke-opacity="0.55"/>
-<circle cx="985" cy="548" r="18" fill="#D4AF37" fill-opacity="0.08" stroke="#D4AF37" stroke-opacity="0.6"/>
-<g transform="translate(985,548)"><path d="M -10 0 C -6 -8 4 -8 8 0 C 4 8 -6 8 -10 0 Z" fill="none" stroke="#D4AF37" stroke-width="1.6"/><path d="M 8 0 L 12 -5 V 5 Z" fill="none" stroke="#D4AF37" stroke-width="1.4"/><circle cx="3" cy="-2" r="1" fill="#D4AF37"/></g>
-<text x="1011" y="552" font-size="12.5" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">FISHING</text>
-<line x1="967" y1="566" x2="1184" y2="566" stroke="#D4AF37" stroke-opacity="0.25"/>
-<text x="967" y="592" font-size="11.5" fill="#D4AF37" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">знание закона · пошлина</text>
-<text x="967" y="616" font-size="11.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">пошлина Правительства</text>
-<text x="967" y="640" font-size="10.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">мэрия LS · LSPD · LSCSD</text>
-<rect x="40" y="704" width="1160" height="248" rx="18" fill="#2A1518" stroke="#D64545" stroke-opacity="0.75"/>
-<text x="64" y="734" font-size="16" fill="#FF8A8A" font-weight="bold" text-anchor="start" letter-spacing="0.8" opacity="1">ОСНОВАНИЯ АННУЛИРОВАНИЯ</text>
-<rect x="64.0" y="750" width="360.0" height="84" rx="12" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="78.0" y="774" font-size="12.5" fill="#FFFFFF" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">НЕТ МЕДСПРАВКИ</text>
-<text x="78.0" y="795" font-size="10.5" fill="#F0C0C0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">оружие · водительские · пара-медик</text>
-<text x="78.0" y="816" font-size="10" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 41.1 ЗО · ст. 1.1 ДК · ст. 36 ЗО</text>
-<rect x="440.0" y="750" width="360.0" height="84" rx="12" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="454.0" y="774" font-size="12.5" fill="#FFFFFF" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ЗАКЛЮЧЕНИЕ EMS</text>
-<text x="454.0" y="795" font-size="10.5" fill="#F0C0C0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">психическое состояние</text>
-<text x="454.0" y="816" font-size="10" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 41 ЗО</text>
-<rect x="816.0" y="750" width="360.0" height="84" rx="12" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="830.0" y="774" font-size="12.5" fill="#FFFFFF" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">НАРУШЕНИЕ ЗАКОНА</text>
-<text x="830.0" y="795" font-size="10.5" fill="#F0C0C0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лишение лицензии · изъятие оружия</text>
-<text x="830.0" y="816" font-size="10" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 40, 42 ЗО</text>
-<rect x="64.0" y="846" width="360.0" height="84" rx="12" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="78.0" y="870" font-size="12.5" fill="#FFFFFF" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ОХОТА И РЫБАЛКА</text>
-<text x="78.0" y="891" font-size="10.5" fill="#F0C0C0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">HUNTING ↔ оружие</text>
-<text x="78.0" y="912" font-size="10" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 24, 30–33 ЗОО</text>
-<rect x="440.0" y="846" width="360.0" height="84" rx="12" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="454.0" y="870" font-size="12.5" fill="#FFFFFF" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПРЕСТУПЛЕНИЕ НА ТС</text>
-<text x="454.0" y="891" font-size="10.5" fill="#F0C0C0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">все категории</text>
-<text x="454.0" y="912" font-size="10" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 1.2 ДК</text>
-<rect x="816.0" y="846" width="360.0" height="84" rx="12" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="830.0" y="870" font-size="12.5" fill="#FFFFFF" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПРОФЕССИИ И БИЗНЕС</text>
-<text x="830.0" y="891" font-size="10.5" fill="#F0C0C0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">парамедик · адвокат · налог 3 дня</text>
-<text x="830.0" y="912" font-size="10" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ЗО · ст. 11 ЗА · ст. 9 ЗПД</text>
-<text x="40" y="978" font-size="10" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ЗО — Закон об оружии · ЗОО — Закон об охоте и рыбалке · ДК — Дорожный кодекс · ЗА — Закон об адвокатуре · ЗПД — Закон о предпринимательской деятельности</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1104" viewBox="0 0 1240 1104" font-family="Inter, Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1240" height="1104" fill="#0E1B2A"/>
+<text x="40" y="62" font-size="32" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0.6" opacity="1">АННУЛИРОВАНИЕ ЛИЦЕНЗИЙ</text>
+<text x="40" y="90" font-size="13" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">только основания · норма под причиной · строка = что аннулируется</text>
+<rect x="40" y="104" width="72" height="3" rx="1.5" fill="#D64545"/>
+<rect x="40" y="122" width="22" height="11" rx="3" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.8"/>
+<text x="70" y="131" font-size="10.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование</text>
+<rect x="210" y="122" width="22" height="11" rx="3" fill="none" stroke="#D64545" stroke-opacity="0.8" stroke-dasharray="4 3"/>
+<text x="240" y="131" font-size="10.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">заморозка / приостановление</text>
+<rect x="40" y="160" width="1160" height="92" rx="14" fill="#2A1518" stroke="#D64545" stroke-opacity="0.85"/>
+<text x="60" y="194" font-size="13.5" fill="#FF9494" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">НЕТ МЕДСПРАВКИ</text>
+<text x="60" y="218" font-size="9.5" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 41.1 ЗО · ДК 1.1 · ст. 36 ЗО</text>
+<rect x="320.0" y="175" width="285.3333333333333" height="62" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="205" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">оружие</text>
+<text x="332.0" y="227" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">обязательное аннулирование и изъятие · ст. 41.1 ЗО</text>
+<rect x="617.3333333333333" y="175" width="285.3333333333333" height="62" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="205" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">водительские</text>
+<text x="629.3333333333333" y="227" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">штраф + аннулирование категории · ДК 1.1</text>
+<rect x="914.6666666666666" y="175" width="285.3333333333333" height="62" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="926.6666666666666" y="205" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">пара-медик</text>
+<text x="926.6666666666666" y="227" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">по требованию должностного лица · ст. 36 ч. 5 «б»</text>
+<rect x="40" y="266" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="288" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="306" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ГРАЖДАНСКОЕ ОРУЖИЕ</text>
+<rect x="320.0" y="276" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">заключение EMS: психическое состояние</text>
+<text x="332.0" y="328" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">основание для аннулирования · ст. 41 ЗО</text>
+<rect x="617.3333333333333" y="276" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение Закона об оружии</text>
+<text x="629.3333333333333" y="328" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лишение лицензии · изъятие оружия · ст. 40, 42 ЗО</text>
+<rect x="914.6666666666666" y="276" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="926.6666666666666" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет HUNTING, но есть охотничьи ресурсы</text>
+<text x="926.6666666666666" y="328" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование лицензии на оружие · ст. 31 ЗОО</text>
+<rect x="320" y="372" width="880" height="24" rx="12" fill="none" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="760.0" y="388" font-size="9.5" fill="#E2AFAF" font-weight="normal" text-anchor="middle" letter-spacing="0" opacity="1">ст. 30 ↔ 31 — “парные” лицензии аннулируются навстречу друг другу</text>
+<rect x="40" y="406" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="428" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="446" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">HUNTING</text>
+<rect x="320.0" y="416" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="446" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет лицензии на оружие, но есть ружьё</text>
+<text x="332.0" y="468" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование HUNTING · ст. 30 ЗОО</text>
+<rect x="617.3333333333333" y="416" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="446" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет медсправки, но есть ресурсы</text>
+<text x="629.3333333333333" y="468" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование HUNTING · ст. 32 ЗОО</text>
+<rect x="914.6666666666666" y="416" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="926.6666666666666" y="446" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">изъяли лицензию на оружие</text>
+<text x="926.6666666666666" y="468" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">HUNTING заморожена · ст. 24 ЗОО</text>
+<rect x="40" y="512" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="534" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="552" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ВОДИТЕЛЬСКИЕ</text>
+<rect x="320.0" y="522" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="552" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ТС как орудие преступления</text>
+<text x="332.0" y="574" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">вправе снять все категории · ДК ст. 1.2</text>
+<rect x="766.0" y="522" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="778.0" y="552" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">безрассудное вождение</text>
+<text x="778.0" y="574" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лишение лицензии · АК ст. 5.6</text>
+<rect x="40" y="618" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="640" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="658" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">FISHING</text>
+<rect x="320.0" y="628" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="658" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение правил рыболовства</text>
+<text x="332.0" y="680" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование и изъятие · ст. 33 ч. 1 ЗОО</text>
+<rect x="766.0" y="628" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="778.0" y="658" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">вылов в водоёмах Приложения № 1</text>
+<text x="778.0" y="680" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">то же основание · ст. 33 ч. 1 ЗОО</text>
+<rect x="40" y="724" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="746" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="764" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПАРА-МЕДИК</text>
+<rect x="320.0" y="734" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="764" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">срок истёк · ложные сведения · нарушение обязанностей</text>
+<text x="332.0" y="786" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ч. 3 «а»–«в» ЗО</text>
+<rect x="766.0" y="734" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="778.0" y="764" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">деяние · утрата квалификации · передача лицензии</text>
+<text x="778.0" y="786" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ч. 3 «г»–«е» ЗО</text>
+<rect x="40" y="830" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="852" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="870" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ЧАСТНЫЙ АДВОКАТ</text>
+<rect x="320.0" y="840" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="870" font-size="10.0" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение закона · действия против Коллегии</text>
+<text x="332.0" y="892" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 11 ч. 3 «а», «д» ЗА</text>
+<rect x="617.3333333333333" y="840" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="870" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приговор · переаттестация · госслужба</text>
+<text x="629.3333333333333" y="892" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 11 ч. 3 «б»–«г» ЗА</text>
+<rect x="914.6666666666666" y="840" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="926.6666666666666" y="870" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">госслужба · активная судимость</text>
+<text x="926.6666666666666" y="892" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приостановление · ст. 11 ч. 1.1, 2 ЗА</text>
+<rect x="40" y="936" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="958" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="976" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПРЕДПРИНИМАТЕЛЬ</text>
+<rect x="320.0" y="946" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="976" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">налог не уплачен 3 дня · систематически</text>
+<text x="332.0" y="998" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 9 ч. 2–3 ЗПД</text>
+<rect x="617.3333333333333" y="946" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="976" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ходатайство Генерального прокурора</text>
+<text x="629.3333333333333" y="998" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 27 ч. 2, 28 ч. 2 ЗПД</text>
+<rect x="914.6666666666666" y="946" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="926.6666666666666" y="976" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нецелевой вид деятельности</text>
+<text x="926.6666666666666" y="998" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приостановка · ст. 11 ч. 1, 11.1 ч. 2</text>
+<text x="40" y="1062" font-size="9.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ЗО — Закон об оружии · ЗОО — Закон об охоте и рыбалке · ДК — Дорожный кодекс · АК — Административный кодекс · ЗА — Закон об адвокатуре · ЗПД — Закон о предпринимательской деятельности</text>
+<text x="40" y="1080" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">Отдельных оснований нет: коллекционер и лицензия на охотничье оружие — пробел в законе.</text>
 </svg>

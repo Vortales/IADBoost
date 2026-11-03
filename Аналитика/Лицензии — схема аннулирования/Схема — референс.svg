@@ -1,101 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1104" viewBox="0 0 1240 1104" font-family="Inter, Segoe UI, Arial, Helvetica, sans-serif">
-<rect width="1240" height="1104" fill="#0E1B2A"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="880" viewBox="0 0 1240 880" font-family="Inter, Segoe UI, Arial, Helvetica, sans-serif">
+<rect width="1240" height="880" fill="#0E1B2A"/>
 <text x="40" y="62" font-size="32" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0.6" opacity="1">АННУЛИРОВАНИЕ ЛИЦЕНЗИЙ</text>
-<text x="40" y="90" font-size="13" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">только основания · норма под причиной · строка = что аннулируется</text>
+<text x="40" y="90" font-size="13" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">что снимает лицензию и какой статьёй · строка = какая лицензия</text>
 <rect x="40" y="104" width="72" height="3" rx="1.5" fill="#D64545"/>
 <rect x="40" y="122" width="22" height="11" rx="3" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.8"/>
 <text x="70" y="131" font-size="10.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование</text>
-<rect x="210" y="122" width="22" height="11" rx="3" fill="none" stroke="#D64545" stroke-opacity="0.8" stroke-dasharray="4 3"/>
-<text x="240" y="131" font-size="10.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">заморозка / приостановление</text>
-<rect x="40" y="160" width="1160" height="92" rx="14" fill="#2A1518" stroke="#D64545" stroke-opacity="0.85"/>
-<text x="60" y="194" font-size="13.5" fill="#FF9494" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">НЕТ МЕДСПРАВКИ</text>
+<rect x="230" y="122" width="22" height="11" rx="3" fill="none" stroke="#D64545" stroke-opacity="0.8" stroke-dasharray="4 3"/>
+<text x="260" y="131" font-size="10.5" fill="#C7D3E0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">заморозка / приостановление</text>
+<rect x="40" y="160" width="1160" height="88" rx="14" fill="#2A1518" stroke="#D64545" stroke-opacity="0.85"/>
+<text x="60" y="196" font-size="13.5" fill="#FF9494" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">НЕТ МЕДСПРАВКИ</text>
 <text x="60" y="218" font-size="9.5" fill="#C98A8A" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 41.1 ЗО · ДК 1.1 · ст. 36 ЗО</text>
-<rect x="320.0" y="175" width="285.3333333333333" height="62" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="205" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">оружие</text>
-<text x="332.0" y="227" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">обязательное аннулирование и изъятие · ст. 41.1 ЗО</text>
-<rect x="617.3333333333333" y="175" width="285.3333333333333" height="62" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="629.3333333333333" y="205" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">водительские</text>
-<text x="629.3333333333333" y="227" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">штраф + аннулирование категории · ДК 1.1</text>
-<rect x="914.6666666666666" y="175" width="285.3333333333333" height="62" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
-<text x="926.6666666666666" y="205" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">пара-медик</text>
-<text x="926.6666666666666" y="227" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">по требованию должностного лица · ст. 36 ч. 5 «б»</text>
-<rect x="40" y="266" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="288" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="306" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ГРАЖДАНСКОЕ ОРУЖИЕ</text>
-<rect x="320.0" y="276" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">заключение EMS: психическое состояние</text>
+<rect x="320.0" y="174" width="285.3333333333333" height="60" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="204" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">оружие</text>
+<text x="332.0" y="226" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">обязательное аннулирование и изъятие · ст. 41.1 ЗО</text>
+<rect x="617.3333333333333" y="174" width="285.3333333333333" height="60" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="204" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">водительские</text>
+<text x="629.3333333333333" y="226" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">штраф + снятие категории · ст. 1.1 ДК</text>
+<rect x="914.6666666666666" y="174" width="285.3333333333333" height="60" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="926.6666666666666" y="204" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">пара-медик</text>
+<text x="926.6666666666666" y="226" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">по требованию должностного лица · ст. 36 ч. 5 «б»</text>
+<rect x="40" y="266" width="1160" height="92" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="286" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="304" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ГРАЖДАНСКОЕ ОРУЖИЕ</text>
+<rect x="320.0" y="276" width="285.3333333333333" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">заключение EMS о психическом состоянии</text>
 <text x="332.0" y="328" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">основание для аннулирования · ст. 41 ЗО</text>
-<rect x="617.3333333333333" y="276" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<rect x="617.3333333333333" y="276" width="285.3333333333333" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
 <text x="629.3333333333333" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение Закона об оружии</text>
 <text x="629.3333333333333" y="328" font-size="9.0" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лишение лицензии · изъятие оружия · ст. 40, 42 ЗО</text>
-<rect x="914.6666666666666" y="276" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<rect x="914.6666666666666" y="276" width="285.3333333333333" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
 <text x="926.6666666666666" y="306" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет HUNTING, но есть охотничьи ресурсы</text>
 <text x="926.6666666666666" y="328" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование лицензии на оружие · ст. 31 ЗОО</text>
-<rect x="320" y="372" width="880" height="24" rx="12" fill="none" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
-<text x="760.0" y="388" font-size="9.5" fill="#E2AFAF" font-weight="normal" text-anchor="middle" letter-spacing="0" opacity="1">ст. 30 ↔ 31 — “парные” лицензии аннулируются навстречу друг другу</text>
-<rect x="40" y="406" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="428" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="446" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">HUNTING</text>
-<rect x="320.0" y="416" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="446" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет лицензии на оружие, но есть ружьё</text>
-<text x="332.0" y="468" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование HUNTING · ст. 30 ЗОО</text>
-<rect x="617.3333333333333" y="416" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="629.3333333333333" y="446" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет медсправки, но есть ресурсы</text>
-<text x="629.3333333333333" y="468" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование HUNTING · ст. 32 ЗОО</text>
-<rect x="914.6666666666666" y="416" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
-<text x="926.6666666666666" y="446" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">изъяли лицензию на оружие</text>
-<text x="926.6666666666666" y="468" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">HUNTING заморожена · ст. 24 ЗОО</text>
-<rect x="40" y="512" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="534" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="552" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ВОДИТЕЛЬСКИЕ</text>
-<rect x="320.0" y="522" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="552" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ТС как орудие преступления</text>
-<text x="332.0" y="574" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">вправе снять все категории · ДК ст. 1.2</text>
-<rect x="766.0" y="522" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="778.0" y="552" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">безрассудное вождение</text>
-<text x="778.0" y="574" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лишение лицензии · АК ст. 5.6</text>
-<rect x="40" y="618" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="640" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="658" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">FISHING</text>
-<rect x="320.0" y="628" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="658" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение правил рыболовства</text>
-<text x="332.0" y="680" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование и изъятие · ст. 33 ч. 1 ЗОО</text>
-<rect x="766.0" y="628" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="778.0" y="658" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">вылов в водоёмах Приложения № 1</text>
-<text x="778.0" y="680" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">то же основание · ст. 33 ч. 1 ЗОО</text>
-<rect x="40" y="724" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="746" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="764" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПАРА-МЕДИК</text>
-<rect x="320.0" y="734" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="764" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">срок истёк · ложные сведения · нарушение обязанностей</text>
-<text x="332.0" y="786" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ч. 3 «а»–«в» ЗО</text>
-<rect x="766.0" y="734" width="434.0" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="778.0" y="764" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">деяние · утрата квалификации · передача лицензии</text>
-<text x="778.0" y="786" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ч. 3 «г»–«е» ЗО</text>
-<rect x="40" y="830" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="852" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="870" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ЧАСТНЫЙ АДВОКАТ</text>
-<rect x="320.0" y="840" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="870" font-size="10.0" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение закона · действия против Коллегии</text>
-<text x="332.0" y="892" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 11 ч. 3 «а», «д» ЗА</text>
-<rect x="617.3333333333333" y="840" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="629.3333333333333" y="870" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приговор · переаттестация · госслужба</text>
-<text x="629.3333333333333" y="892" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 11 ч. 3 «б»–«г» ЗА</text>
-<rect x="914.6666666666666" y="840" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
-<text x="926.6666666666666" y="870" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">госслужба · активная судимость</text>
-<text x="926.6666666666666" y="892" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приостановление · ст. 11 ч. 1.1, 2 ЗА</text>
-<rect x="40" y="936" width="1160" height="96" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
-<rect x="40" y="958" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
-<text x="60" y="976" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПРЕДПРИНИМАТЕЛЬ</text>
-<rect x="320.0" y="946" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="332.0" y="976" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">налог не уплачен 3 дня · систематически</text>
-<text x="332.0" y="998" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 9 ч. 2–3 ЗПД</text>
-<rect x="617.3333333333333" y="946" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
-<text x="629.3333333333333" y="976" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ходатайство Генерального прокурора</text>
-<text x="629.3333333333333" y="998" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 27 ч. 2, 28 ч. 2 ЗПД</text>
-<rect x="914.6666666666666" y="946" width="285.3333333333333" height="76" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
-<text x="926.6666666666666" y="976" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нецелевой вид деятельности</text>
-<text x="926.6666666666666" y="998" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">приостановка · ст. 11 ч. 1, 11.1 ч. 2</text>
-<text x="40" y="1062" font-size="9.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ЗО — Закон об оружии · ЗОО — Закон об охоте и рыбалке · ДК — Дорожный кодекс · АК — Административный кодекс · ЗА — Закон об адвокатуре · ЗПД — Закон о предпринимательской деятельности</text>
-<text x="40" y="1080" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">Отдельных оснований нет: коллекционер и лицензия на охотничье оружие — пробел в законе.</text>
+<rect x="320" y="368" width="880" height="24" rx="12" fill="none" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="760.0" y="384" font-size="9.5" fill="#E2AFAF" font-weight="normal" text-anchor="middle" letter-spacing="0" opacity="1">ст. 30 ↔ 31 — «парные» лицензии снимаются навстречу друг другу</text>
+<rect x="40" y="402" width="1160" height="92" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="422" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="440" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">HUNTING</text>
+<rect x="320.0" y="412" width="285.3333333333333" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="442" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет лицензии на оружие, но есть ружьё</text>
+<text x="332.0" y="464" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование HUNTING · ст. 30 ЗОО</text>
+<rect x="617.3333333333333" y="412" width="285.3333333333333" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="629.3333333333333" y="442" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нет медсправки, но есть ресурсы</text>
+<text x="629.3333333333333" y="464" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование HUNTING · ст. 32 ЗОО</text>
+<rect x="914.6666666666666" y="412" width="285.3333333333333" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55" stroke-dasharray="6 4"/>
+<text x="926.6666666666666" y="442" font-size="10.5" fill="#F3C7C7" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">изъяли лицензию на оружие</text>
+<text x="926.6666666666666" y="464" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">HUNTING заморожена · ст. 24 ЗОО</text>
+<rect x="40" y="504" width="1160" height="92" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="524" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="542" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ВОДИТЕЛЬСКИЕ</text>
+<rect x="320.0" y="514" width="434.0" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="544" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ТС как орудие преступления</text>
+<text x="332.0" y="566" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">вправе снять все категории · ст. 1.2 ДК</text>
+<rect x="766.0" y="514" width="434.0" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="778.0" y="544" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">безрассудное вождение</text>
+<text x="778.0" y="566" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">лишение лицензии · ст. 5.6 АК</text>
+<rect x="40" y="606" width="1160" height="92" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="626" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="644" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">FISHING</text>
+<rect x="320.0" y="616" width="434.0" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="646" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">нарушение правил рыболовства</text>
+<text x="332.0" y="668" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">аннулирование и изъятие · ст. 33 ч. 1 ЗОО</text>
+<rect x="766.0" y="616" width="434.0" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="778.0" y="646" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">вылов в водоёмах Приложения № 1</text>
+<text x="778.0" y="668" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">то же основание · ст. 33 ч. 1 ЗОО</text>
+<rect x="40" y="708" width="1160" height="92" rx="14" fill="#16283C" stroke="#D64545" stroke-opacity="0.28"/>
+<rect x="40" y="728" width="4" height="52" rx="2" fill="#D64545" fill-opacity="0.85"/>
+<text x="60" y="746" font-size="13" fill="#EAF0F6" font-weight="bold" text-anchor="start" letter-spacing="0" opacity="1">ПАРА-МЕДИК</text>
+<rect x="320.0" y="718" width="434.0" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="332.0" y="748" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">истёк срок · ложные сведения · нарушение обязанностей</text>
+<text x="332.0" y="770" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ч. 3 «а»–«в» ЗО</text>
+<rect x="766.0" y="718" width="434.0" height="72" rx="10" fill="#3A1C20" stroke="#D64545" stroke-opacity="0.55"/>
+<text x="778.0" y="748" font-size="10.5" fill="#FFFFFF" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">деяние · утрата квалификации · передача лицензии</text>
+<text x="778.0" y="770" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ст. 36 ч. 3 «г»–«е» ЗО</text>
+<text x="40" y="830" font-size="9.5" fill="#8FA3B8" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">ЗО — Закон об оружии · ЗОО — Закон об охоте и рыбалке · ДК — Дорожный кодекс · АК — Административный кодекс</text>
+<text x="40" y="848" font-size="9.5" fill="#D9A0A0" font-weight="normal" text-anchor="start" letter-spacing="0" opacity="1">Отдельных оснований нет: коллекционер и лицензия на охотничье оружие — пробел в законе.</text>
 </svg>

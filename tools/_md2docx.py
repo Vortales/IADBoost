@@ -2,14 +2,14 @@
 """Convert the legal markdown drafts in AntiGubrnator/ to formatted DOCX."""
 import re, sys
 from docx import Document
-from docx.shared import Pt, Cm
+from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 BODY_FONT = "Times New Roman"
-INLINE = re.compile(r"(\*\*.+?\*\*|\*[^*]+?\*|`[^`]+?`)")
+INLINE = re.compile(r"(\*\*.+?\*\*|\*[^*]+?\*|`[^`]+?`|\[\[.+?\]\]|\{\{.+?\}\})")
 
 
 def add_runs(par, text, bold=False, italic=False, size=None):
@@ -18,7 +18,12 @@ def add_runs(par, text, bold=False, italic=False, size=None):
         if not part:
             continue
         b, i, mono = bold, italic, False
-        if part.startswith("**") and part.endswith("**") and len(part) > 4:
+        dead = note = False
+        if part.startswith("[[") and part.endswith("]]") and len(part) > 4:
+            part, dead = part[2:-2], True
+        elif part.startswith("{{") and part.endswith("}}") and len(part) > 4:
+            part, note = part[2:-2], True
+        elif part.startswith("**") and part.endswith("**") and len(part) > 4:
             part, b = part[2:-2], True
         elif part.startswith("*") and part.endswith("*") and len(part) > 2:
             part, i = part[1:-1], True
@@ -33,6 +38,17 @@ def add_runs(par, text, bold=False, italic=False, size=None):
             run.font.size = Pt(size)
         if mono:
             run.font.name = "Consolas"
+        if dead:
+            run.bold = True
+            run.font.color.rgb = RGBColor(0xC0, 0x00, 0x00)
+            shd = OxmlElement("w:shd")
+            shd.set(qn("w:val"), "clear")
+            shd.set(qn("w:color"), "auto")
+            shd.set(qn("w:fill"), "FBE4E4")
+            run._element.get_or_add_rPr().append(shd)
+        if note:
+            run.italic = True
+            run.font.color.rgb = RGBColor(0x59, 0x59, 0x59)
 
 
 def set_cell_border(cell):

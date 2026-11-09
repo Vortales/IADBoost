@@ -162,22 +162,14 @@ def heading(d, y, text, size=30, draw=True):
 
 # ------------------------------------------------------------------ контент
 
-def stats(d, y, size, draw=True):
-    """Сводка в три числа - без таблицы."""
-    h = 230
+def essence(d, y, size, draw=True):
+    """Одна строка-суть вместо любых итогов голосования."""
+    h = 118
     if draw:
         d.line([(BODY_L, y), (BODY_R, y)], fill=GREEN, width=3)
         d.line([(BODY_L, y + h), (BODY_R, y + h)], fill=RULE, width=2)
-        for x in (BODY_L + 800, BODY_L + 1600):
-            d.line([(x, y + 34), (x, y + h - 34)], fill=RULE, width=2)
-
-    cells = [("7", "ПРИНЯТО", GREEN_D), ("2", "ОТКЛОНЕНО", RED), ("1", "ОТОЗВАН", MUTED)]
-    for i, (num, label, col) in enumerate(cells):
-        cx = BODY_L + 400 + i * 800
-        fn = F(FB, 96)
-        if draw:
-            d.text((cx - tw(d, num, fn) / 2, y + 26), num, font=fn, fill=col)
-        tracked(d, y + 160, label, F(FB, 22), 7, MUTED, center_at=cx, draw=draw)
+    tracked(d, y + 30, "ВСЕ ВОПРОСЫ ПОВЕСТКИ ДНЯ ПРИНЯТЫ",
+            F(FB, 40), 3, GREEN_D, draw=draw)
     return y + h
 
 
@@ -210,16 +202,13 @@ def section_common(d, y, size, draw=True):
 def section_decisions(d, y, size, draw=True):
     items = [
         [("2.1. Приняты", "b", GREEN_D),
-         (" законопроекты ACT. 277, ACT. 278, ACT. 279, ACT. 280, ACT. 282, ACT. 284 и "
-          "ACT. 285 - всего 7 законопроектов.", "r", INK)],
-        [("2.2. Отклонены", "b", RED),
+         (" все вынесенные на голосование законопроекты: ACT. 277, ACT. 278, "
+          "ACT. 279, ACT. 280, ACT. 282, ACT. 283, ACT. 284 и ACT. 285.", "r", INK)],
+        [("2.2. Принята", "b", GREEN_D),
          (" инициатива об избрании председателя и членов Центральной избирательной "
-          "комиссии штата Сан-Андреас и законопроект ACT. 283: по каждому из этих "
-          "вопросов подано 7 голосов «за» при необходимых 8.", "r", INK)],
-        [("2.3. Отозван", "b", INK),
+          "комиссии штата Сан-Андреас.", "r", INK)],
+        [("2.3. Отозван", "b", MUTED),
          (" законопроект ACT. 281 - инициатором, до голосования.", "r", INK)],
-        [("2.4. Занесено в протокол", "b", INK),
-         (": результаты голосования по каждому вопросу повестки дня.", "r", INK)],
     ]
     return numbered(d, y, items, size, draw)
 
@@ -249,8 +238,8 @@ def body(d, size, draw=True):
                      "Лос-Сантос.", "r", INK)],
              size=size, lh=int(size * 1.62), space_after=int(size * 1.35), draw=draw)
 
-    y = stats(d, y, size, draw)
-    y += int(size * 0.95)
+    y = essence(d, y, size, draw)
+    y += int(size * 1.05)
 
     y = heading(d, y, "I.  ОБЩИЕ СВЕДЕНИЯ", size, draw)
     y = section_common(d, y, size, draw)

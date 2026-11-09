@@ -11,7 +11,7 @@ from docx.oxml import OxmlElement
 from docx.table import _Cell
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE = os.path.join(ROOT, "ACT. 230 — Технические исправления в Закон о Национальной Гвардии.docx")
+TEMPLATE = os.path.join(ROOT, "Законопроекты", "ACT. 230 — Технические исправления в Закон о Национальной Гвардии.docx")
 RED, GREEN = "F4CCCC", "D9EAD3"
 TOKEN = re.compile(r"\[\[(R|G)\]\](.*?)\[\[/\1\]\]", re.S)
 
@@ -49,16 +49,31 @@ def add_run(p, text, fill=None):
 
 
 def fill_cell(cell, text):
+    """Раскладка текста по абзацам с сохранением подсветки.
+
+    Разметка [[R]]…[[/R]] / [[G]]…[[/G]] может охватывать несколько строк
+    (несколько абзацев) — поэтому текст сначала разбирается целиком, а затем
+    режется по переводам строк.
+    """
     for p in list(cell.paragraphs):
         p._p.getparent().remove(p._p)
-    for line in text.split("\n"):
+
+    lines = [[]]
+    for seg, fill in parse_line(text):
+        parts = seg.split("\n")
+        for k, part in enumerate(parts):
+            if k:
+                lines.append([])
+            if part:
+                lines[-1].append((part, fill))
+
+    for line in lines:
         p = cell.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         p.paragraph_format.widow_control = False
         p.paragraph_format.line_spacing = 1.0
-        for seg, fill in parse_line(line):
-            if seg:
-                add_run(p, seg, fill)
+        for seg, fill in line:
+            add_run(p, seg, fill)
 
 
 def set_par_text(p, text):

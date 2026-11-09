@@ -25,64 +25,48 @@ SUBTITLE = "официальное сообщение по итогам плен
 LEAD = ("Настоящим Председатель (Спикер) Сената штата Сан-Андреас Marcus Nomad объявляет "
         "итоги пленарного заседания Сената штата Сан-Андреас, состоявшегося 9 ноября 2026 года.")
 
+LEAD = ("Настоящим Председатель (Спикер) Сената штата Сан-Андреас Marcus Nomad объявляет "
+        "итоги пленарного заседания Сената штата Сан-Андреас, состоявшегося 9 ноября 2026 "
+        "года в городе Лос-Сантос.")
+
+SUMMARY = "Принято - 7. Отклонено - 2. Отозвано - 1."
+
 COMMON = [
-    "Заседание открыто и признано правомочным: на заседании присутствовало не менее половины "
+    "Заседание открыто и признано правомочным: присутствовало не менее половины "
     "действующих сенаторов (часть 1 статьи 9 Конституционного закона «О Сенате штата "
     "Сан-Андреас»).",
 
-    "Общее число действующих сенаторов, определённое председательствующим перед началом "
-    "голосований, — 14.",
-
-    "Для принятия решения большинством голосов требовалось 8 голосов — число, превышающее "
-    "половину общего числа действующих сенаторов (часть 5 статьи 80 Конституции штата "
-    "Сан-Андреас).",
+    "Общее число действующих сенаторов - 14. Для принятия решения большинством голосов "
+    "требовалось 8 голосов, то есть число, превышающее половину общего числа действующих "
+    "сенаторов (часть 5 статьи 80 Конституции штата Сан-Андреас).",
 
     "Заседание проведено под председательством Председателя (Спикера) Сената штата "
     "Сан-Андреас Marcus Nomad.",
 ]
 
-ROWS = [
-    ("Инициатива об избрании председателя и членов Центральной избирательной комиссии "
-     "штата Сан-Андреас", "7", "6", "1", "Не принята"),
-    ("Законопроект ACT. 277", "8", "3", "2", "Принят"),
-    ("Законопроект ACT. 278", "9", "4", "1", "Принят"),
-    ("Законопроект ACT. 279", "11", "2", "1", "Принят"),
-    ("Законопроект ACT. 280", "11", "1", "2", "Принят"),
-    ("Законопроект ACT. 281", "—", "—", "—", "Отозван"),
-    ("Законопроект ACT. 282", "12", "0", "2", "Принят"),
-    ("Законопроект ACT. 283", "7", "5", "1", "Не принят"),
-    ("Законопроект ACT. 284", "11", "1", "1", "Принят"),
-    ("Законопроект ACT. 285", "12", "0", "1", "Принят"),
-]
-
 DECISIONS = [
-    "Приняты 7 законопроектов: ACT. 277, ACT. 278, ACT. 279, ACT. 280, ACT. 282, ACT. 284, "
-    "ACT. 285.",
+    "Приняты законопроекты ACT. 277, ACT. 278, ACT. 279, ACT. 280, ACT. 282, ACT. 284 и "
+    "ACT. 285 - всего 7 законопроектов.",
 
-    "Не набрали необходимого числа голосов и считаются отклонёнными: инициатива об избрании "
-    "председателя и членов Центральной избирательной комиссии штата Сан-Андреас (7 голосов "
-    "«за» при необходимых 8) и законопроект ACT. 283 (7 голосов «за» при необходимых 8).",
+    "Отклонены инициатива об избрании председателя и членов Центральной избирательной "
+    "комиссии штата Сан-Андреас и законопроект ACT. 283: по каждому из этих вопросов "
+    "подано 7 голосов «за» при необходимых 8.",
 
-    "Законопроект ACT. 281 отозван инициатором и на голосование не ставился.",
+    "Отозван законопроект ACT. 281 - инициатором, до голосования.",
 
-    "Результаты голосования по каждому вопросу определены по числу голосов «за», «против» и "
-    "«воздержался» и занесены в протокол заседания.",
+    "В протокол занесены результаты голосования по каждому вопросу повестки дня.",
 ]
 
 SENDING = [
-    "Принятые законы в течение двух дней направляются в Федеральный Суд штата Сан-Андреас, а "
-    "после получения его одобрения — Губернатору штата Сан-Андреас для подписания и "
-    "обнародования (часть 3 статьи 80 Конституции штата Сан-Андреас).",
+    "Принятые законы в течение двух дней направляются в Федеральный Суд штата "
+    "Сан-Андреас, а после получения его одобрения - Губернатору штата Сан-Андреас для "
+    "подписания и обнародования (часть 3 статьи 80 Конституции штата Сан-Андреас).",
 
-    "Направление принятых законов обеспечивает Председатель (Спикер) Сената штата Сан-Андреас.",
-]
+    "Направление принятых законов обеспечивает Председатель (Спикер) Сената штата "
+    "Сан-Андреас.",
 
-FINAL = [
-    "Настоящие итоги являются официальным сообщением Председателя (Спикера) Сената штата "
-    "Сан-Андреас и доводятся до сведения сенаторов, Губернатора штата Сан-Андреас и "
-    "заинтересованных лиц.",
-
-    "Итоги не заменяют протокол заседания: при расхождении применяются сведения протокола.",
+    "Настоящие итоги не заменяют протокол заседания: при расхождении применяются сведения "
+    "протокола.",
 ]
 
 SIGN = ["С уважением,", "Marcus Nomad", "Председатель (Спикер) Сената штата Сан-Андреас"]
@@ -112,68 +96,6 @@ def with_text(proto, text):
     return el
 
 
-def cell_borders(cell):
-    tcPr = cell._tc.get_or_add_tcPr()
-    borders = OxmlElement("w:tcBorders")
-    for edge in ("top", "left", "bottom", "right"):
-        el = OxmlElement(f"w:{edge}")
-        el.set(qn("w:val"), "single")
-        el.set(qn("w:sz"), "4")
-        el.set(qn("w:space"), "0")
-        el.set(qn("w:color"), "808080")
-        borders.append(el)
-    tcPr.append(borders)
-
-
-def cell_shade(cell, color="EDEDED"):
-    tcPr = cell._tc.get_or_add_tcPr()
-    shd = OxmlElement("w:shd")
-    shd.set(qn("w:val"), "clear")
-    shd.set(qn("w:color"), "auto")
-    shd.set(qn("w:fill"), color)
-    tcPr.append(shd)
-
-
-def style_cell(cell, text, bold=False, center=True, size=10.5):
-    p = cell.paragraphs[0]
-    for old in list(p.runs):          # пустой прогон от cell.text = ""
-        old._r.getparent().remove(old._r)
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER if center else WD_ALIGN_PARAGRAPH.LEFT
-    pf = p.paragraph_format
-    pf.space_before = Pt(1)
-    pf.space_after = Pt(1)
-    pf.line_spacing = 1.0
-    run = p.add_run(text)
-    run.bold = bold
-    run.font.size = Pt(size)
-    run.font.name = "Book Antiqua"
-    rpr = run._element.get_or_add_rPr()
-    rpr.rFonts.set(qn("w:eastAsia"), "Book Antiqua")
-    rpr.rFonts.set(qn("w:cs"), "Book Antiqua")
-    cell_borders(cell)
-
-
-def add_results_table(doc):
-    t = doc.add_table(rows=1, cols=len(HEAD))
-    t.alignment = WD_TABLE_ALIGNMENT.CENTER
-    t.autofit = False
-    layout = OxmlElement("w:tblLayout")
-    layout.set(qn("w:type"), "fixed")
-    t._tbl.tblPr.append(layout)
-    for i, name in enumerate(HEAD):
-        c = t.rows[0].cells[i]
-        style_cell(c, name, bold=True)
-        cell_shade(c)
-        c.width = Cm(WIDTHS[i])
-    for n, (q, za, pr, vo, res) in enumerate(ROWS, 1):
-        cells = t.add_row().cells
-        vals = [str(n), q, za, pr, vo, res]
-        for i, v in enumerate(vals):
-            style_cell(cells[i], v, bold=(i == 5 and v != "Принят"), center=(i != 1))
-            cells[i].width = Cm(WIDTHS[i])
-    return t
-
-
 def main():
     doc = Document(SRC)
     ps = doc.paragraphs
@@ -188,27 +110,39 @@ def main():
 
     body = doc.element.body
     sect = body.find(qn("w:sectPr"))
-    for p in doc.paragraphs[4:]:      # начиная с обращения «Уважаемые сенаторы!»
+    for p in doc.paragraphs[4:]:
         p._p.getparent().remove(p._p)
 
     def push(el):
         sect.addprevious(el)
 
     push(with_text(proto_body, LEAD))
+
+    summary = with_text(proto_body, SUMMARY)
+    pPr = summary.find(qn("w:pPr"))
+    if pPr is not None:
+        jc = pPr.find(qn("w:jc"))
+        if jc is None:
+            jc = OxmlElement("w:jc")
+            pPr.append(jc)
+        jc.set(qn("w:val"), "center")
+    for r in summary.findall(qn("w:r")):
+        rPr = r.find(qn("w:rPr"))
+        if rPr is None:
+            rPr = OxmlElement("w:rPr")
+            r.insert(0, rPr)
+        b = OxmlElement("w:b")
+        rPr.insert(0, b)
+    push(summary)
+
     push(with_text(proto_h1, "ОБЩИЕ СВЕДЕНИЯ"))
     for t in COMMON:
         push(with_text(proto_body, t))
-    push(with_text(proto_h1, "РЕЗУЛЬТАТЫ ГОЛОСОВАНИЯ"))
-    push(with_text(proto_body, "Итоги голосования по вопросам повестки дня:"))
-    add_results_table(doc)
     push(with_text(proto_h1, "РЕШЕНИЯ ЗАСЕДАНИЯ"))
     for t in DECISIONS:
         push(with_text(proto_body, t))
     push(with_text(proto_h1, "НАПРАВЛЕНИЕ ПРИНЯТЫХ ЗАКОНОВ"))
     for t in SENDING:
-        push(with_text(proto_body, t))
-    push(with_text(proto_h1, "ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ"))
-    for t in FINAL:
         push(with_text(proto_body, t))
     for proto, t in zip(proto_sign, SIGN):
         push(with_text(proto, t))

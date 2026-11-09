@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Итоги пленарного заседания Сената — парадный PNG-документ.
+"""Итоги пленарного заседания Сената - парадный PNG-документ.
 
 Стиль снят с обращений Сената (зелёная рамка, печать Сената, двуязычная шапка,
 рубленые лид-ины, нумерованные абзацы с висячим отступом, таблица голосований).
@@ -160,161 +160,77 @@ def heading(d, y, text, size=30, draw=True):
 
 # ------------------------------------------------------------------ таблица
 
-HEAD = ["№", "Вопрос", "«За»", "«Против»", "«Воздержался»", "Решение"]
-ROWS = [
-    ("Инициатива об избрании председателя и членов Центральной избирательной "
-     "комиссии штата Сан-Андреас", "7", "6", "1", "Не принята"),
-    ("Законопроект ACT. 277", "8", "3", "2", "Принят"),
-    ("Законопроект ACT. 278", "9", "4", "1", "Принят"),
-    ("Законопроект ACT. 279", "11", "2", "1", "Принят"),
-    ("Законопроект ACT. 280", "11", "1", "2", "Принят"),
-    ("Законопроект ACT. 281", "—", "—", "—", "Отозван"),
-    ("Законопроект ACT. 282", "12", "0", "2", "Принят"),
-    ("Законопроект ACT. 283", "7", "5", "1", "Не принят"),
-    ("Законопроект ACT. 284", "11", "1", "1", "Принят"),
-    ("Законопроект ACT. 285", "12", "0", "1", "Принят"),
-]
-COLW = [95, 1105, 150, 195, 320, 535]      # сумма = 2400 = BODY_W
-GRID = (223, 228, 221)
+# ------------------------------------------------------------------ контент
 
-
-def fit_font(d, text, path, size, width, low=15):
-    while size > low and tw(d, text, F(path, size)) > width:
-        size -= 1
-    return size
-
-
-def table(d, y, size, draw=True):
-    pad_x, pad_y = 14, 16
-    top = y
-    sumw = sum(COLW)
-    body_size = size - 2
-    lh = int(body_size * 1.38)
-
-    # ---- шапка
-    hfonts, hlines, hh = [], [], 0
-    for i, name in enumerate(HEAD):
-        fs = fit_font(d, name, FB, size - 3, COLW[i] - 2 * pad_x)
-        f = F(FB, fs)
-        lines = wrap(d, name, f, COLW[i] - 2 * pad_x)
-        hfonts.append(f)
-        hlines.append(lines)
-        hh = max(hh, len(lines) * fs + 34)
+def stats(d, y, size, draw=True):
+    """Сводка в три числа - без таблицы."""
+    h = 230
     if draw:
-        d.rectangle([BODY_L, y, BODY_L + sumw, y + hh], fill=SHADE)
-    x = BODY_L
-    for i, lines in enumerate(hlines):
-        f = hfonts[i]
-        total = len(lines) * hfonts[i].size * 1.28
-        ty = y + (hh - total) / 2 + 4
-        for ln in lines:
-            if draw:
-                d.text((x + (COLW[i] - tw(d, ln, f)) / 2, ty), ln, font=f, fill=GREEN_D)
-            ty += hfonts[i].size * 1.28
-        x += COLW[i]
-    y += hh
-    if draw:
-        d.line([(BODY_L, y), (BODY_L + sumw, y)], fill=GREEN, width=3)
+        d.line([(BODY_L, y), (BODY_R, y)], fill=GREEN, width=3)
+        d.line([(BODY_L, y + h), (BODY_R, y + h)], fill=RULE, width=2)
+        for x in (BODY_L + 800, BODY_L + 1600):
+            d.line([(x, y + 34), (x, y + h - 34)], fill=RULE, width=2)
 
-    # ---- строки
-    for n, (q, za, pr, vo, res) in enumerate(ROWS, 1):
-        cells = [str(n), q, za, pr, vo, res]
-        fonts, lines, rh = [], [], 0
-        for i, c in enumerate(cells):
-            f = F(FB, body_size) if i in (0, 2, 3, 4, 5) else F(FR, body_size)
-            ls = wrap(d, c, f, COLW[i] - 2 * pad_x)
-            fonts.append(f)
-            lines.append(ls)
-            rh = max(rh, len(ls) * lh)
-        rh += 2 * pad_y
-        if draw and n % 2 == 0:
-            d.rectangle([BODY_L, y, BODY_L + sumw, y + rh], fill=(249, 251, 248))
-        x = BODY_L
-        for i, ls in enumerate(lines):
-            f = fonts[i]
-            total = len(ls) * lh
-            ty = y + (rh - total) / 2 + 2
-            color = INK
-            if i == 5:
-                color = (GREEN_D if cells[i] == "Принят"
-                         else RED if cells[i].startswith("Не ") else MUTED)
-            for ln in ls:
-                if draw:
-                    if i == 1:
-                        d.text((x + pad_x, ty), ln, font=f, fill=color)
-                    else:
-                        d.text((x + (COLW[i] - tw(d, ln, f)) / 2, ty), ln, font=f, fill=color)
-                ty += lh
-            x += COLW[i]
-        y += rh
+    cells = [("7", "ПРИНЯТО", GREEN_D), ("2", "ОТКЛОНЕНО", RED), ("1", "ОТОЗВАН", MUTED)]
+    for i, (num, label, col) in enumerate(cells):
+        cx = BODY_L + 400 + i * 800
+        fn = F(FB, 96)
         if draw:
-            d.line([(BODY_L, y), (BODY_L + sumw, y)], fill=GRID, width=2)
+            d.text((cx - tw(d, num, fn) / 2, y + 26), num, font=fn, fill=col)
+        tracked(d, y + 160, label, F(FB, 22), 7, MUTED, center_at=cx, draw=draw)
+    return y + h
 
-    # ---- вертикальные линии
-    if draw:
-        x = BODY_L
-        for w in COLW[:-1]:
-            x += w
-            d.line([(x, top), (x, y)], fill=GRID, width=2)
-        d.rectangle([BODY_L, top, BODY_L + sumw, y], outline=GRID, width=2)
+
+def numbered(d, y, items, size, draw=True):
+    lh = int(size * 1.62)
+    for runs in items:
+        y = para(d, y, runs, hang=92, size=size, lh=lh,
+                 space_after=int(size * 0.50), draw=draw)
     return y
 
 
-# ------------------------------------------------------------------ контент
-
-def section_common(d, y, size):
-    lh = int(size * 1.62)
+def section_common(d, y, size, draw=True):
     items = [
         [("1.1.", "b", GREEN_D),
-         (" Заседание открыто и признано правомочным: на заседании присутствовало не "
-          "менее половины действующих сенаторов (часть 1 статьи 9 Конституционного "
-          "закона «О Сенате штата Сан-Андреас»).", "r", INK)],
+         (" Заседание открыто и признано правомочным: присутствовало не менее половины "
+          "действующих сенаторов (часть 1 статьи 9 Конституционного закона «О Сенате "
+          "штата Сан-Андреас»).", "r", INK)],
         [("1.2.", "b", GREEN_D),
-         (" Общее число действующих сенаторов, определённое председательствующим перед "
-          "началом голосований, — 14.", "r", INK)],
+         (" Общее число действующих сенаторов - 14. Для принятия решения большинством "
+          "голосов требовалось 8 голосов, то есть число, превышающее половину общего "
+          "числа действующих сенаторов (часть 5 статьи 80 Конституции штата "
+          "Сан-Андреас).", "r", INK)],
         [("1.3.", "b", GREEN_D),
-         (" Для принятия решения большинством голосов требовалось 8 голосов — число, "
-          "превышающее половину общего числа действующих сенаторов (часть 5 статьи 80 "
-          "Конституции штата Сан-Андреас).", "r", INK)],
-        [("1.4.", "b", GREEN_D),
          (" Заседание проведено под председательством Председателя (Спикера) Сената "
           "штата Сан-Андреас Marcus Nomad.", "r", INK)],
     ]
-    for runs in items:
-        y = para(d, y, runs, hang=90, size=size, lh=lh, space_after=int(size * 0.42))
-    return y
+    return numbered(d, y, items, size, draw)
 
 
-def section_decisions(d, y, size):
-    lh = int(size * 1.62)
+def section_decisions(d, y, size, draw=True):
     items = [
-        [("2.1. Приняты законопроекты", "b", GREEN_D),
-         (": ACT. 277, ACT. 278, ACT. 279, ACT. 280, ACT. 282, ACT. 284, ACT. 285 — "
-          "всего 7 законопроектов.", "r", INK)],
+        [("2.1. Приняты", "b", GREEN_D),
+         (" законопроекты ACT. 277, ACT. 278, ACT. 279, ACT. 280, ACT. 282, ACT. 284 и "
+          "ACT. 285 - всего 7 законопроектов.", "r", INK)],
         [("2.2. Отклонены", "b", RED),
-         (": инициатива об избрании председателя и членов Центральной избирательной "
-          "комиссии штата Сан-Андреас (7 голосов «за» при необходимых 8) и законопроект "
-          "ACT. 283 (7 голосов «за» при необходимых 8) — не набрали необходимого числа "
-          "голосов.", "r", INK)],
+         (" инициатива об избрании председателя и членов Центральной избирательной "
+          "комиссии штата Сан-Андреас и законопроект ACT. 283: по каждому из этих "
+          "вопросов подано 7 голосов «за» при необходимых 8.", "r", INK)],
         [("2.3. Отозван", "b", INK),
-         (": законопроект ACT. 281 отозван инициатором и на голосование не ставился.", "r", INK)],
+         (" законопроект ACT. 281 - инициатором, до голосования.", "r", INK)],
         [("2.4. Занесено в протокол", "b", INK),
-         (": результаты голосования по каждому вопросу определены по числу голосов «за», "
-          "«против» и «воздержался».", "r", INK)],
+         (": результаты голосования по каждому вопросу повестки дня.", "r", INK)],
     ]
-    for runs in items:
-        y = para(d, y, runs, hang=90, size=size, lh=lh, space_after=int(size * 0.42))
-    return y
+    return numbered(d, y, items, size, draw)
 
 
-def section_send(d, y, size):
-    lh = int(size * 1.62)
+def section_send(d, y, size, draw=True):
     items = [
         [("3.1.", "b", GREEN_D),
          (" Принятые законы в течение двух дней направляются в Федеральный Суд штата "
-          "Сан-Андреас, а после получения его одобрения — Губернатору штата Сан-Андреас "
-          "для подписания и обнародования (часть 3 статьи 80 Конституции штата "
-          "Сан-Андреас).", "r", INK)],
+          "Сан-Андреас, а после получения его одобрения - Губернатору штата "
+          "Сан-Андреас для подписания и обнародования (часть 3 статьи 80 Конституции "
+          "штата Сан-Андреас).", "r", INK)],
         [("3.2.", "b", GREEN_D),
          (" Направление принятых законов обеспечивает Председатель (Спикер) Сената "
           "штата Сан-Андреас.", "r", INK)],
@@ -322,9 +238,7 @@ def section_send(d, y, size):
          (" Настоящие итоги не заменяют протокол заседания: при расхождении применяются "
           "сведения протокола.", "r", INK)],
     ]
-    for runs in items:
-        y = para(d, y, runs, hang=90, size=size, lh=lh, space_after=int(size * 0.42))
-    return y
+    return numbered(d, y, items, size, draw)
 
 
 def body(d, size, draw=True):
@@ -333,25 +247,19 @@ def body(d, size, draw=True):
                      "Marcus Nomad объявляет итоги пленарного заседания Сената штата "
                      "Сан-Андреас, состоявшегося 9 ноября 2026 года в городе "
                      "Лос-Сантос.", "r", INK)],
-             size=size, lh=int(size * 1.62), space_after=int(size * 0.9))
+             size=size, lh=int(size * 1.62), space_after=int(size * 1.35), draw=draw)
+
+    y = stats(d, y, size, draw)
+    y += int(size * 0.95)
 
     y = heading(d, y, "I.  ОБЩИЕ СВЕДЕНИЯ", size, draw)
-    y = section_common(d, y, size)
+    y = section_common(d, y, size, draw)
 
-    y = heading(d, y, "II.  РЕЗУЛЬТАТЫ ГОЛОСОВАНИЯ", size, draw)
-    if draw:
-        d.text((BODY_L, y - int(size * 0.15)),
-               "Итоги голосования по вопросам повестки дня:",
-               font=F(FI, size - 2), fill=MUTED)
-    y += int(size * 1.5)
-    y = table(d, y, size, draw)
-    y += int(size * 1.15)
+    y = heading(d, y, "II.  РЕШЕНИЯ ЗАСЕДАНИЯ", size, draw)
+    y = section_decisions(d, y, size, draw)
 
-    y = heading(d, y, "III.  РЕШЕНИЯ ЗАСЕДАНИЯ", size, draw)
-    y = section_decisions(d, y, size)
-
-    y = heading(d, y, "IV.  НАПРАВЛЕНИЕ ПРИНЯТЫХ ЗАКОНОВ", size, draw)
-    y = section_send(d, y, size)
+    y = heading(d, y, "III.  НАПРАВЛЕНИЕ ПРИНЯТЫХ ЗАКОНОВ", size, draw)
+    y = section_send(d, y, size, draw)
     return y
 
 

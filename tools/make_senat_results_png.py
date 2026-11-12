@@ -196,7 +196,7 @@ def section_common(d, y, size, draw=True):
           "числа действующих сенаторов (часть 5 статьи 80 Конституции штата "
           "Сан-Андреас).", "r", INK)],
         [("1.3.", "b", GREEN_D),
-         (" Заседание проведено под председательством Председателя (Спикера) Сената "
+         (" Заседание проведено под председательством Спикера Сената "
           "штата Сан-Андреас Marcus Nomad.", "r", INK)],
     ]
     return numbered(d, y, items, size, draw)
@@ -228,7 +228,7 @@ def section_send(d, y, size, draw=True):
           "Сан-Андреас для подписания и обнародования (часть 3 статьи 80 Конституции "
           "штата Сан-Андреас).", "r", INK)],
         [("3.2.", "b", GREEN_D),
-         (" Направление принятых законов обеспечивает Председатель (Спикер) Сената "
+         (" Направление принятых законов обеспечивает Спикер Сената "
           "штата Сан-Андреас.", "r", INK)],
         [("3.3.", "b", GREEN_D),
          (" Настоящие итоги не заменяют протокол заседания: при расхождении применяются "
@@ -273,12 +273,12 @@ def render(size):
     tracked(d, 560, "SENATE OF THE STATE OF SAN ANDREAS", F(FB, 26), 7, GREEN)
     d.line([(840, 640), (2160, 640)], fill=GREEN, width=3)
 
-    tracked(d, 690, "ИТОГИ ПЛЕНАРНОГО ЗАСЕДАНИЯ", F(FB, 58), 4, INK)
-    tracked(d, 790, "ОФИЦИАЛЬНОЕ СООБЩЕНИЕ ПРЕДСЕДАТЕЛЯ (СПИКЕРА) СЕНАТА", F(FR, 24), 2, MUTED)
+    tracked(d, 690, "ИТОГИ ПЛЕНАРНОГО ЗАСЕДАНИЯ № 1", F(FB, 54), 4, INK)
+    tracked(d, 790, "ОФИЦИАЛЬНОЕ СООБЩЕНИЕ СПИКЕРА СЕНАТА", F(FR, 24), 3, MUTED)
 
     # метаданные
     d.text((BODY_L, 875), "9 ноября 2026 года, г. Лос-Сантос", font=F(FI, 26), fill=MUTED)
-    right = "Спикер Сената Marcus Nomad, UID-85028"
+    right = "Спикер Сената Marcus Nomad, номер паспорта 85028"
     d.text((BODY_R - tw(d, right, F(FI, 26)), 875), right, font=F(FI, 26), fill=MUTED)
     d.line([(BODY_L, 925), (BODY_R, 925)], fill=RULE, width=2)
 
@@ -288,7 +288,7 @@ def render(size):
     sy = max(end + int(size * 1.1), 3380)
     d.line([(1560, sy + 150), (2660, sy + 150)], fill=INK, width=4)
     d.text((1590, sy + 172), "Marcus Nomad", font=F(FB, 34), fill=INK)
-    d.text((1590, sy + 222), "Председатель (Спикер) Сената", font=F(FI, 26), fill=MUTED)
+    d.text((1590, sy + 222), "Спикер Сената", font=F(FI, 26), fill=MUTED)
     d.text((1590, sy + 264), "штата Сан-Андреас", font=F(FI, 26), fill=MUTED)
 
     seal = Image.open(os.path.join(ASSETS, "great_seal.png")).convert("RGBA")

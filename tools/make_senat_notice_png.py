@@ -92,22 +92,21 @@ def frame(d, draw=True):
 def center_head(d, y, text, size=33, draw=True, space_before=10):
     y += space_before
     font = F(FB, size)
-    tracked(d, y, text, font, 5, GREEN_D, draw=draw)
-    return y + int(size * 2.0)
+    tracked(d, y, text, font, 5, GREEN_D, draw=draw, left=True)
+    if draw:
+        d.line([(BODY_L, y + int(size * 1.75)), (BODY_R, y + int(size * 1.75))],
+               fill=RULE, width=3)
+    return y + int(size * 2.55)
 
 
 def quote(d, y, text, size=None, draw=True, space=18):
     size = size or SIZE
-    font = F(FI, size)
-    lh = int(size * LH)
-    lines = wrap(d, text, font, BODY_W - 230)
+    bar = BODY_L + 76
+    y2 = para(d, y, [(text, "i", (74, 80, 74))], left=bar + 34,
+              width=BODY_W - 150, size=size, draw=draw, space_after=0)
     if draw:
-        top = y + 4
-        d.line([(BODY_L + 90, top), (BODY_L + 90, y + len(lines) * lh - 6)], fill=GREEN,
-               width=6)
-        for i, ln in enumerate(lines):
-            d.text((BODY_L + 130, y + i * lh), ln, font=font, fill=(74, 80, 74))
-    return y + len(lines) * lh + space
+        d.line([(bar, y + 8), (bar, y2 - 24)], fill=GREEN, width=6)
+    return y2 + space
 
 
 def address_box(d, y, size=None, draw=True):
@@ -164,7 +163,7 @@ def item(d, y, num, text, quote_text=None, tail=None, size=None, draw=True, afte
     if tail:
         y = para(d, y, [(tail, "r", INK)], left=BODY_L + hang, width=BODY_W - hang,
                  size=size, draw=draw, space_after=0)
-    return y + (after if after is not None else int(size * 0.62))
+    return y + (after if after is not None else int(size * 0.68))
 
 
 def top_band(d, draw=True, page_no=2, total=2):
@@ -201,15 +200,15 @@ def body(d, draw=True):
              space_after=int(SIZE * 0.7))
     y = center_head(d, y, "УСТАНОВЛЕНО:", size=32, draw=draw, space_before=22)
     for num, text, q, tail in ITEMS:
-        y = item(d, y, num, text, q, tail, draw=draw, after=int(SIZE * 0.55))
+        y = item(d, y, num, text, q, tail, draw=draw, after=int(SIZE * 0.60))
 
-    y += int(SIZE * 0.35)
+    y += int(SIZE * 0.30)
     y = para(d, y, [(BASIS, "r", INK)], size=SIZE, draw=draw,
-             space_after=int(SIZE * 0.75))
+             space_after=int(SIZE * 0.70))
     y = center_head(d, y, "РЕШИЛ:", size=32, draw=draw, space_before=0)
     for num, text in DECISIONS:
         y = para(d, y, [(num + " ", "b", GREEN_D), (text, "r", INK)], hang=76,
-                 size=SIZE, draw=draw, space_after=int(SIZE * 0.55))
+                 size=SIZE, draw=draw, space_after=int(SIZE * 0.70))
     return y
 
 
@@ -221,13 +220,13 @@ def signature(d, sy, draw=True):
     d.text((1850, sy + 314), "12 ноября 2026 года", font=F(FI, 24), fill=MUTED)
 
     seal = Image.open(os.path.join(ASSETS, "great_seal.png")).convert("RGBA")
-    seal = seal.resize((356, 356), Image.LANCZOS)
+    seal = seal.resize((430, 430), Image.LANCZOS)
     r, g, b, a = seal.split()
     r = r.point(lambda v: int(max(0, min(255, (v - 112) * 1.42 + 92))))
     g = g.point(lambda v: int(max(0, min(255, (v - 100) * 1.42 + 80))))
     b = b.point(lambda v: int(max(0, min(255, (v - 74) * 1.42 + 54))))
     seal = Image.merge("RGBA", (r, g, b, a))
-    d._image.paste(seal, (1290, sy - 6), seal)
+    d._image.paste(seal, (1074, sy - 52), seal)
 
     d.line([(BODY_L, 3966), (BODY_R, 3966)], fill=RULE, width=2)
     tracked(d, 3996, "STATE OF SAN ANDREAS  ·  SENATE", F(FR, 22), 8, MUTED)
@@ -236,7 +235,7 @@ def signature(d, sy, draw=True):
 
 def page(d, draw=True):
     y = body(d, draw)
-    sy = max(y + 70, 3180)
+    sy = max(y + 120, 3180)
     if sy + 400 > 3900:
         sy = 3900 - 400
     if draw:

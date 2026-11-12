@@ -140,8 +140,8 @@ def render(size):
     d.text((line_l + 30, sy + 122), "штата Сан-Андреас", font=F(FI, 27), fill=MUTED)
 
     seal = Image.open(os.path.join(ASSETS, "great_seal.png")).convert("RGBA")
-    seal = seal.resize((236, 236), Image.LANCZOS)
-    img.paste(seal, (BODY_L + 40, sy - 40), seal)
+    seal = seal.resize((708, 708), Image.LANCZOS)      # втрое крупнее
+    img.paste(seal, (BODY_L + 10, 3938 - 708 - 6), seal)   # низ печати - над подвалом
 
     d.line([(BODY_L, 3940), (BODY_R, 3940)], fill=RULE, width=2)
     tracked(d, 3976, "STATE OF SAN ANDREAS  ·  SENATE", F(FR, 21), 8, MUTED)

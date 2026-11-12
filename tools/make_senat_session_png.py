@@ -16,8 +16,23 @@ from PIL import Image, ImageDraw                           # noqa: E402
 
 from make_senat_results_png import (                       # noqa: E402
     ASSETS, BODY_L, BODY_R, BODY_W, CENTER, FB, FI, FR, FRAME, GREEN, GREEN_D,
-    H, INK, MUTED, RULE, W, F, para, tracked, tw, wrap, heading,
+    H, INK, MUTED, RULE, W, F, para, tracked, tw,
 )
+
+TRACK = 4
+
+
+def heading(d, y, text, size=30, draw=True):
+    """Заголовок раздела: по левому краю, с линейкой под ним."""
+    font = F(FB, size)
+    if draw:
+        x = BODY_L
+        for ch in text:
+            d.text((x, y), ch, font=font, fill=GREEN_D)
+            x += tw(d, ch, font) + TRACK
+        d.line([(BODY_L, y + int(size * 1.55)), (BODY_R, y + int(size * 1.55))],
+               fill=RULE, width=3)
+    return y + int(size * 2.35)
 
 OUT_DIR = os.path.join(os.path.dirname(HERE), "Сенат", "Заседание 13.11.2026")
 OUT = os.path.join(OUT_DIR, "Созыв заседания Сената - 13.11.2026.png")
@@ -32,22 +47,22 @@ BAND = "13 НОЯБРЯ 2026 ГОДА, 19:00"
 SECTIONS = [
     ("I.  СВЕДЕНИЯ О ЗАСЕДАНИИ", [
         [("1.1.", "b", GREEN_D),
-         (" Пленарное заседание Сената штата Сан-Андреас состоится 13 ноября 2026 года "
-          "в 19:00 в зале заседаний Сената, Капитолий штата Сан-Андреас, г. Лос-Сантос.",
-          "r", INK)],
+         (" Пленарное заседание Сената штата Сан-Андреас состоится 13 ноября 2026 года "
+          "в 19:00 в зале заседаний Сената, Капитолий штата Сан-Андреас, город "
+          "Лос-Сантос.", "r", INK)],
         [("1.2.", "b", GREEN_D),
          (" Заседание созывается Председателем (Спикером) Сената штата Сан-Андреас "
-          "Marcus Nomad (пункт «а» части 4 статьи 3 Конституционного закона «О Сенате "
+          "Marcus Nomad (пункт «а» части 4 статьи 3 Конституционного закона «О Сенате "
           "штата Сан-Андреас»); он же председательствует.", "r", INK)],
     ]),
     ("II.  ЯВКА И ПРАВОМОЧНОСТЬ", [
         [("2.1.", "b", GREEN_D),
          (" Явка сенаторов обязательна; неявка на плановое заседание влечёт меры, "
           "предусмотренные пунктом «и» части 4 статьи 3 Конституционного закона "
-          "«О Сенате штата Сан-Андреас».", "r", INK)],
+          "«О Сенате штата Сан-Андреас».", "r", INK)],
         [("2.2.", "b", GREEN_D),
          (" Заседание правомочно при присутствии не менее половины действующих сенаторов "
-          "(часть 1 статьи 9 Конституционного закона «О Сенате штата Сан-Андреас»).",
+          "(часть 1 статьи 9 Конституционного закона «О Сенате штата Сан-Андреас»).",
           "r", INK)],
     ]),
 ]
@@ -72,7 +87,7 @@ def sections(d, y, size, draw=True):
     for title, items in SECTIONS:
         y = heading(d, y, title, size, draw)
         for runs in items:
-            y = para(d, y, runs, hang=92, size=size, lh=lh,
+            y = para(d, y, runs, hang=92, size=size, lh=lh, justify=False,
                      space_after=int(size * 0.50), draw=draw)
     return y
 
@@ -80,13 +95,13 @@ def sections(d, y, size, draw=True):
 def body(d, size, draw=True):
     y = 1035
     y = para(d, y, [(LEAD, "r", INK)], size=size, lh=int(size * 1.62),
-             space_after=int(size * 1.25), draw=draw)
+             justify=False, space_after=int(size * 1.25), draw=draw)
     y = band(d, y, size, draw)
     y += int(size * 1.0)
     y = sections(d, y, size, draw)
     y += int(size * 0.35)
     y = para(d, y, [("Прошу сенаторов обеспечить явку к указанному времени.", "r", INK)],
-             size=size, lh=int(size * 1.62), draw=draw)
+             size=size, lh=int(size * 1.62), justify=False, draw=draw)
     return y
 
 
@@ -96,47 +111,50 @@ def render(size):
     d.rectangle(FRAME, outline=GREEN, width=9)
 
     em = Image.open(os.path.join(ASSETS, "state_emblem.png")).convert("RGB")
-    em = em.resize((260, 260), Image.LANCZOS)
-    img.paste(em, (CENTER - 130, 150))
+    em = em.resize((236, 236), Image.LANCZOS)
+    img.paste(em, (CENTER - 118, 152))
 
-    base.title_mixed(d, 455, [("STATE", F(FB, 58), 10),
-                              ("of", F(FI, 50), 2),
-                              ("SAN ANDREAS", F(FB, 58), 10)])
-    tracked(d, 560, "SENATE OF THE STATE OF SAN ANDREAS", F(FB, 26), 7, GREEN)
-    d.line([(840, 640), (2160, 640)], fill=GREEN, width=3)
+    base.title_mixed(d, 450, [("STATE", F(FB, 56), 10),
+                              ("of", F(FI, 48), 2),
+                              ("SAN ANDREAS", F(FB, 56), 10)])
+    tracked(d, 552, "SENATE OF THE STATE OF SAN ANDREAS", F(FB, 25), 7, GREEN)
+    d.line([(900, 628), (2100, 628)], fill=GREEN, width=3)
 
-    tracked(d, 690, TITLE, F(FB, 54), 3, INK)
-    tracked(d, 790, SUBTITLE.upper(), F(FR, 23), 2, MUTED)
+    tracked(d, 676, TITLE, F(FB, 52), 3, INK)
+    tracked(d, 772, SUBTITLE.upper(), F(FR, 22), 2, MUTED)
 
-    d.text((BODY_L, 875), DATE_LINE, font=F(FI, 26), fill=MUTED)
-    d.text((BODY_R - tw(d, RIGHT_META, F(FI, 26)), 875), RIGHT_META,
-           font=F(FI, 26), fill=MUTED)
-    d.line([(BODY_L, 925), (BODY_R, 925)], fill=RULE, width=2)
+    d.text((BODY_L, 858), DATE_LINE, font=F(FI, 25), fill=MUTED)
+    d.text((BODY_R - tw(d, RIGHT_META, F(FI, 25)), 858), RIGHT_META,
+           font=F(FI, 25), fill=MUTED)
+    d.line([(BODY_L, 906), (BODY_R, 906)], fill=RULE, width=2)
 
     end = body(d, size)
 
-    sy = max(end + int(size * 1.6), 3010)
-    d.line([(1560, sy + 150), (2660, sy + 150)], fill=INK, width=4)
-    d.text((1590, sy + 172), "Marcus Nomad", font=F(FB, 34), fill=INK)
-    d.text((1590, sy + 222), "Председатель (Спикер) Сената", font=F(FI, 26), fill=MUTED)
-    d.text((1590, sy + 264), "штата Сан-Андреас", font=F(FI, 26), fill=MUTED)
+    # --- подпись и печать: общий нижний блок
+    sy = min(max(end + int(size * 3.0), 3300), 3420)
+    line_l, line_r = 1620, 2690
+    d.line([(line_l, sy), (line_r, sy)], fill=INK, width=3)
+    d.text((line_l + 30, sy + 30), "Marcus Nomad", font=F(FB, 36), fill=INK)
+    d.text((line_l + 30, sy + 84), "Председатель (Спикер) Сената",
+           font=F(FI, 27), fill=MUTED)
+    d.text((line_l + 30, sy + 122), "штата Сан-Андреас", font=F(FI, 27), fill=MUTED)
 
     seal = Image.open(os.path.join(ASSETS, "great_seal.png")).convert("RGBA")
-    seal = seal.resize((330, 330), Image.LANCZOS)
-    img.paste(seal, (BODY_L + 45, sy + 8), seal)
+    seal = seal.resize((236, 236), Image.LANCZOS)
+    img.paste(seal, (BODY_L + 40, sy - 40), seal)
 
-    d.line([(BODY_L, 3970), (BODY_R, 3970)], fill=RULE, width=2)
-    tracked(d, 4000, "STATE OF SAN ANDREAS  ·  SENATE", F(FR, 22), 8, MUTED)
+    d.line([(BODY_L, 3940), (BODY_R, 3940)], fill=RULE, width=2)
+    tracked(d, 3976, "STATE OF SAN ANDREAS  ·  SENATE", F(FR, 21), 8, MUTED)
     return img, end, sy
 
 
 def build(path):
     chosen = None
-    for size in range(48, 21, -1):
+    for size in range(64, 21, -1):
         scratch = Image.new("RGB", (W, H), "white")
         d0 = ImageDraw.Draw(scratch)
         end = body(d0, size, draw=False)
-        if end <= 3150:
+        if end <= 2960:
             chosen = size
             break
     chosen = chosen or 22

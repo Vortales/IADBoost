@@ -105,13 +105,15 @@ def para(d, y, runs, width=BODY_W, left=BODY_L, hang=0, lh=None,
             if i < len(parts) - 1:
                 tokens.append((None, style, color))
 
+    first_ind = 0          # первая строка начинается от левого края
+    cont_ind = hang        # строки со второй - с висячим отступом
     lines, cur, curw = [], [], 0.0
     for tok in tokens:
         if tok[0] is None:
             if cur:
                 cur.append(tok)
             continue
-        limit = width - (hang if not lines else 0)
+        limit = width - (first_ind if not lines else cont_ind)
         w = tw(d, tok[0], F(style_font(tok[1]), size))
         sp = tw(d, " ", F(style_font(tok[1]), size)) if cur else 0
         if curw + sp + w <= limit or not cur:
@@ -131,8 +133,9 @@ def para(d, y, runs, width=BODY_W, left=BODY_L, hang=0, lh=None,
         lines.append(cur)
 
     for i, ln in enumerate(lines):
-        x = left + (hang if i else 0)
-        limit = width - (hang if i else 0)
+        ind = first_ind if i == 0 else cont_ind
+        x = left + ind
+        limit = width - ind
         gaps = sum(1 for t in ln if t[0] is None)
         natural = sum(tw(d, " ", F(style_font(t[1]), size)) if t[0] is None
                       else tw(d, t[0], F(style_font(t[1]), size)) for t in ln)

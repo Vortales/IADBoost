@@ -20,7 +20,7 @@ OUT = os.path.join(os.path.dirname(HERE), "Сенат",
                    "Уведомление об оставлении инициативы (12.11.2026)")
 
 SIZE = 32
-LH = 1.62
+LH = 1.74
 
 # ------------------------------------------------------------------ данные
 ADDRESS = [
@@ -40,16 +40,17 @@ INTRO = ("Рассмотрев в порядке ведения вопросов
          "Merkylka Fair (ID: 62277),")
 
 ITEMS = [
-    ("1.", "Согласно части 1 статьи 60 Конституции штата Сан-Андреас, перечень субъектов "
-           "права законодательной инициативы является исчерпывающим:",
+    ("1.", "Частью 1 статьи 60 Конституции штата Сан-Андреас установлен перечень "
+           "субъектов права законодательной инициативы, и председатель политической партии "
+           "в него не входит:",
      "Право законодательной инициативы принадлежит Губернатору штата Сан-Андреас, "
      "Вице-губернатору штата Сан-Андреас, Генеральному прокурору штата Сан-Андреас, "
      "Спикеру Сената штата Сан-Андреас и его заместителю, сенаторам штата Сан-Андреас и "
      "Верховному Суду штата Сан-Андреас.",
-     "Председатель политической партии в данный перечень не входит, а политическая партия "
-     "участвует в законотворчестве исключительно путём выдвижения своего представителя в "
-     "Сенат (часть 9 статьи 5 Конституционного закона штата Сан-Андреас «О политических "
-     "партиях»)."),
+     "Политическая партия участвует в законотворчестве путём выдвижения своего "
+     "представителя в Сенат (часть 9 статьи 5 Конституционного закона штата Сан-Андреас "
+     "«О политических партиях»), однако правом законодательной инициативы наделён сам "
+     "сенатор, а не председатель партии."),
     ("2.", "В соответствии с частью 4 статьи 2 Конституционного закона «О нормативных "
            "правовых актах штата Сан-Андреас», законодательной инициативой признаётся "
            "официальное внесение законопроекта в законодательный орган именно субъектом "
@@ -80,8 +81,28 @@ DECISIONS = [
            "Сан-Андреас в соответствии с частью 1 статьи 6 Конституционного закона «О Сенате "
            "штата Сан-Андреас» и частью 4 статьи 20 Конституционного закона «О нормативных "
            "правовых актах штата Сан-Андреас»."),
+    ("3.", "Разъяснить, что повторное внесение указанной инициативы сенатором Merkylka Fair "
+           "(ID: 62277) лично, в том числе в ходе пленарного заседания, назначенного на "
+           "13.11.2026 в 19:00, само по себе не влечёт её рассмотрения в этом заседании и не "
+           "создаёт обязанности председательствующего ставить её на голосование, за "
+           "исключением случая, предусмотренного пунктом 4 настоящей резолюции."),
+    ("4.", "Разъяснить, что из пункта 3 настоящей резолюции установлены следующие "
+           "исключения:"),
 ]
 
+EXCEPTIONS = [
+    ("а)", "законопроект или инициатива, подписанные более чем половиной от общего числа "
+           "действующих сенаторов штата Сан-Андреас, подлежат обязательному включению в "
+           "повестку дня ближайшего пленарного заседания в качестве внеочередного вопроса. "
+           "При общем числе действующих сенаторов, равном шестнадцати, инициатива должна "
+           "быть подписана не менее чем девятью сенаторами (часть 5 статьи 80 Конституции "
+           "штата Сан-Андреас). При соблюдении этого условия отказ во включении инициативы в "
+           "повестку дня не допускается;"),
+    ("б)", "Сенат вправе включить вопрос в повестку дня собственным решением, принятым "
+           "большинством голосов от общего числа действующих сенаторов (часть 5 статьи 80 "
+           "Конституции штата Сан-Андреас), в порядке ведения заседания (пункт «в» части 4 "
+           "статьи 3 Конституционного закона «О Сенате штата Сан-Андреас»)."),
+]
 
 # ------------------------------------------------------------------ блоки
 def frame(d, draw=True):
@@ -103,7 +124,8 @@ def quote(d, y, text, size=None, draw=True, space=18):
     size = size or SIZE
     bar = BODY_L + 76
     y2 = para(d, y, [(text, "i", (74, 80, 74))], left=bar + 34,
-              width=BODY_W - 150, size=size, draw=draw, space_after=0)
+              width=BODY_W - 150, size=size, lh=int(size * LH), justify=False,
+              draw=draw, space_after=0)
     if draw:
         d.line([(bar, y + 8), (bar, y2 - 24)], fill=GREEN, width=6)
     return y2 + space
@@ -136,7 +158,7 @@ def address_box(d, y, size=None, draw=True):
 def title_band(d, y, text, size=None, draw=True):
     size = size or 30
     font = F(FB, size)
-    lines = wrap(d, text, font, BODY_W - 140)
+    lines = wrap(d, text, font, BODY_W - 120)
     lh = int(size * 1.5)
     h = len(lines) * lh + 34
     if draw:
@@ -144,8 +166,7 @@ def title_band(d, y, text, size=None, draw=True):
         d.line([(BODY_L, y), (BODY_R, y)], fill=GREEN_D, width=3)
         d.line([(BODY_L, y + h), (BODY_R, y + h)], fill=GREEN_D, width=3)
         for i, ln in enumerate(lines):
-            w = sum(tw(d, ch, font) + 4 for ch in ln) - 4
-            x = CENTER - w / 2
+            x = BODY_L + 44
             for ch in ln:
                 d.text((x, y + 17 + i * lh), ch, font=font, fill=GREEN_D)
                 x += tw(d, ch, font) + 4
@@ -157,12 +178,12 @@ def item(d, y, num, text, quote_text=None, tail=None, size=None, draw=True, afte
     lh = int(size * LH)
     hang = 76
     y = para(d, y, [(num + " ", "b", GREEN_D), (text, "r", INK)], hang=hang, size=size,
-             draw=draw, space_after=0)
+             lh=int(size * LH), draw=draw, space_after=0)
     if quote_text:
         y = quote(d, y + 6, quote_text, size=size - 1, draw=draw, space=14)
     if tail:
         y = para(d, y, [(tail, "r", INK)], left=BODY_L + hang, width=BODY_W - hang,
-                 size=size, draw=draw, space_after=0)
+                 size=size, lh=int(size * LH), draw=draw, space_after=0)
     return y + (after if after is not None else int(size * 0.68))
 
 
@@ -177,7 +198,7 @@ def top_band(d, draw=True, page_no=2, total=2):
     return 312
 
 
-def body(d, draw=True):
+def letterhead(d, draw=True):
     frame(d, draw)
     em = Image.open(os.path.join(ASSETS, "state_emblem.png")).convert("RGB")
     em = em.resize((228, 228), Image.LANCZOS)
@@ -192,23 +213,35 @@ def body(d, draw=True):
     tracked(d, 630, "ОФИЦИАЛЬНОЕ УВЕДОМЛЕНИЕ", F(FB, 46), 6, INK, draw=draw)
     tracked(d, 720, "ПРЕДСЕДАТЕЛЯ СЕНАТА ШТАТА САН-АНДРЕАС", F(FR, 26), 3, MUTED,
             draw=draw)
+    return 812
 
-    y = 812
+
+def body1(d, draw=True, air=0):
+    y = letterhead(d, draw)
     y = address_box(d, y, draw=draw)
     y = title_band(d, y, TITLE, size=30, draw=draw)
-    y = para(d, y, [(INTRO, "r", INK)], size=SIZE, draw=draw,
-             space_after=int(SIZE * 0.7))
-    y = center_head(d, y, "УСТАНОВЛЕНО:", size=32, draw=draw, space_before=22)
+    y = para(d, y, [(INTRO, "r", INK)], size=SIZE, lh=int(SIZE * LH), draw=draw,
+             space_after=int(SIZE * 1.0))
+    y = center_head(d, y, "УСТАНОВЛЕНО:", size=32, draw=draw, space_before=22 + air)
     for num, text, q, tail in ITEMS:
-        y = item(d, y, num, text, q, tail, draw=draw, after=int(SIZE * 0.60))
+        y = item(d, y, num, text, q, tail, draw=draw,
+                 after=int(SIZE * 1.05) + air)
+    return y
 
-    y += int(SIZE * 0.30)
-    y = para(d, y, [(BASIS, "r", INK)], size=SIZE, draw=draw,
-             space_after=int(SIZE * 0.70))
-    y = center_head(d, y, "РЕШИЛ:", size=32, draw=draw, space_before=0)
+
+def body2(d, draw=True, air=0):
+    y = top_band(d, draw, 2, 2)
+    y = para(d, y, [(BASIS, "r", INK)], size=SIZE, lh=int(SIZE * LH), draw=draw,
+             space_after=int(SIZE * 1.05))
+    y = center_head(d, y, "РЕШИЛ:", size=32, draw=draw, space_before=6 + air)
     for num, text in DECISIONS:
         y = para(d, y, [(num + " ", "b", GREEN_D), (text, "r", INK)], hang=76,
-                 size=SIZE, draw=draw, space_after=int(SIZE * 0.70))
+                 size=SIZE, lh=int(SIZE * LH), draw=draw,
+                 space_after=int(SIZE * 0.85) + air)
+    for num, text in EXCEPTIONS:
+        y = para(d, y, [(num + " ", "b", GREEN_D), (text, "r", INK)], hang=110,
+                 left=BODY_L + 76, width=BODY_W - 76, size=SIZE, lh=int(SIZE * LH),
+                 draw=draw, space_after=int(SIZE * 0.85) + air)
     return y
 
 
@@ -220,31 +253,36 @@ def signature(d, sy, draw=True):
     d.text((1850, sy + 314), "12 ноября 2026 года", font=F(FI, 24), fill=MUTED)
 
     seal = Image.open(os.path.join(ASSETS, "great_seal.png")).convert("RGBA")
-    seal = seal.resize((430, 430), Image.LANCZOS)
+    seal = seal.resize((540, 540), Image.LANCZOS)
     r, g, b, a = seal.split()
     r = r.point(lambda v: int(max(0, min(255, (v - 112) * 1.42 + 92))))
     g = g.point(lambda v: int(max(0, min(255, (v - 100) * 1.42 + 80))))
     b = b.point(lambda v: int(max(0, min(255, (v - 74) * 1.42 + 54))))
     seal = Image.merge("RGBA", (r, g, b, a))
-    d._image.paste(seal, (1074, sy - 52), seal)
+    d._image.paste(seal, (800, sy - 96), seal)
 
     d.line([(BODY_L, 3966), (BODY_R, 3966)], fill=RULE, width=2)
     tracked(d, 3996, "STATE OF SAN ANDREAS  ·  SENATE", F(FR, 22), 8, MUTED)
     return sy + 400
 
 
-def page(d, draw=True):
-    y = body(d, draw)
-    sy = max(y + 120, 3180)
-    if sy + 400 > 3900:
-        sy = 3900 - 400
-    if draw:
-        signature(d, sy, draw)
-    return sy + 400 if draw else y
+def page1(d, draw=True, air=0):
+    y = body1(d, draw, air)
+    if draw and y < 3900:
+        d.line([(BODY_L, 3966), (BODY_R, 3966)], fill=RULE, width=2)
+        tracked(d, 3996, "STATE OF SAN ANDREAS  ·  SENATE", F(FR, 22), 8, MUTED)
+    return y
 
 
-def page1(d, draw=True):
-    return page(d, draw)
+def page2(d, draw=True, air=0):
+    y = body2(d, draw, air)
+    if not draw:
+        return y
+    sy = max(y + 130, 3170)
+    if sy + 440 > 3900:
+        sy = 3900 - 440
+    signature(d, sy, draw)
+    return sy + 440
 
 
 def measure(builder, **kw):
@@ -265,13 +303,28 @@ def render(builder, path, **kw):
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
-    for sz in range(40, 23, -1):
+    best = 26
+    for sz in range(40, 25, -1):
         globals()["SIZE"] = sz
-        e = measure(page)
-        print(f"кегль {sz}: текст до {e}")
-        if e <= 3300:
+        e1 = measure(page1)
+        e2 = measure(page2)
+        print(f"кегль {sz}: стр.1 -> {e1}, стр.2 -> {e2}")
+        if e1 <= 3260 and e2 <= 2760:
+            best = sz
             break
-    print("итоговый кегль:", SIZE)
+    globals()["SIZE"] = best
+    print("кегль:", best)
 
-    render(page, os.path.join(
-        OUT, "Уведомление об оставлении инициативы без рассмотрения.png"))
+    e1 = measure(page1)
+    air1 = 0
+    if e1 < 3620:
+        air1 = min(88, int((3620 - e1) / 4))
+    e2 = measure(page2)
+    air2 = 0
+    if e2 < 2900:
+        air2 = min(96, int((2900 - e2) / 8))
+    print("воздух:", air1, air2)
+
+    base = "Уведомление об оставлении инициативы без рассмотрения"
+    render(page1, os.path.join(OUT, base + " - стр. 1.png"), air=air1)
+    render(page2, os.path.join(OUT, base + " - стр. 2.png"), air=air2)

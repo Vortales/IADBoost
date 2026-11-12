@@ -131,13 +131,20 @@ def render(size):
     end = body(d, size)
 
     # --- подпись и печать: общий нижний блок
-    sy = min(max(end + int(size * 3.0), 3300), 3420)
-    line_l, line_r = 1620, 2690
-    d.line([(line_l, sy), (line_r, sy)], fill=INK, width=3)
-    d.text((line_l + 30, sy + 30), "Marcus Nomad", font=F(FB, 36), fill=INK)
-    d.text((line_l + 30, sy + 84), "Председатель (Спикер) Сената",
-           font=F(FI, 27), fill=MUTED)
-    d.text((line_l + 30, sy + 122), "штата Сан-Андреас", font=F(FI, 27), fill=MUTED)
+    sy = min(max(end + int(size * 2.6), 3170), 3300)
+    # подпись прижата к правому краю текстовой колонки, как строки метаданных сверху
+    line_r = BODY_R
+    sig_name = "Marcus Nomad"
+    sig_role = ["Председатель (Спикер) Сената", "штата Сан-Андреас"]
+    f_name, f_role = F(FB, 64), F(FI, 48)
+    block_w = max([tw(d, sig_name, f_name)] +
+                  [tw(d, t, f_role) for t in sig_role])
+    line_l = BODY_R - block_w
+
+    d.line([(line_l, sy), (line_r, sy)], fill=INK, width=4)
+    d.text((line_l, sy + 46), sig_name, font=f_name, fill=INK)
+    d.text((line_l, sy + 132), sig_role[0], font=f_role, fill=MUTED)
+    d.text((line_l, sy + 190), sig_role[1], font=f_role, fill=MUTED)
 
     seal = Image.open(os.path.join(ASSETS, "great_seal.png")).convert("RGBA")
     seal = seal.resize((708, 708), Image.LANCZOS)      # втрое крупнее

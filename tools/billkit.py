@@ -10,6 +10,7 @@ SECTION 2, таблица «настоящая редакция / предлож
 """
 import json
 import os
+import re
 
 ROOT = "/home/user/IADBoost"
 BASE = os.path.join(ROOT, "Законодательная база")
@@ -65,10 +66,33 @@ def pair(src, edits):
     return "".join(left), "".join(right)
 
 
+HEAD = re.compile(r"^\s*Статья\s+(\d+(?:\.\d+)*)\.?\s*$")
+
+
+def strip_head(src, locator=""):
+    """Убирает заголовок статьи из начала текста: он уже назван в локаторе.
+
+    «Статья 2.\nОбщее положение\n…» → «Общее положение\n…»;
+    «Статья 2\n. Охраняемые объекты\n…» → «Охраняемые объекты\n…».
+    """
+    m = re.search(r"Статья\s+(\d+(?:\.\d+)*)", locator)
+    lines = src.split("\n")
+    if not m or not lines:
+        return src
+    h = HEAD.match(lines[0])
+    if not h or h.group(1) != m.group(1):
+        return src
+    rest = lines[1:]
+    if rest and rest[0].lstrip().startswith("."):
+        rest[0] = rest[0].lstrip()[1:].lstrip()
+    return "\n".join(rest).lstrip("\n")
+
+
 def row(locator, src, edits, act=None):
     """Строка таблицы: локатор (при необходимости с названием акта) и обе колонки."""
+    src = strip_head(src, locator)
     left, right = pair(src, edits)
-    head = (act + "\n" if act else "") + locator + "\n"
+    head = ("[[B]]%s[[/B]]\n" % act if act else "") + locator + "\n"
     return head + left, head + right
 
 

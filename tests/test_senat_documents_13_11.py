@@ -44,8 +44,9 @@ class SenateDocumentsTests(unittest.TestCase):
         self.assertTrue(senate.validate_polls_against_log())
         self.assertEqual(len(senate.POLLS), 18)
         self.assertEqual(len(senate.SUBSTANTIVE), 16)
-        self.assertEqual(len(senate.RESULT_POLLS), 17)
-        self.assertEqual(senate.RESULT_POLLS, (senate.BY_KEY["open"],) + senate.SUBSTANTIVE)
+        self.assertEqual(len(senate.RESULT_POLLS), 18)
+        self.assertEqual(senate.RESULT_POLLS, (senate.BY_KEY["open"],) + senate.SUBSTANTIVE + (senate.BY_KEY["close"],))
+        self.assertEqual(senate.RESULT_POLLS, senate.POLLS)
         self.assertEqual(sum(p.key.isdigit() for p in senate.POLLS), 13)
         self.assertEqual(len({p.key for p in senate.POLLS}), 18)
 
@@ -68,11 +69,35 @@ class SenateDocumentsTests(unittest.TestCase):
             self.assertEqual(sum(opening.title in row[1] for row in rows[1:]), 1)
             self.assertNotIn("Вы проголосовали за этот ответ", senate.build_bb(protocol))
 
+    def test_closing_votes_time_and_percentages_in_both_documents(self):
+        closing = senate.BY_KEY["close"]
+        self.assertEqual((closing.start, closing.end), ("20:53", "20:54"))
+        self.assertEqual((closing.yes, closing.no, closing.abstain, closing.total), (9, 0, 0, 9))
+        self.assertEqual(closing.active, 14)
+        self.assertEqual(closing.detail, "Всего 9 голосов: за - 100%, против - 0%, воздержался - 0%.")
+        source = senate.SOURCE.read_text(encoding="utf-8")
+        source = source.split("\nЗакрытие заседания 13.11.26\n", 1)[1].split("\nОпрос завершён\n", 1)[0]
+        self.assertRegex(source, r"(?s)Закрытие\s+За\s+9 голосов\s+100%\s+Против\s+0 голосов\s+0%"
+                                 r"\s+Воздержался\s+0 голосов\s+0%\s+9 голосов")
+        for protocol in (False, True):
+            rows = table_rows(senate.build_bb(protocol))
+            self.assertEqual(untag(rows[-1][0]), "20:53-20:54")
+            self.assertIn(closing.title, rows[-1][1])
+            self.assertIn(senate.SPEAKER, rows[-1][1])
+            self.assertIn(senate.bb_text(closing.detail), rows[-1][1])
+            count_index = 3 if protocol else 2
+            self.assertEqual([untag(c) for c in rows[-1][count_index:count_index + 3]], ["9", "0", "0"])
+            self.assertEqual(untag(rows[-1][-1]), "Закрыто")
+            self.assertEqual(sum(closing.title in row[1] for row in rows[1:]), 1)
+            self.assertNotIn("Aliya Nomad", rows[-1][1])  # упоминание не устанавливает личный голос
+
     def test_validator_rejects_modified_poll_or_finish_time(self):
         original = senate.SOURCE.read_text(encoding="utf-8")
         changes = [
             ("8 голосов\n89%\nПротив", "7 голосов\n89%\nПротив"),
             ("«296» завершён. — 20:54", "«296» завершён. — 20:55"),
+            ("Закрытие\nЗа\n\n9 голосов\n100%", "Закрытие\nЗа\n\n8 голосов\n100%"),
+            ("«Закрытие» завершён. — 20:54", "«Закрытие» завершён. — 20:55"),
         ]
         for before, after in changes:
             self.assertIn(before, original)
@@ -262,9 +287,10 @@ class SenateDocumentsTests(unittest.TestCase):
             self.assertIn("Jonny", visible)
             self.assertIn("Afelia", visible)
             self.assertIn("296", visible)
-            for key in ("open", "cec_governor", "293", "294"):
+            for key in ("open", "cec_governor", "293", "294", "close"):
                 self.assertIn(senate.BY_KEY[key].detail, visible)
             self.assertEqual(painter.texts.count("19:00-19:05"), 1)
+            self.assertEqual(painter.texts.count("20:53-20:54"), 1)
             self.assertNotIn("Вы проголосовали за этот ответ", visible)
             for p in senate.POLLS if protocol else senate.RESULT_POLLS:
                 self.assertIn(p.interval, visible)

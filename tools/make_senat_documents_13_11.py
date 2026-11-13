@@ -133,13 +133,15 @@ POLLS = (
          "[B]Инициатива[/B] об избрании Afelia Suspect Вице-Спикером Сената",
          GOVERNOR + "; Afelia Suspect, номер паспорта 14077"),
     Poll("close", "Закрытие заседания 13.11.26", "Закрытие", "20:53", "20:54",
-         9, 0, 0, 14, "-", "Закрыто", "служебное", "[B]Закрытие заседания[/B]", SPEAKER),
+         9, 0, 0, 14, "-", "Закрыто", "служебное",
+         "[B]Закрытие заседания Сената[/B]", SPEAKER,
+         detail="Всего 9 голосов: за - 100%, против - 0%, воздержался - 0%."),
 )
 
 BY_KEY = {poll.key: poll for poll in POLLS}
 SUBSTANTIVE = tuple(p for p in POLLS if p.kind != "служебное")
-# В итогах отдельно показывается открытие, а закрытие остаётся во вводной части.
-RESULT_POLLS = (BY_KEY["open"],) + SUBSTANTIVE
+# В итогах показаны и открытие, и закрытие в порядке начала голосований.
+RESULT_POLLS = (BY_KEY["open"],) + SUBSTANTIVE + (BY_KEY["close"],)
 UNVOTED_CEC_URL = "https://docs.google.com/document/d/1YULp4KtWRA2fbbngZjd2vx6K20C5efhrr8Bbj9ICcOw/edit?tab=t.0"
 SPECIAL_PROSECUTOR_URL = "https://docs.google.com/document/d/1w1DoJKVzdqG6RI8ZwLgpDtIsF3fbsp4Mo0LXBs5BS3M/edit?tab=t.0"
 REVISED_294_URL = "https://docs.google.com/document/d/1es8SpMm30VyHhDh2d7-O3DfKDjAxkcJRdYFojrvp4OE/edit?usp=sharing"
@@ -170,11 +172,10 @@ UNCONSIDERED_REASON = (
 RESULT_INTRO = (
     "Пленарное заседание Сената штата Сан-Андреас состоялось 13 ноября 2026 года "
     "под председательством Спикера Сената Marcus Nomad, номер паспорта 85028.",
-    "При закрытии заседания подано 9 голосов: 9 за, 0 против, 0 воздержались.",
     "До голосования по инициативе о Jonny Zakonov для подсчёта учитывались 16 сенаторов; "
     "после него - 15. После избрания Afelia Suspect Вице-Спикером - 14.",
-    "Ниже - голосование об открытии и рассмотренные вопросы в порядке начала голосования; "
-    "указаны время начала и окончания. Неучастие не приравнивается к воздержанию.",
+    "Голосования приведены в порядке начала; указано время начала и окончания. "
+    "Неучастие не приравнивается к воздержанию.",
 )
 
 PROTOCOL_INTRO = (

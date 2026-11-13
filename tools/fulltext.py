@@ -8,7 +8,8 @@ from docx.table import _Cell
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = os.path.join(ROOT, "Законодательная база")
-TEMPLATE = os.path.join(ROOT, "Законопроекты", "ACT. 230 — Технические исправления в Закон о Национальной Гвардии.docx")
+TEMPLATE = os.path.join(ROOT, "Законопроекты", "_ШАБЛОН",
+                        "ACT.260.Закон об охоте и рыбалке (лицензия FISHING).docx")
 OUT = os.path.join(ROOT, "Законопроекты")
 RED, GREEN = "F4CCCC", "D9EAD3"
 

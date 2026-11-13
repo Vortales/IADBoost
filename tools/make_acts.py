@@ -11,7 +11,8 @@ from docx.oxml import OxmlElement
 from docx.table import _Cell
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE = os.path.join(ROOT, "Законопроекты", "ACT. 230 — Технические исправления в Закон о Национальной Гвардии.docx")
+TEMPLATE = os.path.join(ROOT, "Законопроекты", "_ШАБЛОН",
+                          "ACT.260.Закон об охоте и рыбалке (лицензия FISHING).docx")
 RED, GREEN = "F4CCCC", "D9EAD3"
 TOKEN = re.compile(r"\[\[(R|G)\]\](.*?)\[\[/\1\]\]", re.S)
 

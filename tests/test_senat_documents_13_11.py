@@ -25,7 +25,7 @@ def table_rows(bb):
 
 
 def check_balanced_bb(test, text):
-    expression = re.compile(r"\[(/?)(CENTER|IMG|I|B|COLOR|SIZE|TABLE|TR|td|URL|LIST)(?:[ =][^\]]*)?\]", re.I)
+    expression = re.compile(r"\[(/?)(CENTER|RIGHT|IMG|I|B|COLOR|SIZE|TABLE|TR|td|URL|LIST)(?:[ =][^\]]*)?\]", re.I)
     stack = []
     for token in expression.finditer(text):
         close, name = token.group(1), token.group(2).upper()
@@ -33,6 +33,8 @@ def check_balanced_bb(test, text):
             test.assertTrue(stack, f"unexpected closing tag {token.group(0)}")
             test.assertEqual(stack.pop(), name, f"unbalanced tag {token.group(0)}")
         else:
+            if name == "SIZE":
+                test.assertNotIn("SIZE", stack, "nested SIZE tags are not supported consistently")
             stack.append(name)
     test.assertEqual(stack, [])
 
@@ -42,8 +44,29 @@ class SenateDocumentsTests(unittest.TestCase):
         self.assertTrue(senate.validate_polls_against_log())
         self.assertEqual(len(senate.POLLS), 18)
         self.assertEqual(len(senate.SUBSTANTIVE), 16)
+        self.assertEqual(len(senate.RESULT_POLLS), 17)
+        self.assertEqual(senate.RESULT_POLLS, (senate.BY_KEY["open"],) + senate.SUBSTANTIVE)
         self.assertEqual(sum(p.key.isdigit() for p in senate.POLLS), 13)
         self.assertEqual(len({p.key for p in senate.POLLS}), 18)
+
+    def test_opening_votes_time_and_percentages_in_both_documents(self):
+        opening = senate.BY_KEY["open"]
+        self.assertEqual((opening.start, opening.end), ("19:00", "19:05"))
+        self.assertEqual((opening.yes, opening.no, opening.abstain, opening.total), (13, 0, 1, 14))
+        self.assertEqual(opening.detail, "Всего 14 голосов: да - 93%, нет - 0%, воздержался - 7%.")
+        source = senate.SOURCE.read_text(encoding="utf-8")
+        source = source.split("\nОткрытие Сената 13.11.26\n", 1)[1].split("\nОпрос завершён\n", 1)[0]
+        self.assertRegex(source, r"(?s)Да\s+13 голосов\s+93%\s+Нет\s+0 голосов\s+0%"
+                                 r"\s+Воздержался.*?1 голос\s+7%\s+14 голосов")
+        for protocol in (False, True):
+            rows = table_rows(senate.build_bb(protocol))
+            self.assertEqual(untag(rows[1][0]), "19:00-19:05")
+            self.assertIn(opening.title, rows[1][1])
+            self.assertIn(senate.bb_text(opening.detail), rows[1][1])
+            count_index = 3 if protocol else 2
+            self.assertEqual([untag(c) for c in rows[1][count_index:count_index + 3]], ["13", "0", "1"])
+            self.assertEqual(sum(opening.title in row[1] for row in rows[1:]), 1)
+            self.assertNotIn("Вы проголосовали за этот ответ", senate.build_bb(protocol))
 
     def test_validator_rejects_modified_poll_or_finish_time(self):
         original = senate.SOURCE.read_text(encoding="utf-8")
@@ -109,9 +132,9 @@ class SenateDocumentsTests(unittest.TestCase):
             self.assertIn("Jhonny Scoutezaki, номер паспорта 164317", text)
             self.assertIn("Dmitriy Grayrat, номер паспорта 40117", text)
             self.assertIn("вопроса о назначении специального прокурора", text.lower())
-            self.assertIn(senate.CEC_CANDIDATES_NOTE, text)
             self.assertIn("Qwikus Killa, номер паспорта 11736", text)
             self.assertIn("Pravik Killaz, номер паспорта 91999", text)
+            self.assertIn("фамилия также указана как Killa", text)
             self.assertIn("номер паспорта Angel Insomnia не установлен", text)
             self.assertIn(senate.UNCONSIDERED_REASON, text)
             self.assertEqual(text.count("[B]не рассматривалась[/B]"), 2)
@@ -129,24 +152,46 @@ class SenateDocumentsTests(unittest.TestCase):
                 bb = senate.build_bb(protocol)
                 check_balanced_bb(self, bb)
                 rows = table_rows(bb)
-                polls = senate.POLLS if protocol else senate.SUBSTANTIVE
+                polls = senate.POLLS if protocol else senate.RESULT_POLLS
                 self.assertEqual(len(rows), len(polls) + 1)
                 for cells, poll in zip(rows[1:], polls):
                     self.assertEqual(len(cells), 8 if protocol else 6, poll.key)
                     expected = ([poll.interval, poll.active, poll.yes, poll.no, poll.abstain,
                                  poll.threshold, poll.outcome] if protocol else
-                                [poll.start, poll.yes, poll.no, poll.abstain, poll.outcome])
+                                [poll.interval, poll.yes, poll.no, poll.abstain, poll.outcome])
                     actual = [untag(cells[0])] + [untag(cell) for cell in cells[2:]]
                     self.assertEqual(actual, [str(x) for x in expected], poll.key)
                     self.assertIn(poll.title, cells[1])
                     self.assertIn(poll.meta, cells[1])
+                    if poll.detail:
+                        self.assertIn(senate.bb_text(poll.detail), cells[1])
                     if poll.url:
                         self.assertIn(poll.url, cells[1])
-                self.assertIn(senate.REVISED_294_URL, bb)
+                    if poll.key == "294":
+                        self.assertIn(f"[URL='{poll.url}']Исходная редакция[/URL]", cells[1])
+                        self.assertIn(f"[URL='{senate.REVISED_294_URL}']исправленная редакция[/URL]", cells[1])
                 self.assertIn(senate.UNVOTED_CEC_URL, bb)
                 self.assertIn(senate.SPECIAL_PROSECUTOR_URL, bb)
-                if protocol:
-                    self.assertIn("в ту же минуту", bb)
+
+    def test_notes_are_concise_and_keep_publication_caveat(self):
+        bills = [p for p in senate.POLLS if p.key.isdigit()]
+        self.assertEqual(sum(p.outcome == "Принят" for p in bills), 9)
+        self.assertEqual(sum(p.outcome == "Не принят" for p in bills), 4)
+        self.assertEqual(len(senate.RESULT_NOTES), 2)
+        self.assertEqual(len(senate.PROTOCOL_NOTES), 1)
+        for protocol in (False, True):
+            with self.subTest(protocol=protocol):
+                bb = senate.build_bb(protocol)
+                notes = bb.split(senate.bb_heading("Примечания"), 1)[1].split("[RIGHT]", 1)[0]
+                self.assertEqual(notes.count("[*]"), 1 if protocol else 2)
+                self.assertIn(senate.ENACTMENT_NOTE, notes)
+                self.assertNotIn("ACT. 294", notes)
+                self.assertNotIn("Qwikus", notes)
+                self.assertNotIn("Scoutezaki", notes)
+                self.assertNotIn("http", notes)
+                if not protocol:
+                    self.assertIn("приняты 9 законопроектов, не приняты - 4", notes)
+                self.assertLess(len(untag(notes)), 250)
 
     def test_bb_font_sizes_and_more_saturated_red(self):
         self.assertEqual((senate.BB_BODY_SIZE, senate.BB_META_SIZE, senate.BB_HEADING_SIZE), (5, 3, 6))
@@ -154,7 +199,7 @@ class SenateDocumentsTests(unittest.TestCase):
         for protocol in (False, True):
             with self.subTest(protocol=protocol):
                 bb = senate.build_bb(protocol)
-                polls = senate.POLLS if protocol else senate.SUBSTANTIVE
+                polls = senate.POLLS if protocol else senate.RESULT_POLLS
                 rows = table_rows(bb)
                 self.assertEqual(bb.count("[SIZE=3]"), len(polls))
                 self.assertEqual(bb.count("[SIZE=6]"), 7)
@@ -217,9 +262,12 @@ class SenateDocumentsTests(unittest.TestCase):
             self.assertIn("Jonny", visible)
             self.assertIn("Afelia", visible)
             self.assertIn("296", visible)
-            if protocol:
-                for p in senate.POLLS:
-                    self.assertIn(p.interval, visible)
+            for key in ("open", "cec_governor", "293", "294"):
+                self.assertIn(senate.BY_KEY[key].detail, visible)
+            self.assertEqual(painter.texts.count("19:00-19:05"), 1)
+            self.assertNotIn("Вы проголосовали за этот ответ", visible)
+            for p in senate.POLLS if protocol else senate.RESULT_POLLS:
+                self.assertIn(p.interval, visible)
 
 
 if __name__ == "__main__":

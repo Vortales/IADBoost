@@ -45,6 +45,7 @@ class Poll:
     title: str                   # допустимо только локальное выделение [B]...[/B]
     meta: str
     url: str = ""
+    detail: str = ""            # важные сведения для читателя рядом с вопросом
 
     @property
     def total(self):
@@ -64,7 +65,8 @@ DEPUTY_PROSECUTOR = "Заместитель Генерального проку�
 POLLS = (
     Poll("open", "Открытие Сената 13.11.26", "Открытие саната", "19:00", "19:05",
          13, 0, 1, 16, "-", "Открыто", "служебное",
-         "[B]Открытие заседания[/B]", SPEAKER),
+         "[B]Открытие заседания Сената[/B]", SPEAKER,
+         detail="Всего 14 голосов: да - 93%, нет - 0%, воздержался - 7%."),
     Poll("jonny", "ИНИЦИАТИВА о пожизненном лишении Jonny Zakonov права занимать должность сенатора",
          "Инициатива", "19:08", "19:10", 10, 2, 3, 16, "-", "Поддержана", "инициатива",
          "[B]Инициатива[/B] о пожизненном лишении Jonny Zakonov права занимать должность сенатора "
@@ -75,7 +77,10 @@ POLLS = (
          "Инициатива", "19:13", "19:14", 10, 2, 3, 15, "-", "Поддержана", "инициатива",
          "[B]Инициатива[/B] об избрании председателя и членов Центральной избирательной комиссии штата Сан-Андреас",
          GOVERNOR,
-         "https://docs.google.com/document/d/1tQtVhvKSPt0V62J1pd_SCs_EozbsWh5uhNc6HJdtRsQ/edit?usp=sharing"),
+         "https://docs.google.com/document/d/1tQtVhvKSPt0V62J1pd_SCs_EozbsWh5uhNc6HJdtRsQ/edit?usp=sharing",
+         "Предложены: Qwikus Killa, номер паспорта 11736, - председатель; "
+         "Pravik Killaz, номер паспорта 91999 (фамилия также указана как Killa), "
+         "и Angel Insomnia - члены комиссии; номер паспорта Angel Insomnia не установлен."),
     Poll("286", "АСТ 286", "286", "19:21", "19:23", 5, 9, 1, 15, "8", "Не принят", "закон",
          "[B]ACT. 286[/B] - изменения законодательства об Экстренной медицинской службе",
          "Сенатор Kiray Fair, номер паспорта 37492",
@@ -105,10 +110,14 @@ POLLS = (
          "https://docs.google.com/document/d/1HOLOB7m74DMWWPOuqQS9tZ4g5DQQiSiQ-at2Y1jGtrI/edit?usp=sharing"),
     Poll("293", "ACT. 293", "293", "19:50", "19:53", 9, 0, 2, 15, "8", "Принят", "закон",
          "[B]ACT. 293[/B] - контроль деятельности политических партий", SPEAKER,
-         "https://docs.google.com/document/d/13gqMydlY85PShbWdHNEbbiEwcOSiXVAUKI1MiPbOQts/edit?usp=sharing"),
+         "https://docs.google.com/document/d/13gqMydlY85PShbWdHNEbbiEwcOSiXVAUKI1MiPbOQts/edit?usp=sharing",
+         "Воздержались Jhonny Scoutezaki, номер паспорта 164317, "
+         "и Dmitriy Grayrat, номер паспорта 40117."),
     Poll("294", "ACT. 294", "294", "19:56", "20:22", 2, 1, 8, 15, "8", "Не принят", "закон",
          "[B]ACT. 294[/B] - вызов прокурора адвокатом при задержании", DEPUTY_PROSECUTOR,
-         "https://docs.google.com/document/d/1PL1yzFsOUE9zDlZQ8VDSA8TBbMVtWrdlHSbJeTpEe_Q/edit?usp=sharing"),
+         "https://docs.google.com/document/d/1PL1yzFsOUE9zDlZQ8VDSA8TBbMVtWrdlHSbJeTpEe_Q/edit?usp=sharing",
+         "До голосования опубликованы исходная и исправленная редакции; какая из них "
+         "вынесена на голосование, не установлено."),
     Poll("295", "ACT. 295", "295", "20:24", "20:54", 1, 0, 10, 15, "8", "Не принят", "закон",
          "[B]ACT. 295[/B] - круг лиц, подлежащих защите, и условия ответственности", DEPUTY_PROSECUTOR,
          "https://docs.google.com/document/d/1UeiQzWdCS7PU_6PwmpZv1g4boCbJ-kNwpgPKYwUsmjI/edit?usp=sharing"),
@@ -129,6 +138,8 @@ POLLS = (
 
 BY_KEY = {poll.key: poll for poll in POLLS}
 SUBSTANTIVE = tuple(p for p in POLLS if p.kind != "служебное")
+# В итогах отдельно показывается открытие, а закрытие остаётся во вводной части.
+RESULT_POLLS = (BY_KEY["open"],) + SUBSTANTIVE
 UNVOTED_CEC_URL = "https://docs.google.com/document/d/1YULp4KtWRA2fbbngZjd2vx6K20C5efhrr8Bbj9ICcOw/edit?tab=t.0"
 SPECIAL_PROSECUTOR_URL = "https://docs.google.com/document/d/1w1DoJKVzdqG6RI8ZwLgpDtIsF3fbsp4Mo0LXBs5BS3M/edit?tab=t.0"
 REVISED_294_URL = "https://docs.google.com/document/d/1es8SpMm30VyHhDh2d7-O3DfKDjAxkcJRdYFojrvp4OE/edit?usp=sharing"
@@ -159,12 +170,11 @@ UNCONSIDERED_REASON = (
 RESULT_INTRO = (
     "Пленарное заседание Сената штата Сан-Андреас состоялось 13 ноября 2026 года "
     "под председательством Спикера Сената Marcus Nomad, номер паспорта 85028.",
-    "По данным электронных опросов, на открытии подано 14 голосов: 13 за, 0 против, "
-    "1 воздержался. При закрытии подано 9 голосов: 9 за, 0 против, 0 воздержались.",
+    "При закрытии заседания подано 9 голосов: 9 за, 0 против, 0 воздержались.",
     "До голосования по инициативе о Jonny Zakonov для подсчёта учитывались 16 сенаторов; "
     "после него - 15. После избрания Afelia Suspect Вице-Спикером - 14.",
-    "Ниже - рассмотренные вопросы в порядке начала голосования. "
-    "Число воздержавшихся приведено по опросу; неучастие не приравнивается к воздержанию.",
+    "Ниже - голосование об открытии и рассмотренные вопросы в порядке начала голосования; "
+    "указаны время начала и окончания. Неучастие не приравнивается к воздержанию.",
 )
 
 PROTOCOL_INTRO = (
@@ -185,46 +195,18 @@ PROTOCOL_INTRO = (
     "Порядок фиксации состава - часть 5 статьи 80 [B]Конституции штата Сан-Андреас[/B].",
 )
 
-CEC_CANDIDATES_NOTE = (
-    "В инициативе Губернатора о ЦИК предложены Qwikus Killa, номер паспорта 11736, "
-    "на должность председателя; Pravik Killaz, номер паспорта 91999, и Angel Insomnia - "
-    "на должности членов комиссии. В документе фамилия Pravik также указана как Killa; "
-    "номер паспорта Angel Insomnia не установлен."
+# Публикуются только общие итоги и существенное для граждан различие между
+# принятием законопроекта и вступлением закона в силу. Сведения о кандидатах,
+# поимённых голосах и документах размещены рядом с соответствующими вопросами.
+ENACTMENT_NOTE = (
+    "Принятие законопроекта Сенатом не означает его судебного одобрения, подписания, "
+    "обнародования или вступления в силу."
 )
-
 RESULT_NOTES = (
-    "Приняты 9 законопроектов: ACT. 287, ACT. 288, ACT. 298, ACT. 289, ACT. 290, "
-    "ACT. 292, ACT. 293, ACT. 296 и ACT. 297. Не приняты ACT. 286, ACT. 291, "
-    "ACT. 294 и ACT. 295.",
-    CEC_CANDIDATES_NOTE,
-    "В записи ACT. 293 указаны воздержавшиеся Jhonny Scoutezaki, номер паспорта 164317, "
-    "и Dmitriy Grayrat, номер паспорта 40117. Иные персональные голоса не установлены.",
-    "По ACT. 294 до голосования опубликованы исходный и исправленный документы; из "
-    "опроса не следует, какая редакция вынесена на голосование.",
-    "Принятие законопроекта Сенатом не означает его судебного одобрения, подписания, "
-    "обнародования или вступления в силу.",
+    "По итогам голосований приняты 9 законопроектов, не приняты - 4.",
+    ENACTMENT_NOTE,
 )
-
-PROTOCOL_NOTES = (
-    "В колонке «Состав» приведено число действующих сенаторов непосредственно перед "
-    "началом опроса. После инициативы о Jonny Zakonov и отстранения Республиканской "
-    "партии «Возрождение» число уменьшено с 16 до 15; поимённый состав в логе не приведён.",
-    "Порог большинства для законов при 15 сенаторах - 8 голосов, порог двух третей "
-    "для конституционных законов - 10. Для избрания Вице-Спикера при 15 сенаторах "
-    "требовалось большинство - 8 голосов. Прочерк означает, что в настоящей таблице "
-    "порог не определялся; числа поданных голосов приведены без пересчёта.",
-    "Опросы по ACT. 295 и ACT. 296 начаты при 15 сенаторах, продолжались после "
-    "избрания Afelia Suspect в 20:52 и завершены в 20:54, в ту же минуту, что и "
-    "опрос о закрытии. Результаты приведены в таблице по каждому опросу.",
-    CEC_CANDIDATES_NOTE,
-    "По ACT. 293 в записи указаны воздержавшиеся Jhonny Scoutezaki, номер паспорта 164317, "
-    "и Dmitriy Grayrat, номер паспорта 40117. Для остальных участников персональное "
-    "распределение голосов в источнике не приведено.",
-    "По ACT. 294 до голосования опубликованы исходный и исправленный документы; из "
-    "опроса не следует, какая редакция вынесена на голосование.",
-    "Принятие законопроекта Сенатом не означает его судебного одобрения, подписания, "
-    "обнародования или вступления в силу.",
-)
+PROTOCOL_NOTES = (ENACTMENT_NOTE,)
 
 
 def validate_polls_against_log(path=SOURCE):
@@ -294,8 +276,7 @@ def validate_polls_against_log(path=SOURCE):
     return True
 
 
-# Размеры BB-кода: основной текст 5, сведения под вопросом 3, заголовки 6.
-# Настройки PNG и само содержание документов при этом не меняются.
+# Размеры BB-кода: основной текст и важные сведения 5, источник вопроса 3, заголовки 6.
 BB_BODY_SIZE = 5
 BB_META_SIZE = 3
 BB_HEADING_SIZE = 6
@@ -319,8 +300,16 @@ def bb_heading(title):
 
 
 def bb_question(poll):
-    title = f"[URL='{poll.url}']{poll.title}[/URL]" if poll.url else poll.title
-    return bb_text(title) + f"\n[SIZE={BB_META_SIZE}]{poll.meta}[/SIZE]"
+    # По ACT. 294 отдельно подписываем обе ссылки: неизвестно, какую редакцию голосовали.
+    title = (f"[URL='{poll.url}']{poll.title}[/URL]"
+             if poll.url and poll.key != "294" else poll.title)
+    parts = [bb_text(title), f"[SIZE={BB_META_SIZE}]{poll.meta}[/SIZE]"]
+    if poll.detail:
+        parts.append(bb_text(poll.detail))
+    if poll.key == "294":
+        parts.append(bb_text(f"[URL='{poll.url}']Исходная редакция[/URL]; "
+                             f"[URL='{REVISED_294_URL}']исправленная редакция[/URL]"))
+    return "\n".join(parts)
 
 
 def bb_cell(value, width=None, center=False, wrap_size=True):
@@ -336,16 +325,16 @@ def bb_table(protocol=False):
                     ("За", 5), ("Против", 7), ("Воздержался", 9), ("Порог", 8), ("Итог", 15))
         entries = POLLS
     else:
-        headings = (("Начало", 10), ("Вопрос", 45), ("За", 7), ("Против", 8),
+        headings = (("Время начала - окончания", 14), ("Вопрос", 41), ("За", 7), ("Против", 8),
                     ("Воздержался", 12), ("Итог", 18))
-        entries = SUBSTANTIVE
+        entries = RESULT_POLLS
     out = ['[TABLE width="100%"]', '[TR]']
     out.extend(bb_cell(f"[B][I]{t}[/I][/B]", width, True) for t, width in headings)
     out.append('[/TR]')
     for poll in entries:
         values = ([poll.interval, bb_question(poll), poll.active, poll.yes, poll.no,
                    poll.abstain, poll.threshold, poll.outcome] if protocol else
-                  [poll.start, bb_question(poll), poll.yes, poll.no, poll.abstain, poll.outcome])
+                  [poll.interval, bb_question(poll), poll.yes, poll.no, poll.abstain, poll.outcome])
         out.append('[TR]')
         for i, value in enumerate(values):
             if i == len(values) - 1:
@@ -376,7 +365,7 @@ def build_bb(protocol=False):
     notes = PROTOCOL_NOTES if protocol else RESULT_NOTES
     text = bb_header(title)
     text += "\n\n".join(bb_text(paragraph) for paragraph in intro) + "\n\n"
-    text += bb_heading("Хронология голосований" if protocol else "Результаты рассмотрения вопросов")
+    text += bb_heading("Хронология голосований" if protocol else "Результаты голосований")
     text += bb_table(protocol) + "\n"
     if protocol:
         text += bb_text("[I]«Состав» - количество сенаторов, учитываемое перед началом голосования; "
@@ -387,8 +376,6 @@ def build_bb(protocol=False):
                       for question, url in UNCONSIDERED)
     text += "\n[/LIST]\n\n"
     text += bb_heading("Примечания") + bb_notes(notes)
-    text += bb_text("[B]ACT. 294:[/B] в таблице приведён исходный документ; "
-                    f"в теме также размещена [URL='{REVISED_294_URL}']исправленная редакция[/URL].") + "\n\n"
     text += bb_signature()
     return text
 
@@ -546,8 +533,8 @@ class DocumentPainter:
             widths = (210, 1000, 150, 120, 150, 160, 160, 570)
             heads = ("Время", "Вопрос", "Состав", "За", "Против", "Возд.", "Порог", "Итог")
         else:
-            widths = (170, 1240, 130, 170, 180, 630)
-            heads = ("Начало", "Вопрос", "За", "Против", "Возд.", "Итог")
+            widths = (210, 1200, 130, 170, 180, 630)
+            heads = ("Время", "Вопрос", "За", "Против", "Возд.", "Итог")
         assert sum(widths) == BODY_W
         head_h, padx, pad_y = 82, 17, 18
         self.rectangle((LEFT, y, RIGHT, y + head_h), fill=SHADE)
@@ -563,21 +550,27 @@ class DocumentPainter:
         for poll in polls:
             label_lines = self.lines(poll.title, widths[1] - 2 * padx, 40)
             meta_lines = self.lines(poll.meta, widths[1] - 2 * padx, 30, "i")
-            row_h = 2 * pad_y + len(label_lines) * 54 + len(meta_lines) * 43 + 10
+            detail_lines = self.lines(poll.detail, widths[1] - 2 * padx, 36) if poll.detail else []
+            row_h = (2 * pad_y + len(label_lines) * 54 + len(meta_lines) * 43 + 10
+                     + (8 + len(detail_lines) * 50 if detail_lines else 0))
             self.line([(LEFT, y + row_h), (RIGHT, y + row_h)], width=2)
-            self.rich(LEFT + widths[0] + padx, y + pad_y, poll.title,
-                      widths[1] - 2 * padx, 40, INK, line_height=54)
-            self.rich(LEFT + widths[0] + padx, y + pad_y + len(label_lines) * 54 + 8,
-                      poll.meta, widths[1] - 2 * padx, 30, MUTED, "i", line_height=43)
+            text_x = LEFT + widths[0] + padx
+            label_y = y + pad_y
+            meta_y = label_y + len(label_lines) * 54 + 8
+            self.rich(text_x, label_y, poll.title, widths[1] - 2 * padx, 40, INK, line_height=54)
+            self.rich(text_x, meta_y, poll.meta, widths[1] - 2 * padx, 30, MUTED, "i", line_height=43)
+            if detail_lines:
+                self.rich(text_x, meta_y + len(meta_lines) * 43 + 8, poll.detail,
+                          widths[1] - 2 * padx, 36, INK, line_height=50)
             values = ([poll.interval, "", str(poll.active), str(poll.yes), str(poll.no),
                        str(poll.abstain), poll.threshold, poll.outcome] if protocol else
-                      [poll.start, "", str(poll.yes), str(poll.no), str(poll.abstain), poll.outcome])
+                      [poll.interval, "", str(poll.yes), str(poll.no), str(poll.abstain), poll.outcome])
             x = LEFT
             for i, (value, w) in enumerate(zip(values, widths)):
                 if i == 1:
                     x += w
                     continue
-                fs = 34 if i == 0 and protocol else 39
+                fs = 34 if i == 0 else 39
                 typ = "b" if i == len(values) - 1 else "r"
                 color = (RED if poll.outcome == "Не принят" else AMBER if '*' in poll.outcome else GREEN_D) if typ == "b" else INK
                 if self.width(value, typ, fs) > w - 2 * padx:
@@ -613,8 +606,8 @@ def draw_document(painter, protocol=False):
     for para in PROTOCOL_INTRO if protocol else RESULT_INTRO:
         y = painter.paragraph(y, para, size=42, after=24)
     y += 20
-    y = painter.heading(y, "I.  ХРОНОЛОГИЯ ГОЛОСОВАНИЙ" if protocol else "I.  РЕЗУЛЬТАТЫ РАССМОТРЕНИЯ")
-    y = painter.table(y, POLLS if protocol else SUBSTANTIVE, protocol)
+    y = painter.heading(y, "I.  ХРОНОЛОГИЯ ГОЛОСОВАНИЙ" if protocol else "I.  РЕЗУЛЬТАТЫ ГОЛОСОВАНИЙ")
+    y = painter.table(y, POLLS if protocol else RESULT_POLLS, protocol)
     if protocol:
         y = painter.paragraph(y, "Состав - число сенаторов перед началом голосования; "
                               "порог - необходимое число голосов за, где оно определено.",

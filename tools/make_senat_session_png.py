@@ -34,7 +34,7 @@ def heading(d, y, text, size=30, draw=True):
                fill=RULE, width=3)
     return y + int(size * 2.35)
 
-OUT_DIR = os.path.join(os.path.dirname(HERE), "Сенат", "Заседание 13.11.2026")
+OUT_DIR = os.path.join(os.path.dirname(HERE), "Повестка", "13.11.2026", "01 Созыв")
 OUT = os.path.join(OUT_DIR, "Созыв заседания Сената - 13.11.2026.png")
 
 DATE_LINE = "12 ноября 2026 года, г. Лос-Сантос"

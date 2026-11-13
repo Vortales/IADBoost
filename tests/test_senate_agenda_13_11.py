@@ -16,8 +16,10 @@ from openpyxl.formula import Tokenizer
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-AGENDA = ROOT / "Повестка"
-XLSX = AGENDA / "The Senate of San Andreas 19.xlsx"
+SESSION = ROOT / "Повестка" / "13.11.2026"
+AGENDA = SESSION / "02 Повестка"
+INPUTS = SESSION / "06 Исходные данные"
+XLSX = SESSION / "05 Журнал" / "The Senate of San Andreas 19.xlsx"
 SHEET = "Журнал заседаний 13.11"
 
 
@@ -30,7 +32,7 @@ def load_journal_builder():
 
 
 def extra_entries():
-    text = (AGENDA / "Повестка_доп.txt").read_text(encoding="utf-8")
+    text = (INPUTS / "Повестка_доп.txt").read_text(encoding="utf-8")
     headers = list(re.finditer(r"(?m)^ACT\.?\s*(29[4-7])\s*$", text))
     assert [int(m.group(1)) for m in headers] == [294, 295, 296, 297]
     result = {}
@@ -146,6 +148,21 @@ class SenateAgendaTests(unittest.TestCase):
             self.assertEqual(Document(directory / folder / filename).paragraphs[0].text, f"ACT. {number}")
         self.assertFalse((directory / "Законопроекты 298 (лексические и орфографические ошибки)").exists())
 
+    def test_agenda_distinguishes_original_plan_and_meeting_outcomes(self):
+        for name in ("Повестка заседания 13.11.2026.md", "Пост на форум - повестка 13.11.2026.txt"):
+            text = (AGENDA / name).read_text(encoding="utf-8")
+            with self.subTest(name=name):
+                self.assertIn("первоначальн", text.lower())
+                self.assertIn("по итогам заседания", text.lower())
+                self.assertIn("не рассматривались", text.lower())
+                self.assertIn("отстранением", text.lower())
+                self.assertIn("Merkylka Fair", text)
+                self.assertIn("62277", text)
+                self.assertIn("Jonny Zakonov", text)
+                self.assertNotIn("инициативу отклонить", text.lower())
+                self.assertNotIn("отклонена при её формировании", text.lower())
+                self.assertNotIn("внесена председателем политической партии, а не сенатором", text.lower())
+
     def test_png_data_contains_no_links_or_service_labels(self):
         source = (ROOT / "tools" / "make_senat_agenda_png.py").read_text(encoding="utf-8")
         tree = ast.parse(source)
@@ -156,9 +173,14 @@ class SenateAgendaTests(unittest.TestCase):
         values = {node.targets[0].id: ast.literal_eval(node.value)
                   for node in tree.body if isinstance(node, ast.Assign)
                   and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
-                  and node.targets[0].id in {"ACTS", "INITS"}}
+                  and node.targets[0].id in {"ACTS", "INITS", "SPECIAL_INITIATIVE", "AFTER_SESSION_NOTE"}}
         self.assertEqual([a[0] for a in values["ACTS"]], [f"ACT. {n}" for n in range(286, 298)])
         self.assertEqual(len(values["INITS"]), 4)
+        self.assertIn("Merkylka Fair, номер паспорта 62277", values["SPECIAL_INITIATIVE"][2])
+        self.assertIn("Jonny Zakonov, номер паспорта 55454", values["SPECIAL_INITIATIVE"][2])
+        self.assertIn("не рассматривались", values["AFTER_SESSION_NOTE"])
+        self.assertIn("отстранением Республиканской партии", values["AFTER_SESSION_NOTE"])
+        self.assertNotIn("отклонена при её формировании", constants)
         with Image.open(AGENDA / "Повестка заседания 13.11.2026.png") as image:
             self.assertEqual(image.size, (3000, 5200))
 

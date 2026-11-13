@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.parse import unquote
 
 from PIL import Image, ImageDraw
 
@@ -88,9 +89,13 @@ class SenateDocumentsTests(unittest.TestCase):
             needed = 10 if poll.kind == "конституционный" else 8
             self.assertGreaterEqual(poll.yes, needed)
             self.assertNotEqual(poll.outcome, "Не принят")
-        self.assertEqual(senate.BY_KEY["298"].kind, "не уточнён")
-        self.assertIn("Порог набран", senate.BY_KEY["298"].outcome)
-        self.assertIn("Порог набран", senate.BY_KEY["296"].outcome)
+        self.assertEqual(senate.BY_KEY["298"].kind, "закон")
+        self.assertEqual(senate.BY_KEY["298"].threshold, "8")
+        self.assertEqual(senate.BY_KEY["298"].outcome, "Принят")
+        self.assertEqual(senate.BY_KEY["296"].outcome, "Принят")
+        self.assertIn("оперативно-розыскной деятельности", senate.BY_KEY["298"].title)
+        self.assertIn("пункте «в» части 1 статьи 20", senate.BY_KEY["296"].title)
+        self.assertIn("на часть 1 статьи 16", senate.BY_KEY["296"].title)
         self.assertEqual(senate.BY_KEY["vice"].threshold, "8")
 
     def test_unvoted_questions_and_personal_votes_not_guessed(self):
@@ -103,7 +108,15 @@ class SenateDocumentsTests(unittest.TestCase):
             self.assertIn("Merkylka Fair, номер паспорта 62277", text)
             self.assertIn("Jhonny Scoutezaki, номер паспорта 164317", text)
             self.assertIn("Dmitriy Grayrat, номер паспорта 40117", text)
-            self.assertIn("инициатива о специальном прокуроре", text.lower())
+            self.assertIn("вопроса о назначении специального прокурора", text.lower())
+            self.assertIn(senate.CEC_CANDIDATES_NOTE, text)
+            self.assertIn("Qwikus Killa, номер паспорта 11736", text)
+            self.assertIn("Pravik Killaz, номер паспорта 91999", text)
+            self.assertIn("номер паспорта Angel Insomnia не установлен", text)
+            self.assertIn(senate.UNCONSIDERED_REASON, text)
+            self.assertEqual(text.count("[B]не рассматривалась[/B]"), 2)
+            for question, url in senate.UNCONSIDERED:
+                self.assertIn(f"[URL='{url}']{question}[/URL]", text)
             self.assertNotIn("Что смешного", text)
             self.assertNotIn("обойдутся", text)
             self.assertNotIn("youtu.be", text)
@@ -132,7 +145,30 @@ class SenateDocumentsTests(unittest.TestCase):
                 self.assertIn(senate.REVISED_294_URL, bb)
                 self.assertIn(senate.UNVOTED_CEC_URL, bb)
                 self.assertIn(senate.SPECIAL_PROSECUTOR_URL, bb)
-                self.assertIn("в ту же минуту", bb)
+                if protocol:
+                    self.assertIn("в ту же минуту", bb)
+
+    def test_meeting_files_are_sorted_in_date_directory(self):
+        session = ROOT / "Повестка" / "13.11.2026"
+        self.assertEqual(senate.SESSION, session)
+        for name in ("01 Созыв", "02 Повестка", "03 Итоги", "04 Протокол", "05 Журнал", "06 Исходные данные"):
+            self.assertTrue((session / name).is_dir(), name)
+        self.assertTrue((session / "01 Созыв" / "Созыв заседания Сената - 13.11.2026.png").is_file())
+        self.assertTrue((session / "02 Повестка" / "Повестка заседания 13.11.2026.png").is_file())
+        self.assertTrue((session / "05 Журнал" / "The Senate of San Andreas 19.xlsx").is_file())
+        self.assertTrue((session / "06 Исходные данные" / "Результаты.txt").is_file())
+        self.assertTrue((ROOT / "Повестка" / "Образцы" / "message.txt").is_file())
+        for path in (senate.RESULT_BB, senate.RESULT_PNG, senate.PROTOCOL_BB, senate.PROTOCOL_PNG):
+            self.assertTrue(path.is_file())
+            self.assertTrue(path.is_relative_to(session))
+        index = (session / "README.md").read_text(encoding="utf-8")
+        links = re.findall(r"\[[^\]]+\]\(([^)]+)\)", index)
+        local_links = [link for link in links if not link.startswith("https://")]
+        self.assertEqual(len(local_links), 5)
+        for link in local_links:
+            self.assertTrue((session / unquote(link)).is_file(), link)
+        self.assertIn(senate.BY_KEY["296"].url, links)
+        self.assertIn(senate.BY_KEY["298"].url, links)
 
     def test_publication_output_matches_generator(self):
         for path, protocol in ((senate.RESULT_BB, False), (senate.PROTOCOL_BB, True)):

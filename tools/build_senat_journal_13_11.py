@@ -22,7 +22,8 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-XLSX = os.path.join(os.path.dirname(HERE), "Повестка", "The Senate of San Andreas 19.xlsx")
+XLSX = os.path.join(os.path.dirname(HERE), "Повестка", "13.11.2026", "05 Журнал",
+                    "The Senate of San Andreas 19.xlsx")
 SHEET = "Журнал заседаний 13.11"
 REF = "Журнал заседаний 28.10"
 

@@ -1,0 +1,112 @@
+# -*- coding: utf-8 -*-
+"""ACT. 290 — единое наименование должности: Спикер Сената.
+
+Коллизия: Конституция (статьи 56, 57, 60) называет должность «Спикер Сената»,
+а Конституционный закон «О Сенате» — «Председатель Сената», причём в статье 2
+части 2 должность названа «Председатель штата Сан-Андреас». Одна и та же
+должность имеет три наименования. Законопроект оставляет одно — «Спикер
+Сената штата Сан-Андреас» — и приводит к нему все акты.
+"""
+import os
+import re
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
+from billkit import load, pair, row            # noqa: E402
+from make_acts import build                    # noqa: E402
+
+OUT = "/home/user/IADBoost/Законопроекты/Законопроекты 290 (Спикер Сената)"
+SENATE = "Конституционный закон «О Сенате штата Сан-Андреас»"
+NPA = "Конституционный закон «О нормативных правовых актах штата Сан-Андреас»"
+ORDERS = "Закон «О системе ордеров штата Сан-Андреас»"
+
+S = load(SENATE)
+N = load(NPA)
+O = load(ORDERS)
+
+FORMS = {"ь": "Спикер", "": "Спикер", "а": "Спикера", "я": "Спикера",
+         "у": "Спикеру", "ю": "Спикеру", "ом": "Спикером", "ем": "Спикером",
+         "е": "Спикере"}
+
+
+def speaker_edits(text, capitalize=True):
+    """Правки «Председатель Сената» → «Спикер Сената» с сохранением падежа.
+
+    Возвращает список (позиция, старый фрагмент, новый фрагмент) в порядке текста.
+    """
+    edits = []
+    for m in re.finditer(r"[Пп]редседател([а-яё]*)\s+(?:C|С)ената", text):
+        suf = m.group(1)
+        if suf not in FORMS:
+            raise ValueError("неизвестная форма: %r" % m.group(0))
+        edits.append((m.start(), m.group(0), FORMS[suf] + " Сената"))
+    return edits
+
+
+def lower_speaker_edits(text):
+    """«спикер Сената» → «Спикер Сената» (строчная буква в середине нормы)."""
+    edits = []
+    for m in re.finditer(r"[сС]пикер([а-яё]*)\s+Сената", text):
+        suf = m.group(1)
+        if suf not in FORMS:
+            raise ValueError("неизвестная форма: %r" % m.group(0))
+        edits.append((m.start(), m.group(0), FORMS[suf] + " Сената"))
+    return edits
+
+
+def locator(src):
+    m = re.search(r"Статья\s+([0-9]+(?:\.[0-9]+)*)", src)
+    return "Статья %s" % m.group(1)
+
+
+def make_row(src, extra=(), act=None):
+    edits = speaker_edits(src) + [(src.find(o), o, nw) for o, nw in extra]
+    edits.sort(key=lambda e: e[0])
+    return row(locator(src), src, [("R", o, nw) for _, o, nw in edits], act=act)
+
+
+def article_row(n, extra=()):
+    return make_row(S[n], extra, act=SENATE)
+
+
+# --- Конституционный закон «О Сенате» -----------------------------------
+extra2 = [("Председателя штата Сан-Андреас", "Спикера Сената штата Сан-Андреас")]
+rows = [article_row(4, extra2), article_row(5), article_row(6), article_row(7),
+        article_row(9), article_row(10), article_row(14)]
+
+# --- Конституционный закон «О нормативных правовых актах» ----------------
+for n in (17, 24, 26):
+    src = N[n]
+    edits = lower_speaker_edits(src)
+    rows.append(row(locator(src), src, [("R", o, nw) for _, o, nw in edits], act=NPA))
+
+# --- Закон «О системе ордеров» ------------------------------------------
+src = O[10]
+edits = lower_speaker_edits(src)
+rows.append(row(locator(src), src, [("R", o, nw) for _, o, nw in edits], act=ORDERS))
+
+SECTION1 = (
+    "Законопроект устанавливает единое наименование должности — Спикер Сената штата "
+    "Сан-Андреас — и приводит к нему [[B]]Конституционный закон «О Сенате штата "
+    "Сан-Андреас»[[/B]], [[B]]Конституционный закон «О нормативных правовых актах штата "
+    "Сан-Андреас»[[/B]] и [[B]]Закон «О системе ордеров штата Сан-Андреас»[[/B]]."
+)
+
+b = {
+    "num": "290",
+    "date": "NOVEMBER 13, 2026",
+    "file": "ACT.290.Сенат (единое наименование должности Спикера).docx",
+    "subtitle": ("о внесении изменений в [[B]]Конституционный закон «О Сенате штата "
+                 "Сан-Андреас»[[/B]], [[B]]Конституционный закон «О нормативных правовых "
+                 "актах штата Сан-Андреас»[[/B]] и [[B]]Закон «О системе ордеров штата "
+                 "Сан-Андреас»[[/B]]"),
+    "section1": SECTION1,
+    "section2": ("SECTION. 2. ВНЕСЕНИЕ ПРАВОК В [[B]]Конституционный закон «О Сенате "
+                 "штата Сан-Андреас»[[/B]], [[B]]Конституционный закон «О нормативных "
+                 "правовых актах штата Сан-Андреас»[[/B]] и [[B]]Закон «О системе ордеров "
+                 "штата Сан-Андреас»[[/B]]"),
+    "rows": rows,
+}
+
+os.makedirs(OUT, exist_ok=True)
+build(b, OUT)

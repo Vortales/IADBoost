@@ -294,26 +294,39 @@ def validate_polls_against_log(path=SOURCE):
     return True
 
 
+# Размеры BB-кода: основной текст 5, сведения под вопросом 3, заголовки 6.
+# Настройки PNG и само содержание документов при этом не меняются.
+BB_BODY_SIZE = 5
+BB_META_SIZE = 3
+BB_HEADING_SIZE = 6
+BB_REJECTED_COLOR = "rgb(210, 55, 55)"
+
+
+def bb_text(value):
+    return f"[SIZE={BB_BODY_SIZE}]{value}[/SIZE]"
+
+
 def bb_header(title):
     return (f'[CENTER]\n[IMG width="320px"]{LOGO_URL}[/IMG]\n\n'
-            '[I][B][COLOR=rgb(97, 189, 109)][SIZE=5]STATE of SAN ANDREAS[/SIZE][/COLOR][/B][/I]\n'
-            '[B][I][COLOR=rgb(97, 189, 109)][SIZE=5]OFFICE of THE SPEAKER of THE SENATE[/SIZE][/COLOR][/I][/B]\n\n'
-            f'[I][B][SIZE=5]{title}[/SIZE][/B][/I]\n'
-            '[B][I][SIZE=5]13 ноября 2026 года[/SIZE][/I][/B]\n[/CENTER]\n\n')
+            f'[I][B][COLOR=rgb(97, 189, 109)][SIZE={BB_HEADING_SIZE}]STATE of SAN ANDREAS[/SIZE][/COLOR][/B][/I]\n'
+            f'[B][I][COLOR=rgb(97, 189, 109)][SIZE={BB_HEADING_SIZE}]OFFICE of THE SPEAKER of THE SENATE[/SIZE][/COLOR][/I][/B]\n\n'
+            f'[I][B][SIZE={BB_HEADING_SIZE}]{title}[/SIZE][/B][/I]\n'
+            f'[B][I][SIZE={BB_HEADING_SIZE}]13 ноября 2026 года[/SIZE][/I][/B]\n[/CENTER]\n\n')
 
 
 def bb_heading(title):
-    return f"[CENTER][B][I][SIZE=5]{title}[/SIZE][/I][/B][/CENTER]\n\n"
+    return f"[CENTER][B][I][SIZE={BB_HEADING_SIZE}]{title}[/SIZE][/I][/B][/CENTER]\n\n"
 
 
 def bb_question(poll):
     title = f"[URL='{poll.url}']{poll.title}[/URL]" if poll.url else poll.title
-    return title + f"\n[SIZE=2]{poll.meta}[/SIZE]"
+    return bb_text(title) + f"\n[SIZE={BB_META_SIZE}]{poll.meta}[/SIZE]"
 
 
-def bb_cell(value, width=None, center=False):
+def bb_cell(value, width=None, center=False, wrap_size=True):
     attr = f' width="{width}%"' if width else ""
-    body = f"[CENTER]{value}[/CENTER]" if center else str(value)
+    content = bb_text(value) if wrap_size else str(value)
+    body = f"[CENTER]{content}[/CENTER]" if center else content
     return f"[td{attr}]{body}[/td]"
 
 
@@ -336,22 +349,25 @@ def bb_table(protocol=False):
         out.append('[TR]')
         for i, value in enumerate(values):
             if i == len(values) - 1:
-                color = ('rgb(235, 107, 86)' if poll.outcome == "Не принят" else
+                color = (BB_REJECTED_COLOR if poll.outcome == "Не принят" else
                          'rgb(171, 126, 43)' if '*' in poll.outcome else 'rgb(97, 189, 109)')
                 value = f"[B][COLOR={color}]{value}[/COLOR][/B]"
-            out.append(bb_cell(value, center=(i != 1)))
+            # В ячейке вопроса заголовок и сведения оформлены отдельно,
+            # чтобы BB-код не вкладывал два тега SIZE друг в друга.
+            out.append(bb_cell(value, center=(i != 1), wrap_size=(i != 1)))
         out.append('[/TR]')
     out.append('[/TABLE]\n')
     return "\n".join(out)
 
 
 def bb_notes(notes):
-    return "[LIST=1]\n" + "\n".join("[*]" + note for note in notes) + "\n[/LIST]\n\n"
+    return "[LIST=1]\n" + "\n".join("[*]" + bb_text(note) for note in notes) + "\n[/LIST]\n\n"
 
 
 def bb_signature():
-    return ("[RIGHT]\n[B]Спикер Сената штата Сан-Андреас\nMarcus Nomad[/B]\n"
-            "Номер паспорта 85028\n\n13 ноября 2026 года\n[/RIGHT]\n")
+    signature = ("[B]Спикер Сената штата Сан-Андреас\nMarcus Nomad[/B]\n"
+                 "Номер паспорта 85028\n\n13 ноября 2026 года")
+    return f"[RIGHT]\n{bb_text(signature)}\n[/RIGHT]\n"
 
 
 def build_bb(protocol=False):
@@ -359,20 +375,20 @@ def build_bb(protocol=False):
     intro = PROTOCOL_INTRO if protocol else RESULT_INTRO
     notes = PROTOCOL_NOTES if protocol else RESULT_NOTES
     text = bb_header(title)
-    text += "\n\n".join(intro) + "\n\n"
+    text += "\n\n".join(bb_text(paragraph) for paragraph in intro) + "\n\n"
     text += bb_heading("Хронология голосований" if protocol else "Результаты рассмотрения вопросов")
     text += bb_table(protocol) + "\n"
     if protocol:
-        text += ("[I]«Состав» - количество сенаторов, учитываемое перед началом голосования; "
-                 "«Порог» - необходимое количество голосов за, где оно определено.[/I]\n\n")
+        text += bb_text("[I]«Состав» - количество сенаторов, учитываемое перед началом голосования; "
+                        "«Порог» - необходимое количество голосов за, где оно определено.[/I]") + "\n\n"
     text += bb_heading("Вопросы, которые не рассматривались")
-    text += UNCONSIDERED_REASON + "\n\n[LIST=1]\n"
-    text += "\n".join(f"[*][URL='{url}']{question}[/URL] - [B]не рассматривалась[/B]"
+    text += bb_text(UNCONSIDERED_REASON) + "\n\n[LIST=1]\n"
+    text += "\n".join("[*]" + bb_text(f"[URL='{url}']{question}[/URL] - [B]не рассматривалась[/B]")
                       for question, url in UNCONSIDERED)
     text += "\n[/LIST]\n\n"
     text += bb_heading("Примечания") + bb_notes(notes)
-    text += ("[B]ACT. 294:[/B] в таблице приведён исходный документ; "
-             f"в теме также размещена [URL='{REVISED_294_URL}']исправленная редакция[/URL].\n\n")
+    text += bb_text("[B]ACT. 294:[/B] в таблице приведён исходный документ; "
+                    f"в теме также размещена [URL='{REVISED_294_URL}']исправленная редакция[/URL].") + "\n\n"
     text += bb_signature()
     return text
 

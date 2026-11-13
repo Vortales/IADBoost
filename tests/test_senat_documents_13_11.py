@@ -148,6 +148,28 @@ class SenateDocumentsTests(unittest.TestCase):
                 if protocol:
                     self.assertIn("в ту же минуту", bb)
 
+    def test_bb_font_sizes_and_more_saturated_red(self):
+        self.assertEqual((senate.BB_BODY_SIZE, senate.BB_META_SIZE, senate.BB_HEADING_SIZE), (5, 3, 6))
+        self.assertEqual(senate.BB_REJECTED_COLOR, "rgb(210, 55, 55)")
+        for protocol in (False, True):
+            with self.subTest(protocol=protocol):
+                bb = senate.build_bb(protocol)
+                polls = senate.POLLS if protocol else senate.SUBSTANTIVE
+                rows = table_rows(bb)
+                self.assertEqual(bb.count("[SIZE=3]"), len(polls))
+                self.assertEqual(bb.count("[SIZE=6]"), 7)
+                self.assertNotIn("[SIZE=2]", bb)
+                self.assertNotIn("rgb(235, 107, 86)", bb)
+                self.assertEqual(bb.count(f"[COLOR={senate.BB_REJECTED_COLOR}]Не принят[/COLOR]"), 4)
+                self.assertIn("[COLOR=rgb(97, 189, 109)]Принят[/COLOR]", bb)
+                for cells in rows:
+                    for cell in cells:
+                        self.assertIn("[SIZE=5]", cell)
+                for poll in polls:
+                    self.assertIn(f"[SIZE=3]{poll.meta}[/SIZE]", bb)
+                self.assertIn(senate.bb_text(senate.UNCONSIDERED_REASON), bb)
+                check_balanced_bb(self, bb)
+
     def test_meeting_files_are_sorted_in_date_directory(self):
         session = ROOT / "Повестка" / "13.11.2026"
         self.assertEqual(senate.SESSION, session)

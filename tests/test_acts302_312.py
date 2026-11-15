@@ -88,9 +88,31 @@ class BaseInventoryTests(unittest.TestCase):
             self.assertEqual(Path(module.ROOT), root)
             self.assertEqual(module.load(drafts.PC), billkit.load(drafts.PC))
 
+    def test_billkit_rejects_sources_outside_the_current_base(self):
+        for name in ("../другая база/закон.json", str(ROOT / "Правила проекта/Основные правила проекта.json")):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                billkit.load(name)
+        # Отсутствующий в срезе акт не ищется в архиве или другом месте.
+        with self.assertRaises(FileNotFoundError):
+            billkit.load("Закон “О политических партиях на территории штата San-Andreas”")
+
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            base = root / "Законодательная база"
+            base.mkdir()
+            outside = root / "прежний.json"
+            outside.write_text('{"sections": []}', encoding="utf-8")
+            (base / "ссылка.json").symlink_to(outside)
+            with patch.object(billkit, "BASE", str(base)), self.assertRaises(ValueError):
+                billkit.load("ссылка")
+
     def test_old_locations_removed_and_unique_inputs_preserved(self):
         for name in ("Новая законка", "286", "Темы.7z", "Результаты сената.txt"):
             self.assertFalse((ROOT / name).exists(), name)
+        for name in ("Справочные материалы прежней базы", "Законодательная база (устаревшие редакции)"):
+            self.assertFalse((ROOT / "Архив" / name).exists(), name)
+        self.assertEqual(list((ROOT / "Архив").rglob("*.json")), [])
+        self.assertEqual(list(ROOT.glob("*.json")), [])
         preserved = {
             "Компромисс/Исходные данные/ACT286.txt": "1578110e7a2d48fba31fa7c8b61a3ff6d10debfabb2cceb0016e7d4b44d3b2b9",
             "Компромисс/Исходные данные/АСТ 286.docx": "ee9a2559024982a869d933ec85eb0d0cae901bf60f0830c0bb8bfe121cdbc4e7",
@@ -103,9 +125,8 @@ class BaseInventoryTests(unittest.TestCase):
         meeting_09 = ROOT / next(k for k in preserved if k.startswith("Сенат/"))
         meeting_13 = ROOT / "Повестка/13.11.2026/06 Исходные данные/Результаты.txt"
         self.assertNotEqual(file_hash(meeting_09), file_hash(meeting_13))
-        old = ROOT / "Архив/Справочные материалы прежней базы"
-        self.assertEqual(len(list(old.rglob("*.json"))), 17)
         self.assertTrue((ROOT / "Архив/Законопроекты 259-301 до обновления базы/Законопроекты 301 (право на адвоката при задержании)").is_dir())
+        self.assertTrue((ROOT / "Архив/Законопроекты 259-301 до обновления базы/Законопроекты 293 (контроль за партиями)/ACT.293.Закон о политических партиях (контроль и приостановление деятельности).docx").is_file())
 
 
 class HistoricalSourceTests(unittest.TestCase):

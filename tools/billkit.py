@@ -17,8 +17,14 @@ BASE = os.path.join(ROOT, "Законодательная база")
 
 
 def load(name):
-    """Возвращает карту text по номеру записи для акта из «Законодательной базы»."""
-    path = os.path.join(BASE, name if name.endswith(".json") else name + ".json")
+    """Возвращает записи акта только из текущего среза «Законодательная база»."""
+    if (not isinstance(name, str) or not name or name in (".", "..")
+            or os.path.basename(name) != name):
+        raise ValueError("Укажите имя файла акта без пути")
+    filename = name if name.endswith(".json") else name + ".json"
+    path = os.path.realpath(os.path.join(BASE, filename))
+    if os.path.dirname(path) != os.path.realpath(BASE):
+        raise ValueError("Источник должен находиться в текущей законодательной базе")
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     return {s["n"]: (s["text"] or "") for s in data["sections"]}

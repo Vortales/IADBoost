@@ -12,11 +12,13 @@
 """
 import copy
 import os
+import posixpath
 import re
 import shutil
 import zipfile
 
 from docx import Document
+from lxml import etree
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -87,7 +89,7 @@ def fill_cell(cell, text, size=12):
     for line in _lines(text):
         p = cell.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        p.paragraph_format.widow_control = False
+        p.paragraph_format.widow_control = True
         p.paragraph_format.line_spacing = 1.0
         for seg, fill, bold in line:
             add_run(p, seg, fill, bold, size)
@@ -135,15 +137,51 @@ def normalize_fonts(doc):
 
 
 def clean_font_table(path):
-    """Убирает из fontTable.xml шрифты, которые больше не используются."""
+    """Удаляет неиспользуемые встроенные шрифты шаблона и их связи.
+
+    В документе после normalize_fonts используется только Times New Roman.
+    Не сохраняем чужие встроенные Century Schoolbook, Calibri и другие шрифты
+    в каждом новом DOCX; возможное встраивание Times New Roman сохраняем.
+    """
     tmp = path + ".tmp"
+    table_name = "word/fontTable.xml"
+    rels_name = "word/_rels/fontTable.xml.rels"
+    rel_ns = "http://schemas.openxmlformats.org/package/2006/relationships"
+    doc_rel_ns = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     with zipfile.ZipFile(path) as src, zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as dst:
+        table = etree.fromstring(src.read(table_name))
+        for font in list(table):
+            if font.tag == qn("w:font") and font.get(qn("w:name")) != FONT:
+                table.remove(font)
+        used_ids = {el.get(f"{{{doc_rel_ns}}}id") for el in table.iter()
+                    if el.get(f"{{{doc_rel_ns}}}id")}
+        table_data = etree.tostring(table, encoding="UTF-8", xml_declaration=True, standalone=True)
+        removed = set()
+        rels_data = None
+        if rels_name in src.namelist():
+            rels = etree.fromstring(src.read(rels_name))
+            for rel in list(rels):
+                if (rel.tag == f"{{{rel_ns}}}Relationship"
+                        and rel.get("Type", "").endswith("/font")
+                        and rel.get("Id") not in used_ids):
+                    target = posixpath.normpath(posixpath.join("word", rel.get("Target", "")))
+                    if not target.startswith("word/fonts/"):
+                        raise ValueError(f"Неожиданный путь встроенного шрифта: {target}")
+                    removed.add(target)
+                    rels.remove(rel)
+            if len(rels):
+                rels_data = etree.tostring(rels, encoding="UTF-8", xml_declaration=True, standalone=True)
         for item in src.infolist():
-            data = src.read(item.filename)
-            if item.filename == "word/fontTable.xml":
-                text = data.decode("utf-8")
-                text = re.sub(r'<w:font w:name="Century Schoolbook">.*?</w:font>', "", text, flags=re.S)
-                data = text.encode("utf-8")
+            if item.filename in removed:
+                continue
+            if item.filename == table_name:
+                data = table_data
+            elif item.filename == rels_name:
+                if rels_data is None:
+                    continue
+                data = rels_data
+            else:
+                data = src.read(item.filename)
             dst.writestr(item, data)
     shutil.move(tmp, path)
 
@@ -164,6 +202,10 @@ def build(bill, outdir="."):
 
     for left, right in bill["rows"]:
         tr = copy.deepcopy(template_tr)
+        # Короткую новую норму держим вместе с её заголовком; длинные строки
+        # должны свободно переходить на следующую страницу.
+        if left.endswith("В действующей редакции отсутствует.") and len(right) < 1200:
+            tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
         tbl._tbl.append(tr)
         cells = tr.findall(qn("w:tc"))
         fill_cell(_Cell(cells[0], tbl), left)

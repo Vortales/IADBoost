@@ -12,7 +12,7 @@ import json
 import os
 import re
 
-ROOT = "/home/user/IADBoost"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = os.path.join(ROOT, "Законодательная база")
 
 
@@ -41,6 +41,10 @@ def pair(src, edits):
     """
     pos, left, right = 0, [], []
     for kind, old, new in edits:
+        if not old:
+            raise ValueError("Пустой фрагмент или якорь правки")
+        if kind == "R" and not new:
+            raise ValueError("Для удаления используйте D вместо пустой замены R")
         i = src.find(old, pos)
         if i < 0:
             raise ValueError("не найдено: %r" % old[:80])
@@ -49,6 +53,7 @@ def pair(src, edits):
         right.append(src[pos:cut])
         if kind == "D":
             left[-1] = src[pos:i] + "[[R]]%s[[/R]]" % old
+            right[-1] = src[pos:i]
             if new:
                 raise ValueError("D не принимает new")
         elif kind == "R":

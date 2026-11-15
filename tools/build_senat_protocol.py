@@ -6,7 +6,6 @@
 Оба собираются из образца заявления-инициативы (Book Antiqua, шапка Сената).
 """
 import copy
-import glob
 import os
 
 from docx import Document
@@ -17,7 +16,10 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = glob.glob(os.path.join(ROOT, "*инициатива*(1).docx"))[0]
+SRC = os.path.join(
+    ROOT, "Архив", "Разное",
+    "Заявление-инициатива о смене руководства Сената — 09.11.2026 (копия из корня).docx",
+)
 OUTDIR = os.path.join(ROOT, "Сенат", "Протокол заседания (09.11.2026)")
 OUT_A = os.path.join(OUTDIR, "Вариант А - Постановление Сената о подтверждении итогов 09.11.2026.docx")
 OUT_B = os.path.join(OUTDIR, "Вариант Б - Протокол заседания Сената 09.11.2026 (составлен 12.11.2026).docx")

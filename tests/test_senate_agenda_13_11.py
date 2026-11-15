@@ -126,7 +126,8 @@ class SenateAgendaTests(unittest.TestCase):
                     self.assertEqual(before, hashlib.sha256(copy.read_bytes()).hexdigest())
 
     def test_corrected_act_and_renumbering(self):
-        directory = ROOT / "Законопроекты"
+        # Сданные редакции 259-301 сохранены как история, не как действующие проекты.
+        directory = ROOT / "Архив" / "Законопроекты 259-301 до обновления базы"
         path = directory / "Законопроекты 294 (вызов прокурора адвокатом)" / "ACT.294.Процессуальный кодекс (вызов прокурора адвокатом).docx"
         doc = Document(path)
         self.assertEqual(doc.paragraphs[0].text, "ACT. 294")

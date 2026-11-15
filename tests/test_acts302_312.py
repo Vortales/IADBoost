@@ -242,6 +242,21 @@ class DraftStructureTests(unittest.TestCase):
                     for name in a.namelist():
                         self.assertEqual(a.read(name), b.read(name), name)
 
+    def test_targeted_rebuild_writes_only_selected_bill(self):
+        with TemporaryDirectory() as temp, patch.object(drafts, "OUT", Path(temp)):
+            with redirect_stdout(StringIO()):
+                drafts.main(only=302)
+            folder, bill = self.bills[0]
+            rebuilt = Path(temp) / folder / bill["file"]
+            self.assertEqual(list(Path(temp).rglob("*.docx")), [rebuilt])
+            original = ROOT / "Законопроекты" / folder / bill["file"]
+            with zipfile.ZipFile(original) as a, zipfile.ZipFile(rebuilt) as b:
+                self.assertEqual(set(a.namelist()), set(b.namelist()))
+                for name in a.namelist():
+                    self.assertEqual(a.read(name), b.read(name), name)
+            with self.assertRaises(ValueError):
+                drafts.main(only=999)
+
     def test_short_new_norms_keep_heading_and_text_together(self):
         for folder, bill in self.bills:
             doc = Document(ROOT / "Законопроекты" / folder / bill["file"])
@@ -252,6 +267,25 @@ class DraftStructureTests(unittest.TestCase):
                 for cell in row.cells:
                     self.assertTrue(all(p.paragraph_format.widow_control for p in cell.paragraphs))
 
+    def test_selected_short_comparisons_do_not_orphan_headings(self):
+        folder, bill = self.bills[0]
+        doc = Document(ROOT / "Законопроекты" / folder / bill["file"])
+        selected = set(bill["keep_rows_together"])
+        self.assertEqual(selected, {"Статья 17, часть 4.1, примечание 1",
+                                    "Статья 17, часть 5, примечание о назначении звонка"})
+        found = set()
+        for row, (left, right) in zip(doc.tables[0].rows[1:], bill["rows"]):
+            locator = plain(left).split("\n")[1]
+            tr_properties = row._tr.trPr
+            keep = tr_properties is not None and tr_properties.find(qn("w:cantSplit")) is not None
+            if locator in selected:
+                found.add(locator)
+                self.assertLess(max(len(left), len(right)), 1200)
+                self.assertTrue(keep, locator)
+            elif not left.endswith("В действующей редакции отсутствует."):
+                self.assertFalse(keep, locator)
+        self.assertEqual(found, selected)
+
     def test_bold_named_act_inside_replacement(self):
         folder, bill = self.bills[0]
         doc = Document(ROOT / "Законопроекты" / folder / bill["file"])
@@ -260,11 +294,12 @@ class DraftStructureTests(unittest.TestCase):
                    if "Процессуального кодекса штата Сан-Андреас" in run.text]
         self.assertGreaterEqual(len(matches), 2)
         self.assertTrue(all(run.bold for run in matches))
-        cell = doc.tables[0].rows[-1].cells[1]
-        other_act = [run for para in cell.paragraphs for run in para.runs
+        other_act = [run for row in doc.tables[0].rows[1:] for cell in row.cells
+                     for para in cell.paragraphs for run in para.runs
                      if "Закона «Об адвокатской деятельности и адвокатуре" in run.text]
-        self.assertEqual(len(other_act), 1)
-        self.assertTrue(other_act[0].bold)
+        # Вызов госадвоката по договору и порядок прохода в КПЗ FIB.
+        self.assertEqual(len(other_act), 2)
+        self.assertTrue(all(run.bold for run in other_act))
 
 
 class DraftSubstanceTests(unittest.TestCase):
@@ -272,26 +307,58 @@ class DraftSubstanceTests(unittest.TestCase):
     def setUpClass(cls):
         cls.pc = right_rows(302)
 
-    def test_miranda_and_both_parts_are_consistent(self):
+    def test_miranda_and_right_to_call_are_one_alternative(self):
         miranda = find_row(self.pc, "Статья 17, часть 3, правило Миранды")
+        self.assertEqual(miranda.split("\n", 2)[2],
+            'ч. 3.\nПравило Миранды: "Вы имеете право хранить молчание. '
+            'Всё, что вы скажете, может и будет использовано против Вас в суде. '
+            'Вы имеете право на защиту государственным адвокатом либо на один телефонный звонок '
+            'для вызова частного адвоката. Если вам необходим адвокат, он будет для Вас запрошен. '
+            'Вы понимаете свои права?"')
         elements = find_row(self.pc, "Статья 17, часть 3, примечание об обязательных элементах")
-        for text in (miranda, elements):
-            self.assertIn("один телефонный звонок для связи с частным адвокатом", text)
-        phone = find_row(self.pc, "Статья 17, часть 5")
+        self.assertEqual(elements.splitlines()[-4:], [
+            "- Право на хранение молчания;",
+            "- Предупреждение о том, что всё сказанное может и будет использовано против задержанного в суде;",
+            "- Право на защиту государственным адвокатом либо на один телефонный звонок для вызова частного адвоката;",
+            "- Уведомление о том, что при необходимости адвокат будет запрошен.",
+        ])
         right = find_row(self.pc, "Статья 22, часть 1, пункт «а»")
-        self.assertIn("После реализации права на адвоката", phone)
-        self.assertIn("не обязан дополнительно предоставлять телефон или телефонный звонок", phone)
-        self.assertIn("частью 5 статьи 17", right)
+        self.assertIn("право на защиту государственным адвокатом либо на один телефонный звонок для вызова частного адвоката", right)
+        self.assertIn("вместо вызова государственного адвоката по горячей линии", right)
+        self.assertIn("телефонный звонок для вызова государственного адвоката по договору", right)
+        self.assertIn("в том числе дополнительный", right)
+        self.assertIn("до начала процесса ареста в присутствии сотрудника", right)
+        self.assertIn("в случаях и порядке, предусмотренных статьей 17 настоящего Кодекса", right)
+        self.assertIn("Длительность звонка не должна превышать 3-х минут", right)
         self.assertNotIn("сотрудник обязан предоставить телефонный звонок задержанному по его запросу", right)
+
+    def test_state_phone_contract_call_and_no_extra_after_acceptance(self):
+        state = find_row(self.pc, "Статья 17, часть 4")
+        private = find_row(self.pc, "Статья 17, часть 4.1")
+        phone = find_row(self.pc, "Статья 17, часть 5")
+        self.assertIn("В указанном случае по выбору задержанного вместо вызова по горячей линии", state)
+        self.assertIn("по ранее заключенному договору либо для заключения устного договора", state)
+        self.assertIn("части 1 статьи 8 Закона «Об адвокатской деятельности", state)
+        self.assertIn("части 5 настоящей статьи", state)
+        for text in (state, private):
+            self.assertIn("ранее не был своевременно принят вызов адвоката", text)
+            self.assertIn("право на адвоката не признано реализованным", text)
+        self.assertIn("один телефонный звонок для вызова частного адвоката либо государственного адвоката по договору", phone)
+        self.assertIn("Длительность каждого звонка не должна превышать 3 минут", phone)
+        self.assertIn("При своевременном принятии вызова, а также после признания права на адвоката реализованным", phone)
+        self.assertIn("не обязан предоставлять телефон или телефонный звонок для вызова другого адвоката", phone)
+        self.assertIn("в том числе если телефон ранее не предоставлялся", phone)
 
     def test_state_arrival_and_alternative_path(self):
         state = find_row(self.pc, "Статья 17, часть 4")
         alternative = find_row(self.pc, "Статья 17, часть 4.1, примечание 2")
         private = find_row(self.pc, "Статья 17, часть 4.1")
         private_time = find_row(self.pc, "Статья 17, часть 4.1, примечание 1")
+        self.assertIn("по горячей линии Правительства либо по телефону задержанного", state)
         self.assertIn("10 минут с момента принятия вызова", state)
-        self.assertIn("не прибыл в течение указанного срока", state)
-        self.assertIn("после предоставления задержанному возможности воспользоваться его юридической помощью", alternative)
+        self.assertIn("не прибыл в течение указанного срока, процедура задержания продолжается и право на адвоката считается реализованным", state)
+        self.assertIn("после оказания задержанному юридической помощи", alternative)
+        self.assertIn("При прямом добровольном отказе задержанного от юридической помощи прибывшего адвоката", alternative)
         self.assertIn("вызов адвоката другого вида", alternative)
         self.assertIn("по его желанию обеспечить этот вызов", alternative)
         self.assertIn("не является окончательным", alternative)
@@ -311,17 +378,35 @@ class DraftSubstanceTests(unittest.TestCase):
         self.assertIn("Пересекающиеся периоды заморозки процессуального часа учитываются один раз", alternative)
         self.assertIn("конфиденциальную встречу по требованию задержанного", alternative)
 
+    def test_only_unaccepted_first_phone_call_triggers_alternative_phone_call(self):
+        alternative = find_row(self.pc, "Статья 17, часть 4.1, примечание 2")
+        phone = find_row(self.pc, "Статья 17, часть 5")
+        fallback = next(line for line in alternative.splitlines() if line.startswith("Если в течение 3 минут"))
+        # Правило одинаково для первого вызова любого вида: частный -> государственный
+        # (горячая линия или телефон по договору) и государственный -> частный.
+        self.assertIn("вызов не принят адвокатом либо до истечения этого срока получен окончательный отказ", fallback)
+        self.assertIn("обязан предложить задержанному вызов адвоката другого вида", fallback)
+        self.assertIn("по его желанию обеспечить этот вызов в порядке частей 4 и 4.1", fallback)
+        self.assertIn("первоначальный вызов, направленный телефонным звонком задержанного, не был принят в указанном порядке", fallback)
+        self.assertIn("по желанию задержанного предоставляется один дополнительный телефонный звонок", fallback)
+        self.assertIn("Дополнительный телефонный звонок для вызова адвоката другого вида предоставляется в случае, предусмотренном примечанием 2", phone)
+        self.assertIn("Если первоначальный или альтернативный вызов своевременно принят, дополнительный вызов адвоката другого вида не обязателен", alternative)
+
     def test_attorney_law_and_informing_are_not_contradictory(self):
         note = find_row(self.pc, "Статья 8, часть 1, пояснение 4")
         source = drafts.excerpt(billkit.load(drafts.AD)[17],
                                 "Пояснение 4: В случае если с доверителем/подзащитным", "\nч. 2.")
-        self.assertIn(source, note)  # исходное право на добровольный договор не удаляется
-        self.assertIn("части 4 статьи 17 Процессуального кодекса", note)
-        self.assertIn("не устанавливает обязанности дополнительно предоставлять телефон", note)
+        self.assertIn(source, note)  # сохраняются письменный договор и устный договор по телефону
+        self.assertIn("Телефон для вызова государственного адвоката предоставляется в порядке статьи 17 Процессуального кодекса", note)
+        self.assertIn("При ранее заключенном письменном договоре государственный адвокат вправе прибыть также по вызову через горячую линию", note)
+        self.assertIn("не устанавливает обязанности дополнительно предоставлять телефон после своевременного принятия вызова или реализации права", note)
         purpose = find_row(self.pc, "Статья 17, часть 5, примечание о назначении звонка")
+        self.assertIn("для связи с частным или государственным адвокатом в целях его вызова", purpose)
         self.assertIn("по вопросу заключения договора на оказание юридических услуг в установленном законом порядке", purpose)
+        self.assertIn("не обладающими статусом частного или государственного адвоката", purpose)
         self.assertIn("Использование указанного телефонного звонка для иных целей", purpose)
         self.assertNotIn("с которым задержанный заключил действительный устный договор", purpose)
+        self.assertNotIn("не обладающими статусом частного адвоката", purpose)
         info = find_row(self.pc, "Статья 23, часть 1, пункты «б» и «в»")
         self.assertIn("известные фактические обстоятельства каждого вменяемого правонарушения", info)
         self.assertIn("в) По требованию предоставить доказательства совершенного правонарушения, в том числе адвокату", info)
@@ -336,9 +421,11 @@ class DraftSubstanceTests(unittest.TestCase):
         added = find_row(self.pc, "Статья 4, примечание 2.1")
         self.assertIn("принятый государственным адвокатом вызов по горячей линии Правительства", added)
         self.assertIn("является вызовом через телефон", added)
+        self.assertIn("Устный договор с государственным адвокатом", added)
+        self.assertIn("при этом вызове либо по телефону задержанного", added)
         self.assertIn("в порядке части 1 статьи 8", added)
         self.assertIn("до прохода адвоката в КПЗ, считается ранее заключенным договором", added)
-        self.assertIn("Иные установленные законодательством требования доступа", added)
+        self.assertIn("Иные требования доступа и нахождения на территории сохраняются", added)
         self.assertNotIn("пункта «ж» части 2 статьи 4", added)  # это прежний проект, не закон
 
     def test_compromises_keep_safety_and_accountability(self):

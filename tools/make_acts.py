@@ -200,11 +200,14 @@ def build(bill, outdir="."):
     for row in list(tbl.rows)[1:]:
         tbl._tbl.remove(row._tr)
 
+    keep_rows = set(bill.get("keep_rows_together", ()))
     for left, right in bill["rows"]:
         tr = copy.deepcopy(template_tr)
-        # Короткую новую норму держим вместе с её заголовком; длинные строки
-        # должны свободно переходить на следующую страницу.
-        if left.endswith("В действующей редакции отсутствует.") and len(right) < 1200:
+        # Короткую новую норму и явно указанные короткие строки держим целиком;
+        # длинные сравнительные строки должны свободно переходить на следующую страницу.
+        locator = left.split("\n", 2)[1] if keep_rows else None
+        if ((left.endswith("В действующей редакции отсутствует.") and len(right) < 1200)
+                or locator in keep_rows):
             tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
         tbl._tbl.append(tr)
         cells = tr.findall(qn("w:tc"))

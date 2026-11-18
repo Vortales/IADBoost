@@ -44,9 +44,14 @@ class OgpKenzoTests(unittest.TestCase):
         ):
             self.assertIn(f"[B]{name}[/B]", self.bb)
         for item in ("Kenzo Wane", "48905", "2660", "79325182", "insideofdead@ds.com",
-                     "https://i.imgur.com/pTU8irD.png", "https://www.youtube.com/watch?v=G1CjZtgN3hE"):
+                     "https://i.imgur.com/pTU8irD.png", "https://www.youtube.com/watch?v=G1CjZtgN3hE",
+                     "LSCSD", "182618", "206297", "по московскому времени",
+                     "Отсутствует. Обращение подаю лично."):
             self.assertIn(item, self.bb)
         self.assertIn("Обращение в ОГП от гражданина Kenzo Wane", self.guide)
+        self.assertIn("Дата подачи: __.__.____.", self.bb)
+        self.assertIn("Подпись: __________ / Kenzo Wane.", self.bb)
+        self.assertNotIn("УКАЗАТЬ", self.bb)
         self.assertNotIn("Marcus Nomad", self.bb)
         self.assertNotRegex(self.bb, r"\bID\b")
 
@@ -65,8 +70,7 @@ class OgpKenzoTests(unittest.TestCase):
         self.assertTrue(self.bb.rstrip().endswith("[/FONT]"))
         self.assertNotIn("—", self.bb)
         self.assertNotIn("–", self.bb)
-        if "УКАЗАТЬ" in self.bb:
-            self.assertIn("ЧЕРНОВИК", self.bb)
+        self.assertNotIn("ЧЕРНОВИК", self.bb)
 
     def test_evidence_and_disputed_facts_are_not_overstated(self):
         for timestamp in ("00:00-00:10", "00:32-00:35", "01:00-02:13", "02:35-02:46",
@@ -81,6 +85,10 @@ class OgpKenzoTests(unittest.TestCase):
         self.assertIn("20697", self.analysis)
         self.assertIn("182618", self.analysis)
         self.assertIn("18618", self.analysis)
+        self.assertIn("по Москве (UTC+3)", self.analysis)
+        self.assertIn("22:30 20.11.2026 по Москве", self.guide)
+        self.assertIn("а не точно установленный предел срока", self.guide)
+        self.assertIn("не считаю первоначальный вызов основанием для бессрочного пребывания", self.bb)
 
     def test_regulation_and_miranda_support_the_checklist(self):
         reg = topic("Регламент подачи обращений")

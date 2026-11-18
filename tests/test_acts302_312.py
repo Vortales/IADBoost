@@ -54,7 +54,7 @@ def find_row(rows, locator):
 class BaseInventoryTests(unittest.TestCase):
     def test_manifest_json_and_unique_sources(self):
         records = (BASE / "SHA256SUMS.txt").read_text(encoding="utf-8").splitlines()
-        self.assertEqual(len(records), 53)
+        self.assertEqual(len(records), 52)
         manifest = {}
         for record in records:
             digest, name = record.split("  ", 1)
@@ -64,15 +64,19 @@ class BaseInventoryTests(unittest.TestCase):
         json_files = list(BASE.glob("*.json"))
         self.assertEqual(set(manifest), {p.name for p in json_files})
         sources = set()
+        parsed_dates = []
         for path in json_files:
             with self.subTest(file=path.name):
                 self.assertEqual(file_hash(path), manifest[path.name])
                 data = json.loads(path.read_text(encoding="utf-8"))
                 self.assertTrue(data["sections"])
-                self.assertTrue(data["parsed_at"].startswith("2026-11-15"))
+                parsed_dates.append(data["parsed_at"][:10])
                 url = data.get("norm_url") or data["url"]
                 self.assertNotIn(url, sources)
                 sources.add(url)
+        self.assertEqual(parsed_dates.count("2026-11-15"), 44)
+        self.assertEqual(parsed_dates.count("2026-11-18"), 8)
+        self.assertFalse((BASE / "Конституционный закон «О нормативных правовых актах штата Сан-Андреас».json").exists())
 
     def test_billkit_loads_base_relative_to_the_checkout(self):
         with TemporaryDirectory() as temp:

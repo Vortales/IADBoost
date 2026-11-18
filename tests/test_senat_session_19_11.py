@@ -104,19 +104,21 @@ class ConvocationTests(unittest.TestCase):
             self.assertEqual(png.read_bytes(), b"unchanged image")
             self.assertEqual(md.read_text(encoding="utf-8"), "unchanged text")
 
-    def test_legal_references_match_the_new_base(self):
+    def test_previous_legal_references_are_flagged_for_review(self):
         law = ROOT / "Законодательная база" / "Конституционный закон «О Сенате штата Сан-Андреас».json"
         data = json.loads(law.read_text(encoding="utf-8"))
         articles = {(s.get("text") or "").split("\n", 1)[0]: s.get("text") or ""
                     for s in data["sections"]}
-        self.assertIn("назначает заседания Сената", articles["Статья 3."])
-        self.assertIn("неявку на плановое заседание", articles["Статья 3."])
-        self.assertIn("не менее половины действующих сенаторов", articles["Статья 9."])
+        self.assertIn("Сенаторами являются", articles["Статья 3."])
+        self.assertIn("ответственность за проведение, созыв", articles["Статья 9."])
+        self.assertIn("правомочным при достижении кворума", articles["Статья 25."])
         content = convocation.markdown()
         self.assertEqual(content.count(f"**{convocation.LAW}**"), 3)
-        self.assertIn("При неявке на плановое заседание", content)
-        self.assertIn("вправе применить меры", content)
+        self.assertIn("пункт «а» части 4 статьи 3", content)
         self.assertIn("часть 1 статьи 9", content)
+        warning = (SESSION / "README.md").read_text(encoding="utf-8")
+        self.assertIn("Отсылки к статье 3 и части 1 статьи 9", warning)
+        self.assertIn("не подтверждаются новым", warning)
 
     def test_structure_and_no_new_protocol(self):
         self.assertEqual({p.name for p in SESSION.iterdir() if p.is_dir()},

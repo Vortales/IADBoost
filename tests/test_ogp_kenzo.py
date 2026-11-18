@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BASE = ROOT / "Законодательная база"
 CASE = ROOT / "Обращения" / "ОГП - Kenzo Wane против FIB 2660"
-BB = CASE / "Обращение в ОГП от гражданина Kenzo Wane - BB-код (черновик).txt"
+BB = CASE / "Обращение в ОГП от гражданина Kenzo Wane.txt"
 ANALYSIS = CASE / "00. Правовой разбор.md"
 GUIDE = CASE / "01. Подача и проверка.md"
 
@@ -48,6 +48,8 @@ class OgpKenzoTests(unittest.TestCase):
                      "LSCSD", "182618", "206297", "по московскому времени",
                      "Отсутствует. Обращение подаю лично."):
             self.assertIn(item, self.bb)
+        self.assertEqual(BB.stem, "Обращение в ОГП от гражданина Kenzo Wane")
+        self.assertIn(f"`{BB.name}`", self.guide)
         self.assertIn("Обращение в ОГП от гражданина Kenzo Wane", self.guide)
         self.assertIn("Дата подачи: __.__.____.", self.bb)
         self.assertIn("Подпись: __________ / Kenzo Wane.", self.bb)

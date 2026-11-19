@@ -177,8 +177,9 @@ class DraftStructureTests(unittest.TestCase):
 
     def test_eleven_separate_docs_and_explanations(self):
         self.assertEqual([b["num"] for _, b in self.bills], list(range(302, 313)))
-        directories = list((ROOT / "Законопроекты").glob("Законопроекты 3* - *"))
-        self.assertEqual(len(directories), 11)
+        directories = {p.name for p in (ROOT / "Законопроекты").glob("Законопроекты 3* - *")
+                       if re.match(r"Законопроекты (?:30[2-9]|31[0-2]) - ", p.name)}
+        self.assertEqual(directories, {folder for folder, _ in self.bills})
         for folder, bill in self.bills:
             path = ROOT / "Законопроекты" / folder / bill["file"]
             with self.subTest(number=bill["num"]):

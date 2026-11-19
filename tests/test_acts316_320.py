@@ -120,7 +120,8 @@ class NewDraftTests(unittest.TestCase):
         self.assertEqual([(p.number, p.locator) for p in constitutional], [(316, "Статья 42, часть 8")])
         court = constitutional[0].new
         self.assertIn("Судебный пристав вправе проводить личный обыск", court)
-        self.assertIn("оснований и в порядке статьи 29", court)
+        self.assertIn("оснований и в порядке Процессуального кодекса штата Сан-Андреас", court)
+        self.assertNotIn("статьи 29", court)
         self.assertIn("оружия, пронос которого запрещен частью 7", court)
         self.assertNotIn("независимо от должности", court)
         t_bill, t_patches, _ = territory.specs()

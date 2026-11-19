@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Краткий ACT. 315, источники, режим территорий и совместимость с 313-314."""
 import hashlib
+import json
 import re
 import sys
 import unittest
@@ -110,11 +111,28 @@ class Act315Tests(unittest.TestCase):
         self.assertIn("ACT. 316", self.notes)
         self.assertTrue(all("Конституцион" not in p.source for p in self.patches))
 
+    def test_closed_territory_definition_is_a_proposal_not_a_source_quote(self):
+        definition = ("Закрытая территория - часть объекта, доступ на которую ограничен законом. "
+                      "Прилегающая территория и общедоступный холл не являются закрытыми только в силу их расположения.")
+        self.assertIn(definition, self.by_locator["Статья 1, основные понятия"].new)
+        self.assertNotIn("Закрытая территория", draft.clean(self.documents[draft.APP][3]))
+        self.assertIn("Прилегающий объект", draft.clean(self.documents[draft.APP][3]))
+        self.assertIn("Белым цветом выделяются прилегающие территории", draft.clean(self.documents[draft.APP][9]))
+        sources = list((ROOT / "Законодательная база").glob("*.json"))
+        self.assertEqual(len(sources), 52)
+        for path in sources:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for section in data["sections"]:
+                self.assertNotIn(definition, draft.clean(section.get("text") or ""), path.name)
+        self.assertIn("авторское предложение проекта, а не цитата действующего закона", self.notes)
+        self.assertIn("могут не охватывать объект целиком", self.notes)
+
     def test_entire_appendix_review_and_fort_exception(self):
         self.assertEqual({p.section for p in self.patches if p.source == draft.APP}, {1, 3, 4, 5, 7, 8, 9, 10, 11})
         preamble = self.by_locator["Преамбула"].new
         self.assertIn("при производстве по делу", preamble.lower())
-        self.assertIn("указанный Кодекс в порядке его статьи 2", preamble)
+        self.assertIn("указанный Кодекс в установленном им порядке", preamble)
+        self.assertNotIn("его статьи 2", preamble)
         app2 = self.final[draft.APP, 4]
         self.assertIn("Перечень законных целей визита (список открытый)", app2)
         self.assertIn("с законной целью посещения", app2)
@@ -146,14 +164,16 @@ class Act315Tests(unittest.TestCase):
                        "необходимого сопровождения", "не зависящих от лица"):
             self.assertIn(phrase, note)
         note9 = self.by_locator["Статья 4, примечание 9"].new
-        self.assertIn("в пределах статьи 18", note9)
+        self.assertIn("в порядке Процессуального кодекса штата Сан-Андреас", note9)
+        self.assertNotIn("статьи 18", note9)
         self.assertIn("Иные законные основания доступа сохраняются", note9)
         self.assertIn("врачебной тайны", self.by_locator["Статья 4, пункт «е», доступ адвокатов"].new)
         self.assertIn("не входят в состав КПЗ", self.by_locator["Статья 4, примечание 8 и исключение"].new)
         article5 = self.final[draft.APP, 8]
         self.assertIn("для которого суд не является местом работы", article5)
         self.assertIn("с учетом части 1.3", article5)
-        self.assertIn("учетом исключений, предусмотренных статьей 29", article5)
+        self.assertIn("учетом исключений, предусмотренных Процессуальным кодексом", article5)
+        self.assertNotIn("статьей 29 Процессуального кодекса", article5)
         self.assertIn("посетителей, желающих посетить открытые судебные заседания", article5)
 
     def test_sang_force_search_transfers_and_pass_priority(self):

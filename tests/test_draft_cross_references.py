@@ -9,9 +9,9 @@ from docx import Document
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
-import build_act315 as territory
-import build_acts313_314 as releases
-import build_acts316_320 as defence
+import build_act303 as territory
+import build_acts301_302 as releases
+import build_acts304_307 as defence
 import build_sang_299_300 as sang
 
 # Находит как прямые ссылки («статьи 16 Процессуального кодекса»), так и
@@ -65,7 +65,7 @@ class CrossReferenceTests(unittest.TestCase):
                 self.assertFalse(forbidden_references(phrase))
 
     def test_all_proposed_docx_provisions_have_no_numbered_external_citations(self):
-        self.assertEqual(len(bills()), 10)
+        self.assertEqual(len(bills()), 9)
         for directory, bill in bills():
             doc = Document(directory / bill["file"])
             self.assertEqual(len(doc.tables[0].rows), len(bill["rows"]) + 1)
@@ -82,7 +82,7 @@ class CrossReferenceTests(unittest.TestCase):
         # Эти четыре совпадения описывают собственные положения изменяемого акта,
         # а не отсылают к нормам другого акта.
         allowed = {
-            315: ["Статья 2 Приложения"],
+            303: ["Статья 2 Приложения"],
             299: ["статьи 4 Приложения"],
             300: ["статьи 2 Закона", "статье 8 Закона"],
         }
@@ -119,20 +119,19 @@ class CrossReferenceTests(unittest.TestCase):
         app = releases.APP_TITLE
         guard = sang.SANG_TITLE
         self.assertIn("части 1 статьи 19 настоящего Кодекса",
-                      index[314, pc, "Статья 18, часть 1, пункт «е»"])
+                      index[302, pc, "Статья 18, часть 1, пункт «е»"])
         self.assertIn("пункту «е» части 1 статьи 18 настоящего Кодекса",
-                      index[314, pc, "Статья 19, часть 1"])
-        self.assertIn("части 2 настоящей статьи", index[314, pc, "Статья 18, часть 1, пункт «е»"])
-        self.assertIn("статьей 2 настоящего Приложения", index[315, app, "Статья 1, основные понятия"])
-        self.assertIn("примечанию 2 настоящей статьи", index[315, app, "Статья 4, примечание 4"])
-        self.assertIn("статьи 10 настоящего Закона", index[315, guard, "Статья 2, часть 7"])
-        self.assertIn("статье 8 настоящего Закона", index[315, guard, "Статья 2, часть 7"])
-        self.assertIn("частью 7 настоящей статьи", index[316, defence.COURT_TITLE, "Статья 42, часть 8"])
-        self.assertIn("части 2 статьи 23 настоящего Кодекса", index[317, pc, "Статья 20, часть 2, пункт «ж»"])
-        self.assertIn("статьям 11-14 настоящего Кодекса", index[318, pc, "Статья 23, часть 1, пункт «г» и исключение"])
-        self.assertIn("статье 32 настоящего Кодекса", index[319, pc, "Статья 43, часть 3"])
-        self.assertIn("по статье 10 настоящего Закона", index[300, guard, "Статья 2, часть 7"])
-        self.assertIn("статьи 8 настоящего Закона", index[300, guard, "Статья 2, часть 7"])
+                      index[302, pc, "Статья 19, часть 1"])
+        self.assertIn("части 2 настоящей статьи", index[302, pc, "Статья 18, часть 1, пункт «е»"])
+        self.assertIn("статьей 2 настоящего Приложения", index[303, app, "Статья 1, основные понятия"])
+        self.assertIn("примечанию 2 настоящей статьи", index[303, app, "Статья 4, примечание 4"])
+        self.assertIn("примечанию 1 пункта «а» статьи 4 настоящего Приложения",
+                      index[303, app, "Статья 2, цели посещения SANG"])
+        self.assertIn("части 2 статьи 23 настоящего Кодекса", index[304, pc, "Статья 20, часть 2, пункт «ж»"])
+        self.assertIn("статьям 11-14 настоящего Кодекса", index[305, pc, "Статья 23, часть 1, пункт «г» и исключение"])
+        self.assertIn("статье 32 настоящего Кодекса", index[306, pc, "Статья 43, часть 3"])
+        self.assertIn("статьи 10 настоящего Закона", index[300, guard, "Статья 2, часть 7"])
+        self.assertIn("статье 8 настоящего Закона", index[300, guard, "Статья 2, часть 7"])
 
 
 if __name__ == "__main__":

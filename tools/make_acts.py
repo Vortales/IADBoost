@@ -211,10 +211,20 @@ def build(bill, outdir="."):
             tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
         tbl._tbl.append(tr)
         cells = tr.findall(qn("w:tc"))
-        fill_cell(_Cell(cells[0], tbl), left)
-        fill_cell(_Cell(cells[1], tbl), right)
+        cell_size = bill.get("table_font_size", 12)
+        fill_cell(_Cell(cells[0], tbl), left, size=cell_size)
+        fill_cell(_Cell(cells[1], tbl), right, size=cell_size)
 
     normalize_fonts(doc)
+    if bill.get("clear_template_metadata"):
+        # Шаблон содержит данные и даты своего автора, а не нового проекта.
+        props = doc.core_properties
+        props.author = ""
+        props.last_modified_by = ""
+        for local_name in ("created", "modified"):
+            element = props._element.find(f"{{http://purl.org/dc/terms/}}{local_name}")
+            if element is not None:
+                props._element.remove(element)
     path = f"{outdir}/{bill['file']}"
     doc.save(path)
     clean_font_table(path)

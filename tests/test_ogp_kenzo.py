@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Проверки формы и опорных источников обращения Kenzo Wane."""
+import hashlib
 import json
 import re
 import unittest
@@ -118,6 +119,17 @@ class OgpKenzoTests(unittest.TestCase):
         self.assertIn("статьей 12.7 Уголовного кодекса", all_text)
         self.assertIn("Часть 6 статьи 23", self.analysis)
         self.assertIn("Не установлено, состоит ли № 2660 в IB", self.analysis)
+
+    def test_original_user_inputs_are_organized_and_unchanged(self):
+        paths = {
+            CASE / "Исходные данные" / "Ситуация.txt":
+                "9a5b87be93a25d3b4b6afc9b7c28e3da6fbe7b432136ce335ff9d282ad8b1f68",
+            ROOT / "Обращения" / "Указ № 81 — жалоба в Верховный суд" / "Исходные данные" / "Данные.txt":
+                "10aca2f17d86fd958dec38c8c9b0287254d99cd3ddf246b6133724867e6c24af",
+        }
+        for path, digest in paths.items():
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), digest)
+            self.assertFalse((ROOT / path.name).exists())
 
     def test_sources_are_in_the_current_database(self):
         urls = {json.loads(p.read_text(encoding="utf-8"))["url"] for p in BASE.glob("*.json")}

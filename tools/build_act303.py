@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """ACT. 303: адресные поправки о режиме территорий с учетом правок пользователя.
 
-Сравнительная редакция извлекается из локального среза. Изменения нормы о
-мерах на военных объектах согласованы и вынесены в инициативу SANG ACT. 300.
-Конституционный закон о судебной системе этим проектом не изменяется.
+Сравнительная редакция извлекается из локального среза. Проект не заменяет
+положение о мерах на военных объектах и не изменяет Конституционный закон о
+судебной системе. Историческая инициатива SANG ACT. 300 находится в архиве.
 """
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,7 +16,6 @@ from docx.shared import Twips
 import billkit
 from legal_sources import (AD, AD_TITLE, APP, APP_TITLE, PC_TITLE, SANG,
                            SANG_TITLE, UK, UK_TITLE, clean, excerpt)
-from build_sang_299_300 import clear_attest
 from make_acts import build
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -252,6 +251,28 @@ def polish_pagination(path):
         raise ValueError("Неожиданный колонтитул образца")
     for run in tab_runs[-2:]:
         run.text = ""
+    doc.save(path)
+
+
+def clear_attest(path):
+    """Оставляет место для подписи без неподтверждённого удостоверения."""
+    doc = Document(path)
+    found = []
+    for section in doc.sections:
+        for paragraph in section.footer.paragraphs:
+            if "Attest: Marcus Nomad" not in paragraph.text:
+                continue
+            runs = paragraph.runs
+            start = next(i for i, run in enumerate(runs) if "Attest:" in run.text)
+            tail = "".join(run.text for run in runs[start:])
+            if tail.count("Attest: Marcus Nomad") != 1:
+                raise ValueError("Неожиданный колонтитул шаблона")
+            runs[start].text = tail.replace("Attest: Marcus Nomad", "Attest: __________________")
+            for run in runs[start + 1:]:
+                run.text = ""
+            found.append(paragraph)
+    if len(found) != 1:
+        raise ValueError("Не удалось однозначно сохранить подпись автора")
     doc.save(path)
 
 

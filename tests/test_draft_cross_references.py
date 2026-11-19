@@ -11,8 +11,6 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build_act303 as territory
 import build_acts301_302 as releases
-import build_acts304_307 as defence
-import build_sang_299_300 as sang
 
 # Находит как прямые ссылки («статьи 16 Процессуального кодекса»), так и
 # ссылки через уже названный акт («статьи 37 указанного Кодекса» / «его статьи 2»).
@@ -37,9 +35,7 @@ def forbidden_references(text):
 
 def bills():
     return ([(releases.OUT / folder, bill) for folder, bill in releases.specs()]
-            + [(territory.OUT, territory.specs()[0])]
-            + [(defence.OUT / folder, bill) for folder, bill in defence.specs()[0]]
-            + [(sang.OUT / folder, bill) for folder, bill in sang.specs()])
+            + [(territory.OUT, territory.specs()[0])])
 
 
 class CrossReferenceTests(unittest.TestCase):
@@ -65,7 +61,7 @@ class CrossReferenceTests(unittest.TestCase):
                 self.assertFalse(forbidden_references(phrase))
 
     def test_all_proposed_docx_provisions_have_no_numbered_external_citations(self):
-        self.assertEqual(len(bills()), 9)
+        self.assertEqual(len(bills()), 3)
         for directory, bill in bills():
             doc = Document(directory / bill["file"])
             self.assertEqual(len(doc.tables[0].rows), len(bill["rows"]) + 1)
@@ -79,13 +75,8 @@ class CrossReferenceTests(unittest.TestCase):
             self.assertEqual(forbidden_references(narrative), [])
 
     def test_explanations_only_number_the_act_being_discussed(self):
-        # Эти четыре совпадения описывают собственные положения изменяемого акта,
-        # а не отсылают к нормам другого акта.
-        allowed = {
-            303: ["Статья 2 Приложения"],
-            299: ["статьи 4 Приложения"],
-            300: ["статьи 2 Закона", "статье 8 Закона"],
-        }
+        # Совпадение описывает положение самого изменяемого Приложения.
+        allowed = {303: ["Статья 2 Приложения"]}
         for directory, bill in bills():
             text = (directory / "ПОЯСНЕНИЕ К ПАПКЕ.md").read_text(encoding="utf-8").replace("**", "")
             with self.subTest(bill=bill["num"]):
@@ -117,7 +108,6 @@ class CrossReferenceTests(unittest.TestCase):
                 index[bill["num"], title, locator] = body
         pc = releases.PC_TITLE
         app = releases.APP_TITLE
-        guard = sang.SANG_TITLE
         self.assertIn("части 1 статьи 19 настоящего Кодекса",
                       index[302, pc, "Статья 18, часть 1, пункт «е»"])
         self.assertIn("пункту «е» части 1 статьи 18 настоящего Кодекса",
@@ -127,11 +117,6 @@ class CrossReferenceTests(unittest.TestCase):
         self.assertIn("примечанию 2 настоящей статьи", index[303, app, "Статья 4, примечание 4"])
         self.assertIn("примечанию 1 пункта «а» статьи 4 настоящего Приложения",
                       index[303, app, "Статья 2, цели посещения SANG"])
-        self.assertIn("части 2 статьи 23 настоящего Кодекса", index[304, pc, "Статья 20, часть 2, пункт «ж»"])
-        self.assertIn("статьям 11-14 настоящего Кодекса", index[305, pc, "Статья 23, часть 1, пункт «г» и исключение"])
-        self.assertIn("статье 32 настоящего Кодекса", index[306, pc, "Статья 43, часть 3"])
-        self.assertIn("статьи 10 настоящего Закона", index[300, guard, "Статья 2, часть 7"])
-        self.assertIn("статье 8 настоящего Закона", index[300, guard, "Статья 2, часть 7"])
 
 
 if __name__ == "__main__":

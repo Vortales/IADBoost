@@ -204,9 +204,11 @@ class Act303Tests(unittest.TestCase):
         self.assertIn("посетителей, желающих посетить открытые судебные заседания", article5)
 
     def test_sang_force_search_transfers_and_pass_priority(self):
-        # Единственная редакция этой части теперь находится в ACT. 300 SANG.
+        # Ранее отдельная редакция ACT. 300 перенесена в архив, а исходное
+        # положение этим проектом не заменяется.
         self.assertNotIn("Статья 2, часть 7", self.by_locator)
-        self.assertIn("изменяется только в ACT. 300", self.notes)
+        self.assertIn("ACT. 300 перенесён в архив", self.notes)
+        self.assertIn("ACT. 303 данное положение не изменяет", self.notes)
         guard7 = self.final[draft.SANG, 13]
         self.assertNotIn("право останавливать и досматривать лиц", guard7)
         self.assertIn("Остановка сама по себе не является основанием", guard7)

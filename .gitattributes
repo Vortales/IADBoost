@@ -1,0 +1,2 @@
+# Законодательные JSON хранятся побайтно, включая исходные CRLF.
+*.json -text whitespace=cr-at-eol

@@ -124,8 +124,17 @@ class ConvocationTests(unittest.TestCase):
         self.assertEqual({p.name for p in SESSION.iterdir() if p.is_dir()},
                          {"01 Созыв", "02 Повестка", "03 Итоги", "04 Журнал", "05 Исходные данные"})
         self.assertFalse(any("протокол" in p.name.casefold() for p in SESSION.rglob("*")))
-        for name in ("02 Повестка", "03 Итоги", "04 Журнал", "05 Исходные данные"):
-            self.assertEqual({p.name for p in (SESSION / name).iterdir()}, {".gitkeep"})
+        expected = {
+            "02 Повестка": {"Повестка заседания 19.11.2026.png", "Повестка заседания 19.11.2026.md",
+                            "Повестка заседания 19.11.2026 - BB-код.txt"},
+            "03 Итоги": {"Итоги пленарного заседания Сената 19.11.2026.png",
+                         "Итоги пленарного заседания Сената 19.11.2026.md",
+                         "Итоги пленарного заседания Сената 19.11.2026 - BB-код.txt"},
+            "04 Журнал": {"The Senate of San Andreas 19 - 19.11.2026.xlsx"},
+            "05 Исходные данные": {"README.md"},
+        }
+        for name, files in expected.items():
+            self.assertEqual({p.name for p in (SESSION / name).iterdir()}, files)
         readme = (SESSION / "README.md").read_text(encoding="utf-8")
         for link in re.findall(r"\]\(([^)]+)\)", readme):
             self.assertTrue((SESSION / unquote(link)).is_file(), link)

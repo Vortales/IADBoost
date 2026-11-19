@@ -10,7 +10,7 @@ from pathlib import Path
 from docx import Document
 
 import billkit
-from build_acts302_312 import APP, APP_TITLE, edited, excerpt, new_part
+from legal_sources import APP, APP_TITLE, edited, excerpt, new_part
 from make_acts import build
 
 ROOT = Path(__file__).resolve().parent.parent

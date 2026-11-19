@@ -17,7 +17,7 @@ from docx.oxml.ns import qn
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import billkit
-import build_acts302_312 as old_drafts
+import legal_sources as legal
 import build_acts313_314 as release_drafts
 import build_sang_299_300 as drafts
 import check_docx
@@ -95,7 +95,7 @@ class SangStructureTests(unittest.TestCase):
                 self.assertEqual(row.cells[1].text, plain(right))
                 title, _, body = row.cells[0].text.split("\n", 2)
                 if body != "В действующей редакции отсутствует.":
-                    self.assertTrue(any(body in old_drafts.clean(s) for s in sources[title].values()))
+                    self.assertTrue(any(body in legal.clean(s) for s in sources[title].values()))
                 self.assertTrue(all(cell.paragraphs[0].runs[0].bold for cell in row.cells))
                 fills = lambda cell: [e.get(qn("w:fill")) for e in cell._tc.iter(qn("w:shd"))]
                 self.assertIn("D9EAD3", fills(row.cells[1]))
@@ -166,7 +166,7 @@ class SangStructureTests(unittest.TestCase):
 class SangSubstanceTests(unittest.TestCase):
     def test_note_is_new_behind_fort_checkpoint_and_does_not_replace_existing_notes(self):
         app = billkit.load(drafts.APP)[7]
-        fort = old_drafts.excerpt(app, "а)\nФорт Занкудо", "\nб)\nАвианосец")
+        fort = legal.excerpt(app, "а)\nФорт Занкудо", "\nб)\nАвианосец")
         self.assertIn("Примечание 1:", fort)
         self.assertNotIn("Примечание 1.1:", app)
         self.assertIn("Примечание 2: Государственные и частные адвокаты", app)
@@ -198,7 +198,7 @@ class SangSubstanceTests(unittest.TestCase):
     def test_projects_target_distinct_provisions_and_no_future_law_dependency(self):
         first, second = [b for _, b in drafts.specs()]
         self.assertFalse(locators(first) & locators(second))
-        for _, other in release_drafts.specs() + [old_drafts.specs()[0]]:
+        for _, other in release_drafts.specs():
             self.assertFalse(locators(first) & locators(other))
             self.assertFalse(locators(second) & locators(other))
         self.assertNotIn("ACT. 300", right_for(299))

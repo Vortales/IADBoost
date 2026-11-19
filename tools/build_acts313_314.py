@@ -8,7 +8,7 @@ import argparse
 from pathlib import Path
 
 import billkit
-from build_acts302_312 import APP, APP_TITLE, PC, PC_TITLE, clean, edited, excerpt, new_part
+from legal_sources import APP, APP_TITLE, PC, PC_TITLE, clean, edited, excerpt, new_part
 from make_acts import build
 
 ROOT = Path(__file__).resolve().parent.parent

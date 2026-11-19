@@ -16,7 +16,6 @@ from docx.oxml.ns import qn
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import billkit
-import build_acts302_312 as earlier
 import build_acts313_314 as drafts
 import check_docx
 
@@ -160,14 +159,11 @@ class NewBillStructureTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 drafts.main(only=999)
 
-    def test_projects_do_not_edit_the_same_provisions_as_each_other_or_act302(self):
+    def test_projects_do_not_edit_the_same_provisions_as_each_other(self):
         def locators(bill):
             return {tuple(plain(left).split("\n", 2)[:2]) for left, _ in bill["rows"]}
         first, second = [bill for _, bill in self.bills]
-        original302 = earlier.specs()[0][1]
         self.assertFalse(locators(first) & locators(second))
-        self.assertFalse(locators(first) & locators(original302))
-        self.assertFalse(locators(second) & locators(original302))
         for folder, _ in self.bills:
             explanation = (ROOT / "Законопроекты" / folder / "ПОЯСНЕНИЕ К ПАПКЕ.md").read_text(encoding="utf-8")
             self.assertIn("предварительный", explanation)

@@ -129,7 +129,7 @@ class Act303Tests(unittest.TestCase):
         self.assertIn("могут не охватывать объект целиком", self.notes)
 
     def test_user_archive_preserved_and_source_spelling_not_falsified(self):
-        archive = ROOT / "Законопроекты после правок.7z"
+        archive = ROOT / "Архив/Исходные архивы/Законопроекты после правок.7z"
         self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),
                          "6dbb2c159ae8a624840befc65360afd51e7c5b7a6c8abcf9fedcf5901e580f58")
         visual = self.by_locator["Статья 6, визуализация и прилегающие территории"]

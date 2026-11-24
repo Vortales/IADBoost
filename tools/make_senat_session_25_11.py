@@ -1,150 +1,98 @@
 # -*- coding: utf-8 -*-
-"""Сообщение о заседании Сената 25.11.2026: PNG, текст и BB-код.
+"""Созыв 25.11.2026: содержание и оформление образца 19.11 с заменой даты.
 
-Форма использует рамку и графические элементы созыва от 19.11.2026, но не
-переносит неподтверждённые место, подпись или ссылки на нормы из образца.
-Для PNG нужны Pillow и Times New Roman Regular, Bold и Italic; при необходимости
+Ссылки на нормы и сведения о месте и подписанте воспроизведены из образца;
+перед публикацией требуется сверка, описанная в README заседания.
+Для PNG нужны Pillow и Times New Roman Regular, Bold и Italic. При необходимости
 укажите SENATE_FONT_DIR с файлами times.ttf, timesbd.ttf и timesi.ttf.
-Только текстовые файлы можно обновить без этих зависимостей: --text-only.
+Только текстовые файлы можно обновить без Pillow и шрифтов: --text-only.
 """
 import argparse
+import re
+import sys
 from contextlib import contextmanager
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+TOOLS = Path(__file__).resolve().parent
+if str(TOOLS) not in sys.path:
+    sys.path.insert(0, str(TOOLS))
+import make_senat_session_19_11 as template
+
+ROOT = TOOLS.parent
 OUT_DIR = ROOT / "Повестка" / "25.11.26" / "01 Созыв"
+SAMPLE_DIR = ROOT / "Повестка" / "19.11.2026" / "01 Созыв"
 BASENAME = "Созыв заседания Сената - 25.11.2026"
 BB_FILENAME = f"{BASENAME} - BB-код.txt"
 PLAIN_FILENAME = "25.11.26.txt"
-LOGO_URL = "https://i.ibb.co/zVnGyqQv/1.png"
 
-TITLE = "О СОЗЫВЕ ЗАСЕДАНИЯ СЕНАТА"
-SUBTITLE = "Сообщение о предстоящем заседании"
-DATE_META = "Заседание: 25 ноября 2026 года"
-TIME_META = "Начало: 19:00"
-LEAD = "Сообщаем о предстоящем заседании Сената штата Сан-Андреас."
-BAND = "25 НОЯБРЯ 2026 ГОДА, 19:00"
-SECTIONS = (
-    ("I. СВЕДЕНИЯ О ЗАСЕДАНИИ", "1.1.",
-     "Заседание Сената штата Сан-Андреас состоится 25 ноября 2026 года в 19:00."),
-    ("II. УЧАСТИЕ В ЗАСЕДАНИИ", "2.1.",
-     "Просим сенаторов обеспечить явку к указанному времени."),
+
+def new_date(text):
+    """Заменяет в тексте образца только дату сообщения и заседания."""
+    return (text.replace("19 ноября 2026 года", "25 ноября 2026 года")
+                .replace("19 НОЯБРЯ 2026 ГОДА", "25 НОЯБРЯ 2026 ГОДА"))
+
+
+DATE_LINE = new_date(template.DATE_LINE)
+RIGHT_META = template.RIGHT_META
+TITLE = template.TITLE
+SUBTITLE = template.SUBTITLE
+LEAD = template.LEAD
+BAND = new_date(template.BAND)
+LAW = template.LAW
+CLOSING = template.CLOSING
+LOGO_URL = template.LOGO_URL
+SECTIONS = tuple(
+    (heading, tuple(
+        (number, tuple((new_date(value), style) for value, style in fragments))
+        for number, fragments in paragraphs
+    ))
+    for heading, paragraphs in template.SECTIONS
 )
 
 
-def plain_text():
-    """Версия для сообщения без разметки."""
-    lines = ["СЕНАТ ШТАТА САН-АНДРЕАС", "", TITLE, SUBTITLE, "", DATE_META,
-             TIME_META, "", LEAD, "", BAND, ""]
-    for heading, number, text in SECTIONS:
-        lines.extend((heading, "", f"{number} {text}", ""))
-    return "\n".join(lines)
-
-
 def markdown():
-    """Текст из того же источника, что PNG и форумная версия."""
-    lines = ["# Созыв заседания Сената - 25 ноября 2026 года", "",
-             "**СЕНАТ ШТАТА САН-АНДРЕАС**", "", f"**{TITLE}**", "",
-             f"*{SUBTITLE}*", "", f"*{DATE_META}*", "", f"*{TIME_META}*", "",
-             LEAD, "", f"**{BAND}**", ""]
-    for heading, number, text in SECTIONS:
-        lines.extend((f"## {heading}", "", f"**{number}** {text}", ""))
-    return "\n".join(lines)
+    """Точный текст Markdown-образца с заменой даты 19 на 25 ноября."""
+    sample = SAMPLE_DIR / f"{template.BASENAME}.md"
+    return new_date(sample.read_text(encoding="utf-8"))
 
 
 def bbcode():
-    """BB-код для размещения на форуме, без вложенных тегов размера."""
-    lines = [
-        "[FONT=Times New Roman]", "[CENTER]",
-        f'[IMG width="320px"]{LOGO_URL}[/IMG]', "",
-        "[I][B][COLOR=rgb(97, 189, 109)][SIZE=6]STATE of SAN ANDREAS[/SIZE][/COLOR][/B][/I]",
-        "[B][I][COLOR=rgb(97, 189, 109)][SIZE=6]SENATE OF THE STATE OF SAN ANDREAS[/SIZE][/COLOR][/I][/B]",
-        "", f"[I][B][SIZE=6]{TITLE}[/SIZE][/B][/I]",
-        f"[I][SIZE=4]{SUBTITLE.upper()}[/SIZE][/I]", "[/CENTER]", "",
-        f"[SIZE=4][I]{DATE_META}[/I][/SIZE]",
-        f"[SIZE=4][I]{TIME_META}[/I][/SIZE]", "", f"[SIZE=5]{LEAD}[/SIZE]", "",
-        f"[CENTER][B][I][SIZE=6]{BAND}[/SIZE][/I][/B][/CENTER]", "",
-    ]
-    for heading, number, text in SECTIONS:
-        lines.extend((f"[CENTER][B][I][SIZE=6]{heading}[/SIZE][/I][/B][/CENTER]", "",
-                      f"[SIZE=5][B]{number}[/B] {text}[/SIZE]", ""))
-    lines.extend(("[/FONT]", ""))
-    return "\n".join(lines)
+    """Точный BB-код образца с заменой даты 19 на 25 ноября."""
+    return new_date((SAMPLE_DIR / template.BB_FILENAME).read_text(encoding="utf-8"))
+
+
+def plain_text():
+    """Текст самого сообщения без Markdown-разметки и служебного предисловия."""
+    _, separator, content = markdown().partition("\n---\n\n")
+    if not separator:
+        raise ValueError("Не найдено начало сообщения в Markdown-образце")
+    return re.sub(r"(?m)^#{1,6}\s+", "", content).replace("*", "")
 
 
 @contextmanager
-def configured_layout():
-    """Временно подставляет шрифты и полосу даты в существующую вёрстку."""
-    import make_senat_session_19_11 as previous
-    import make_senat_session_png as layout
-
-    faces = previous.font_faces()
-    old_layout = {name: getattr(layout, name) for name in ("FR", "FB", "FI", "BAND")}
-    old_base = {name: getattr(layout.base, name) for name in ("FR", "FB", "FI")}
+def configured_template():
+    """Временно подставляет дату, не меняя генератор образца и его файлы."""
+    names = ("DATE_LINE", "BAND", "SECTIONS")
+    original = {name: getattr(template, name) for name in names}
     try:
-        for module in (layout, layout.base):
-            module.FR, module.FB, module.FI = (str(path) for path in faces)
-        layout.BAND = BAND
-        layout.base._cache.clear()
-        yield layout
+        template.DATE_LINE = DATE_LINE
+        template.BAND = BAND
+        template.SECTIONS = SECTIONS
+        yield
     finally:
-        for name, value in old_layout.items():
-            setattr(layout, name, value)
-        for name, value in old_base.items():
-            setattr(layout.base, name, value)
-        layout.base._cache.clear()
+        for name, value in original.items():
+            setattr(template, name, value)
 
 
 def render_png(path):
-    """Рисует страницу по образцу, не добавляя неподтверждённую подпись."""
-    from PIL import Image, ImageDraw
+    """Собирает PNG той же вёрсткой, что исходный созыв 19 ноября."""
+    import make_senat_session_png as layout
 
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with configured_layout() as layout:
-        img = Image.new("RGB", (layout.W, layout.H), "white")
-        draw = ImageDraw.Draw(img)
-        draw.rectangle(layout.FRAME, outline=layout.GREEN, width=9)
-
-        with Image.open(Path(layout.ASSETS) / "state_emblem.png") as source:
-            emblem = source.convert("RGB").resize((236, 236), Image.LANCZOS)
-        img.paste(emblem, (layout.CENTER - 118, 152))
-        layout.base.title_mixed(draw, 450, [("STATE", layout.F(layout.FB, 56), 10),
-                                             ("of", layout.F(layout.FI, 48), 2),
-                                             ("SAN ANDREAS", layout.F(layout.FB, 56), 10)])
-        layout.tracked(draw, 552, "SENATE OF THE STATE OF SAN ANDREAS",
-                       layout.F(layout.FB, 25), 7, layout.GREEN)
-        draw.line([(900, 628), (2100, 628)], fill=layout.GREEN, width=3)
-        layout.tracked(draw, 676, TITLE, layout.F(layout.FB, 52), 3, layout.INK)
-        layout.tracked(draw, 772, SUBTITLE.upper(), layout.F(layout.FR, 22), 2, layout.MUTED)
-
-        meta_font = layout.F(layout.FI, 25)
-        draw.text((layout.BODY_L, 858), DATE_META, font=meta_font, fill=layout.MUTED)
-        draw.text((layout.BODY_R - layout.tw(draw, TIME_META, meta_font), 858),
-                  TIME_META, font=meta_font, fill=layout.MUTED)
-        draw.line([(layout.BODY_L, 906), (layout.BODY_R, 906)], fill=layout.RULE, width=2)
-
-        size = 64
-        y = layout.para(draw, 1035, [(LEAD, "r", layout.INK)], size=size,
-                        lh=int(size * 1.62), justify=False, space_after=80)
-        y = layout.band(draw, y, size)
-        y += 120
-        for heading, number, text in SECTIONS:
-            y = layout.heading(draw, y, heading.replace(". ", ".  ", 1), size=58)
-            y = layout.para(draw, y, [(number, "b", layout.GREEN_D),
-                                      (" " + text, "r", layout.INK)],
-                            hang=92, size=size, lh=int(size * 1.62),
-                            justify=False, space_after=145)
-        if y > 3120:
-            raise ValueError("Текст созыва не помещается над печатью")
-
-        with Image.open(Path(layout.ASSETS) / "great_seal.png") as source:
-            seal = source.convert("RGBA").resize((708, 708), Image.LANCZOS)
-        img.paste(seal, (layout.BODY_L + 10, 3938 - 708 - 6), seal)
-        draw.line([(layout.BODY_L, 3940), (layout.BODY_R, 3940)], fill=layout.RULE, width=2)
-        layout.tracked(draw, 3976, "STATE OF SAN ANDREAS  ·  SENATE",
-                       layout.F(layout.FR, 21), 8, layout.MUTED)
-        img.save(path, "PNG", dpi=(300, 300))
+    faces = template.font_faces()
+    with configured_template(), template.configured_layout(faces):
+        layout.build(str(path))
     return path
 
 

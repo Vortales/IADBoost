@@ -12,7 +12,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_DIR = ROOT / "Повестка"
+OUT_DIR = ROOT / "Повестка" / "25.11.26" / "01 Созыв"
 BASENAME = "Созыв заседания Сената - 25.11.2026"
 BB_FILENAME = f"{BASENAME} - BB-код.txt"
 PLAIN_FILENAME = "25.11.26.txt"

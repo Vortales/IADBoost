@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+from urllib.parse import unquote
 
 from PIL import Image
 
@@ -16,7 +17,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 import make_senat_session_25_11 as convocation
 import make_senat_session_png as layout
 
-OUT = ROOT / "Повестка"
+SESSION = ROOT / "Повестка" / "25.11.26"
+OUT = SESSION / "01 Созыв"
 OLD = ROOT / "Повестка" / "19.11.2026" / "01 Созыв"
 
 
@@ -90,15 +92,27 @@ class ConvocationTests(unittest.TestCase):
                     f"{convocation.BASENAME}.png", convocation.BB_FILENAME}
         names = {p.name for p in OUT.iterdir() if p.is_file()}
         self.assertTrue(expected.issubset(names))
-        self.assertFalse(any("протокол" in name.casefold() and
-                             ("25.11.2026" in name or "25.11.26" in name)
-                             for name in names))
+        for name in expected:
+            self.assertFalse((ROOT / "Повестка" / name).exists(), name)
+        for name in ("02 Повестка", "03 Итоги", "04 Журнал", "05 Исходные данные"):
+            self.assertTrue((SESSION / name).is_dir(), name)
+        self.assertFalse(any("протокол" in path.name.casefold() for path in SESSION.rglob("*")))
         with Image.open(OUT / f"{convocation.BASENAME}.png") as image:
             self.assertEqual(image.size, (3000, 4225))
             self.assertEqual(image.mode, "RGB")
             self.assertEqual(image.getpixel((116, 92)), layout.GREEN)
             self.assertAlmostEqual(image.info["dpi"][0], 300, delta=1)
             self.assertNotIn("http", str(image.info).lower())
+
+    def test_readme_links_and_pending_materials(self):
+        readme = (SESSION / "README.md").read_text(encoding="utf-8")
+        self.assertIn("25 ноября 2026 года в 19:00", readme)
+        self.assertIn("Место проведения, часовой пояс и подписант не указаны", readme)
+        links = re.findall(r"\]\(([^)]+)\)", readme)
+        self.assertGreaterEqual(len(links), 4)
+        for link in links:
+            if not link.startswith(("http://", "https://")):
+                self.assertTrue((SESSION / unquote(link)).is_file(), link)
 
     def test_rebuild_preserves_template_and_layout_globals(self):
         try:

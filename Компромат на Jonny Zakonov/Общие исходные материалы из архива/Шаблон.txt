@@ -1,0 +1,8 @@
+{
+  "Name": "Marcus Nomad",
+  "ID": "85028",
+  "Fraction": "FIB",
+  "Rang": "13",
+  "Department": "-",
+  "JobTitle": "Спикер сената, Частный адвокат"
+}

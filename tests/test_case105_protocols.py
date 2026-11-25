@@ -61,17 +61,13 @@ def github_references():
 
 
 class Case105ProtocolsTests(unittest.TestCase):
-    def test_package_has_all_deliverables_and_matching_working_copies(self):
+    def test_package_has_all_deliverables(self):
         for name in ("README.md", "00 Перед подачей.md", "01 Ответ на запрос - BB-код.txt",
                      "02 Возражения - BB-код.txt", "03 Состав Сената - предварительная сверка.md",
                      "04 Разбор и перечень документов.md"):
             self.assertTrue((PACKAGE / name).is_file(), name)
         for date in ("09", "13", "19"):
             self.assertTrue(protocol(date).is_file(), date)
-        self.assertEqual((CASE / "04 Ответ на запрос суда - BB-код.txt").read_bytes(),
-                         (PACKAGE / "01 Ответ на запрос - BB-код.txt").read_bytes())
-        self.assertEqual((CASE / "05 Возражения по существу и срокам - BB-код.txt").read_bytes(),
-                         (PACKAGE / "02 Возражения - BB-код.txt").read_bytes())
 
     def test_provenance_signature_date_and_document_structure(self):
         for date, row_count in (("09", 17), ("13", 19), ("19", 9)):

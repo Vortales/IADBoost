@@ -220,23 +220,26 @@ class JonnyCurrentWorkTests(unittest.TestCase):
     def test_response_is_clear_partial_and_preserves_unavailable_evidence(self):
         text = RESPONSE.read_text(encoding="utf-8")
         for required in (
-            "Что я представляю и чего прошу", "частичный ответ", "не является ответом Сената",
+            "Что я представляю и чего прошу", "частичный ответ", "не подтверждает полномочий представлять Сенат",
             "1. Что запросил суд", "2. На каком основании", "3. Как избирался Спикер",
             "4. Что показывают материалы", "5. Ссылки на конкретные голосования",
-            "6. Какие документы не приложены", "отдельное решение об избрании",
-            "протокол соответствующего голосования", "сведения о составе и поимённой явке",
+            "6. Какие запрошенные первичные документы пока не приложены", "отдельное решение об избрании",
+            "протокол соответствующего голосования", "поимённая регистрация явки",
             "причину", "место нахождения", "каждого", "48 часов с получения запроса",
+            "Протоколы имеются и представляются", "подготовлены после заседаний",
+            "не выдаются за файлы, составленные непосредственно в ходе заседаний",
+            "23.11.2026, в 15:58", "25.11.2026, 15:58",
             "не обязательно является временем завершения голосования",
             "вопрос в выгрузке не распознан", "не доказывает законность нового назначения",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, text)
-        self.assertEqual(len(re.findall(r"\{\{[^{}]+\}\}", text)), 7)
+        self.assertEqual(len(re.findall(r"\{\{[^{}]+\}\}", text)), 4)
         assert_balanced_bbcode(self, text)
         instructions = INSTRUCTIONS.read_text(encoding="utf-8")
         self.assertIn("одно общее поле", instructions)
         self.assertIn("по каждому", instructions)
-        self.assertIn("не придумывайте", instructions)
+        self.assertIn("не придумывайте", instructions.lower())
 
     def test_objections_dont_overstate_identity_or_deadline(self):
         text = OBJECTIONS.read_text(encoding="utf-8")
@@ -247,7 +250,9 @@ class JonnyCurrentWorkTests(unittest.TestCase):
         self.assertIn("Не прошу автоматически считать все требования за эту дату просроченными", text)
         self.assertIn("каждому подтверждённому пропуску", text)
         self.assertIn("не проверенный оригинал", text)
-        self.assertEqual(len(re.findall(r"\{\{[^{}]+\}\}", text)), 5)
+        self.assertEqual(len(re.findall(r"\{\{[^{}]+\}\}", text)), 0)
+        self.assertIn("25.11.2026", text)
+        self.assertIn("Подпись: Nomad", text)
         assert_balanced_bbcode(self, text)
 
     def test_report_contains_channel_link_and_access_note(self):

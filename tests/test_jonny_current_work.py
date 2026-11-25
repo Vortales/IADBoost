@@ -243,8 +243,10 @@ class JonnyCurrentWorkTests(unittest.TestCase):
 
     def test_objections_dont_overstate_identity_or_deadline(self):
         text = OBJECTIONS.read_text(encoding="utf-8")
-        self.assertIn("учётная запись uhge", text)
+        self.assertIn("По моим сведениям, Jonny Zakonov участвовал", text)
+        self.assertIn("сопоставлении записи сохранённого опроса с его личностью", text)
         self.assertIn("независимое подтверждение принадлежности аккаунта", text)
+        self.assertNotIn("uhge", text)
         self.assertNotIn("jhonnyycc", text)
         self.assertIn("Если указанные времена, часовой пояс UTC+3", text)
         self.assertIn("Не прошу автоматически считать все требования за эту дату просроченными", text)

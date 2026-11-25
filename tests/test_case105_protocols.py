@@ -170,6 +170,55 @@ class Case105ProtocolsTests(unittest.TestCase):
         self.assertIn("в 20:39 Jhonny Scoutezaki", text)
         self.assertIn("историческая версия реестра", text)
 
+    def test_protocols_use_source_grounded_details_not_invented_attendance(self):
+        posts = {post["n"]: post for post in json.loads(CABINET.read_text(encoding="utf-8"))["posts"]}
+        text_09 = document_text(Document(protocol("09")))
+        text_13 = document_text(Document(protocol("13")))
+        text_19 = document_text(Document(protocol("19")))
+        self.assertIn("Указ № 0012 назначал", text_09)
+        self.assertIn("Точное время окончания заседания по доступным материалам не установлено", text_09)
+        for date, text in (("13", text_13), ("19", text_19)):
+            with self.subTest(date=date):
+                self.assertIn("Капитолий штата Сан-Андреас", text)
+                self.assertIn("Это интервалы опросов", text)
+        for fragment in ("ACT. 286", "Kiray Fair", "ACT. 298", "Qwikus Killa",
+                         "Jhonny Scoutezaki", "Dmitriy Grayrat"):
+            with self.subTest(source="13", fragment=fragment):
+                self.assertIn(fragment, posts[10]["text"])
+                self.assertIn(fragment, text_13)
+        self.assertIn("не самостоятельная регистрация явки", text_13)
+        for fragment in ("ACT. 299", "Asher K.", "ACT. 308", "Pravik Killaz", "Jacob Killa"):
+            with self.subTest(source="19", fragment=fragment):
+                self.assertIn(fragment, posts[12]["text"])
+                self.assertIn(fragment, text_19)
+        self.assertEqual(posts[11]["date"], "13.11.2026 в 22:02")
+        self.assertTrue(any("19 ноября 2026" in block.get("ocr_text", "") for block in posts[11]["blocks"]))
+        self.assertIn("дата 19.11", text_19)
+        self.assertIn("сообщение с ним датировано 13.11 в 22:02", text_19)
+        self.assertIn("не подтверждает автоматически состав или явку на 19.11", text_19)
+
+    def test_no_discord_account_names_in_protocols_or_court_texts(self):
+        records = topic_records(ARCHIVE.read_text(encoding="utf-8"))
+        names = set()
+        for number in (1, 6, 17, 35):
+            for raw in re.findall(r"\(\d+/\d+ видимых имён\):\s*([^\n]+)", records[number]["body"]):
+                names.update(part.strip() for part in raw.split(";"))
+        self.assertGreater(len(names), 20)
+        # Имя человека в реестре не является запрещённым ником, даже если совпадает с ним.
+        real_name_words = {word.casefold() for _, name, _ in builder.ROSTER_09 + builder.ROSTER_13 + builder.ROSTER_19
+                           for word in re.findall(r"[A-Za-z0-9_]+", name)}
+        nicknames = {name for name in names if name.casefold() not in real_name_words}
+        texts = {f"protocol {date}": document_text(Document(protocol(date))) for date in ("09", "13", "19")}
+        for filename in ("01 Ответ на запрос - BB-код.txt", "02 Возражения - BB-код.txt"):
+            # Электронная почта ответчика - контакт, а не имя Discord-аккаунта.
+            text = (PACKAGE / filename).read_text(encoding="utf-8")
+            texts[filename] = re.sub(r"[\w.+-]+@[\w.-]+", "", text)
+        for label, text in texts.items():
+            for nickname in nicknames:
+                with self.subTest(document=label, nickname=nickname):
+                    pattern = r"(?<![\w])" + re.escape(nickname) + r"(?![\w])"
+                    self.assertNotRegex(text.lower(), re.compile(pattern.lower()))
+
     def test_published_vote_counts_and_intervals(self):
         posts = {post["n"]: (post.get("text") or "").replace("\u200b", "")
                  for post in json.loads(CABINET.read_text(encoding="utf-8"))["posts"]}
